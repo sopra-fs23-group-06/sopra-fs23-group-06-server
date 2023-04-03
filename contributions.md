@@ -1,1 +1,2 @@
-Week Date, Name, GitHub Issue, Comment
+| **Week** | **Date** | **Name** | **Github Issues** | **Description** |
+|----------|----------|----------|------------------|-------------|
