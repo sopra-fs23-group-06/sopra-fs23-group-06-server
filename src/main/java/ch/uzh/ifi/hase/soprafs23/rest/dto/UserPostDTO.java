@@ -2,16 +2,25 @@ package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
 public class UserPostDTO {
 
-  private String name;
-
+  private Long id;
+  private Long lobby;
   private String username;
 
-  public String getName() {
-    return name;
+
+  public Long getId() {
+        return id;
+    }
+
+  public void setId(Long id) {
+        this.id = id;
+    }
+
+  public Long getLobby() {
+    return lobby;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setLobby(Long lobby) {
+    this.lobby = lobby;
   }
 
   public String getUsername() {

@@ -19,23 +19,14 @@ import java.io.Serializable;
 @Table(name = "USER")
 public class User implements Serializable {
 
-  private static final long serialVersionUID = 1L;
-
   @Id
-  @GeneratedValue
   private Long id;
 
   @Column(nullable = false)
-  private String name;
+  private Long lobby;
 
   @Column(nullable = false, unique = true)
   private String username;
-
-  @Column(nullable = false, unique = true)
-  private String token;
-
-  @Column(nullable = false)
-  private UserStatus status;
 
   public Long getId() {
     return id;
@@ -45,12 +36,12 @@ public class User implements Serializable {
     this.id = id;
   }
 
-  public String getName() {
-    return name;
+  public Long getLobby() {
+    return lobby;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setLobby(Long lobby) {
+    this.lobby = lobby;
   }
 
   public String getUsername() {
@@ -61,19 +52,5 @@ public class User implements Serializable {
     this.username = username;
   }
 
-  public String getToken() {
-    return token;
-  }
 
-  public void setToken(String token) {
-    this.token = token;
-  }
-
-  public UserStatus getStatus() {
-    return status;
-  }
-
-  public void setStatus(UserStatus status) {
-    this.status = status;
-  }
 }
