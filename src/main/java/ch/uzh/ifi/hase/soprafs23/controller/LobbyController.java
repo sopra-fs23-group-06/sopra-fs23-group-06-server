@@ -25,10 +25,19 @@ public class LobbyController {
 
   private final LobbyService lobbyService;
 
-  LobbyController(LobbyService lobbyService) {
-    this.lobbyService = lobbyService;
-  }
+  LobbyController(LobbyService lobbyService) {this.lobbyService = lobbyService;}
 
+    @PostMapping("/users")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public UserGetDTO addUserToLobby(@RequestBody UserPostDTO userPostDTO) {
+        // create user
+        User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
+
+        User addedUser = lobbyService.addToLobby(userInput);
+        // convert internal representation of user back to API
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(addedUser);
+    }
 
     @PostMapping("/lobbies")
     @ResponseStatus(HttpStatus.CREATED)
@@ -40,12 +49,12 @@ public class LobbyController {
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
     }
 
-    @PutMapping("/lobbies")
+    @GetMapping("/lobbies/{lobbyCode}")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public LobbyGetDTO joinLobby() {
+    public LobbyGetDTO checkLobby(@PathVariable Long lobbyCode) {
         // create user
-        Lobby createdLobby = lobbyService.createLobby();
+        Lobby createdLobby = lobbyService.checkLobby(lobbyCode);
         // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
     }
@@ -61,19 +70,8 @@ public class LobbyController {
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(updatedLobby);
     }
 
-    @PostMapping("users/{lobbyCode}")
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public UserGetDTO addUserToLobby(@PathVariable Long lobbyCode,@RequestBody UserPostDTO userPostDTO) {
-        // create user
-        User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
-        User addedUser = lobbyService.addToLobby(lobbyCode, userInput);
-        // convert internal representation of user back to API
-        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(addedUser);
-    }
-
-    @GetMapping("users/{lobbyCode}")
+    @GetMapping("/lobbies/{lobbyCode}/users")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<UserGetDTO> getAllUsers(@PathVariable Long lobbyCode) {
@@ -86,6 +84,15 @@ public class LobbyController {
             userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
         }
         return userGetDTOs;
+    }// maybe change to GET lobbies/lobbyId
+
+
+    @PutMapping("/lobbies/{lobbyCode}/leaveHandler")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public void removeUser(@RequestBody UserPostDTO userPostDTO) {
+        User leavingUser = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
+        lobbyService.removeUser(leavingUser);
     }
 
 }

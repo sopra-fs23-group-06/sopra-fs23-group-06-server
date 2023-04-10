@@ -22,7 +22,7 @@ public class Lobby implements Serializable {
   @Column(nullable = false)
   private Long lobbyCode;
 
-  @Column(length = 10000)
+  @Lob
   private ArrayList<User> players;
 
 
@@ -33,7 +33,6 @@ public class Lobby implements Serializable {
   public void setId(Long id) {
         this.id = id;
     }
-
 
   public Long getLobbyCode() {
     return lobbyCode;
