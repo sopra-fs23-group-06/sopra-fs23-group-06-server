@@ -31,7 +31,12 @@ public class Deck {
     }
 
     public Card draw() {
-        assert aDeck.size() != 0;
-        return aDeck.remove(aDeck.size() - 1);
+        try {
+            return aDeck.remove(aDeck.size() - 1);
+        }
+        catch (Exception e) {
+            System.out.println("Something went wrong... the deck is empty");
+        }
+        return null;
     }
 }

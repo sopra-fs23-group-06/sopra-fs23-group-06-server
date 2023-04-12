@@ -1,6 +1,8 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import java.util.ArrayList;
 
@@ -10,18 +12,39 @@ class DeckTest {
 
     private Deck deck = Deck.getInstance();
     private Deck deck2 = Deck.getInstance();
+    ArrayList<Card> drawnCards = new ArrayList<Card>(66);
+    ArrayList<Card> drawnCardsAfterShuffle = new ArrayList<Card>(66);
+
+
+
 
     //deck.fillDeck();
     @Test
     void getInstance() {
-        assertEquals(deck, deck2);
+        assertSame(deck, deck2);
+        for(int i=0;i<66;i++){
+            drawnCards.add(deck.draw());
+        }
+        assertEquals(drawnCards.size(),66);
     }
 
     @Test
     void fillDeck() {
+        for(int i=0;i<66;i++){
+            drawnCards.add(deck.draw());
+        }
+        deck.fillDeck();
+        for(int i=0;i<66;i++){
+            drawnCardsAfterShuffle.add(deck.draw());
+        }
+        assertNotEquals(drawnCards, drawnCardsAfterShuffle);
     }
 
     @Test
     void draw() {
+        for(int i=1;i<67; i++){
+            deck.draw();
+        }
+        assertThrows(Exception.class, (Executable) deck.draw());
     }
 }
