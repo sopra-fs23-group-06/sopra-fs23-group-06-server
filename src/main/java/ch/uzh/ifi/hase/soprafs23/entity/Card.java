@@ -22,7 +22,17 @@ public class Card {
             if (color == CardColor.SPECIAL) {
                 //ESCAPE, PIRATE, MERMAID, SCARY_MARY, SKULL_KING
                 for (CardRank rank : CardRank.values()) {
-                    if (rank.ordinal() >= 13) {
+                    if(rank.ordinal() >= 13 && rank.ordinal() < 15){
+                        for(int i=0; i<5;i++){
+                            CARDS.add(new Card(rank,color));
+                        }
+                    }
+                    if(rank.ordinal()==15){
+                        for(int i=0;i<2;i++){
+                            CARDS.add(new Card(rank, color));
+                        }
+                    }
+                    if (rank.ordinal() >= 16) {
                         CARDS.add(new Card(rank, color));
                     }
                 }
