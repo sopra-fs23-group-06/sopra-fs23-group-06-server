@@ -26,6 +26,8 @@ public class Card {
                         CARDS.add(new Card(rank, color));
                     }
                 }
+            }
+            else{
                 for (CardRank rank : CardRank.values()) {
                     if (rank == CardRank.ESCAPE) {
                         break;
@@ -35,6 +37,7 @@ public class Card {
             }
         }
     }
+
     public static ArrayList<Card> getCards() {
         return CARDS;
     }
