@@ -10,9 +10,12 @@ public class Card {
     private final CardRank aRank;
     private final CardColor aColor;
 
+    private boolean playable;
+
     private Card(CardRank rank, CardColor color) {
         aRank = rank;
         aColor = color;
+        playable = true;
     }
     private static final ArrayList<Card> CARDS =
             new ArrayList<Card>(66);
@@ -54,6 +57,14 @@ public class Card {
 
     public CardColor getColor(Card pCard) {
         return pCard.aColor;
+    }
+
+    public void setPlayable(boolean playable) {
+        this.playable = playable;
+    }
+
+    public boolean getPlayable(){
+        return playable;
     }
 
     public CardRank getaRank(Card pCard) {
