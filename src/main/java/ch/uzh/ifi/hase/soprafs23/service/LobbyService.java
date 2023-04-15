@@ -128,11 +128,13 @@ public class LobbyService {
     }
 
     public void closeLobby(Long lobbyCode) {
+        if (checkIfLobbyExists(lobbyCode)){
         Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
         ArrayList<User> playerList = lobby.getPlayers();
         playerList.clear();
+        lobbyRepository.delete(lobby);}
   }
-  
+
 
 
     /**

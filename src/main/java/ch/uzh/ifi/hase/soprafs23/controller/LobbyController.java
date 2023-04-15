@@ -116,9 +116,10 @@ public class LobbyController {
     @ResponseBody
     public void closeLobby(@PathVariable Long lobbyCode) {
         lobbyService.closeLobby(lobbyCode);
-        update();
+        close();
     }
 
+    @CrossOrigin
     @GetMapping("/updates")
     public SseEmitter sendUpdate() {
         SseEmitter emitter = new SseEmitter(-1L);
@@ -134,6 +135,16 @@ public class LobbyController {
         for (SseEmitter emitter : emitters) {
             try {
                 emitter.send(SseEmitter.event().data("update"));
+            } catch (IOException e) {
+                emitters.remove(emitter);
+            }
+        }
+    }
+
+    public void close() {
+        for (SseEmitter emitter : emitters) {
+            try {
+                emitter.send(SseEmitter.event().data("close"));
             } catch (IOException e) {
                 emitters.remove(emitter);
             }
