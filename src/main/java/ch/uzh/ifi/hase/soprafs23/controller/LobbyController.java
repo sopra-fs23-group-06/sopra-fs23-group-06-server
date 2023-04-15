@@ -120,7 +120,7 @@ public class LobbyController {
     }
 
     @CrossOrigin
-    @GetMapping("/updates")
+    @GetMapping("/updates") //need to update to lobby specific listeners
     public SseEmitter sendUpdate() {
         SseEmitter emitter = new SseEmitter(-1L);
         emitters.add(emitter);
