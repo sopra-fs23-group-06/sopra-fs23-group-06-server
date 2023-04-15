@@ -9,9 +9,13 @@ import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * User Controller
@@ -24,7 +28,7 @@ import java.util.List;
 public class LobbyController {
 
   private final LobbyService lobbyService;
-
+  private final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
   LobbyController(LobbyService lobbyService) {this.lobbyService = lobbyService;}
 
     @PostMapping("/users")
@@ -36,6 +40,7 @@ public class LobbyController {
 
         User addedUser = lobbyService.addToLobby(userInput);
         // convert internal representation of user back to API
+        update();
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(addedUser);
     }
 
@@ -90,9 +95,49 @@ public class LobbyController {
     @PutMapping("/lobbies/{lobbyCode}/leaveHandler")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
+    public void leaveUser(@RequestBody UserPostDTO userPostDTO) {
+        User leavingUser = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
+        lobbyService.removeUser(leavingUser);
+        update();
+    }
+
+
+    @PutMapping("/lobbies/{lobbyCode}/kickHandler")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
     public void removeUser(@RequestBody UserPostDTO userPostDTO) {
         User leavingUser = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
         lobbyService.removeUser(leavingUser);
+        update();
+    }
+
+    @PutMapping("/lobbies/{lobbyCode}/closeHandler")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public void closeLobby(@PathVariable Long lobbyCode) {
+        lobbyService.closeLobby(lobbyCode);
+        update();
+    }
+
+    @GetMapping("/updates")
+    public SseEmitter sendUpdate() {
+        SseEmitter emitter = new SseEmitter(-1L);
+        emitters.add(emitter);
+        update();
+        emitter.onCompletion(() -> emitters.remove(emitter));
+        emitter.onTimeout(() -> {emitters.remove(emitter);});
+        return emitter;
+    }
+
+
+    public void update() {
+        for (SseEmitter emitter : emitters) {
+            try {
+                emitter.send(SseEmitter.event().data("update"));
+            } catch (IOException e) {
+                emitters.remove(emitter);
+            }
+        }
     }
 
 }
