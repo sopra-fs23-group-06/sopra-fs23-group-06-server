@@ -1,6 +1,9 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
-import org.hibernate.annotations.LazyCollection;
+import ch.uzh.ifi.hase.soprafs23.Game.GameLogic;
+import ch.uzh.ifi.hase.soprafs23.Game.Round;
+import ch.uzh.ifi.hase.soprafs23.Game.GameTable;
+
 
 import javax.persistence.*;
 import java.io.Serial;
@@ -25,7 +28,13 @@ public class Lobby implements Serializable {
   @Lob
   private ArrayList<User> players;
 
+  private Round round = new Round();
+  private GameTable gameTable = new GameTable();
+  private Deck deck = new Deck();
 
+  public void CreateGameLogic(){
+      GameLogic gameLogic = new GameLogic(deck, gameTable,round);
+  }
   public Long getId() {
       return id;
   }

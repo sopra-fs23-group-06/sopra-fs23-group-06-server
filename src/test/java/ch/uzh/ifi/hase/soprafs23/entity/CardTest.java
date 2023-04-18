@@ -20,11 +20,11 @@ class CardTest {
 
     @Test
     void getColor() {
-        assertEquals(cards.get(0).getColor(cards.get(0)), CardColor.RED);
+        assertEquals(cards.get(0).getColor(), CardColor.RED);
     }
 
     @Test
     void getaRank() {
-        assertEquals(cards.get(0).getaRank(cards.get(0)), CardRank.ONE);
+        assertEquals(cards.get(0).getaRank(), CardRank.ONE);
     }
 }

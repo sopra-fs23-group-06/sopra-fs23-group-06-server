@@ -55,8 +55,8 @@ public class Card {
         return CARDS;
     }
 
-    public CardColor getColor(Card pCard) {
-        return pCard.aColor;
+    public CardColor getColor() {
+        return this.aColor;
     }
 
     public void setPlayable(boolean playable) {
@@ -67,8 +67,8 @@ public class Card {
         return playable;
     }
 
-    public CardRank getaRank(Card pCard) {
-        return pCard.aRank;
+    public CardRank getaRank() {
+        return this.aRank;
     }
 
 }

@@ -40,7 +40,7 @@ public class LobbyController {
 
         User addedUser = lobbyService.addToLobby(userInput);
         // convert internal representation of user back to API
-        update();
+        update(addedUser.getLobby());
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(addedUser);
     }
 
@@ -98,7 +98,7 @@ public class LobbyController {
     public void leaveUser(@RequestBody UserPostDTO userPostDTO) {
         User leavingUser = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
         lobbyService.removeUser(leavingUser);
-        update();
+        update(leavingUser.getLobby());
     }
 
 
@@ -108,7 +108,7 @@ public class LobbyController {
     public void removeUser(@RequestBody UserPostDTO userPostDTO) {
         User leavingUser = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
         lobbyService.removeUser(leavingUser);
-        update();
+        update(leavingUser.getLobby());
     }
 
     @PutMapping("/lobbies/{lobbyCode}/closeHandler")
@@ -116,39 +116,40 @@ public class LobbyController {
     @ResponseBody
     public void closeLobby(@PathVariable Long lobbyCode) {
         lobbyService.closeLobby(lobbyCode);
-        close();
+        close(lobbyCode);
     }
 
     @CrossOrigin
-    @GetMapping("/updates") //need to update to lobby specific listeners
+    @GetMapping("/updates")
     public SseEmitter sendUpdate() {
         SseEmitter emitter = new SseEmitter(-1L);
         emitters.add(emitter);
-        update();
         emitter.onCompletion(() -> emitters.remove(emitter));
         emitter.onTimeout(() -> {emitters.remove(emitter);});
         return emitter;
     }
 
 
-    public void update() {
+    public void update(Long lobbyCode) {
         for (SseEmitter emitter : emitters) {
             try {
-                emitter.send(SseEmitter.event().data("update"));
+                emitter.send(SseEmitter.event().data("update:"+ lobbyCode));
             } catch (IOException e) {
                 emitters.remove(emitter);
             }
         }
     }
 
-    public void close() {
+    public void close(Long lobbyCode) {
         for (SseEmitter emitter : emitters) {
             try {
-                emitter.send(SseEmitter.event().data("close"));
+                emitter.send(SseEmitter.event().data("close:"+ lobbyCode));
             } catch (IOException e) {
                 emitters.remove(emitter);
             }
         }
     }
+
+
 
 }
