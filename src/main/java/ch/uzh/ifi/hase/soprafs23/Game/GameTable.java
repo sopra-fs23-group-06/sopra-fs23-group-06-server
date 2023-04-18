@@ -3,18 +3,9 @@ package ch.uzh.ifi.hase.soprafs23.Game;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Table {
+public class GameTable {
     private List<Player> Order = new ArrayList<Player>();
-    private static Table instance;
-
-    private Table(){}
-
-    public static synchronized Table getInstance() {
-        if (instance == null) {
-            instance = new Table();
-        }
-        return instance;
-    }
+    private Player startingPlayer;
 
     public List<Player> getOrder() {
         return Order;
@@ -22,5 +13,12 @@ public class Table {
 
     public void addPlayer(Player p){
         Order.add(p);
+    }
+
+    public void setStartingPlayer(Player startingPlayer) {
+        this.startingPlayer = startingPlayer;
+    }
+    public Player getStartingPlayer(){
+        return startingPlayer;
     }
 }

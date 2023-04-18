@@ -1,8 +1,12 @@
 package ch.uzh.ifi.hase.soprafs23.Game;
 
+import ch.uzh.ifi.hase.soprafs23.Points.Trick;
+import ch.uzh.ifi.hase.soprafs23.constant.CardColor;
 import ch.uzh.ifi.hase.soprafs23.entity.Card;
 
+import javax.persistence.Table;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Player {
     private String username;
@@ -51,7 +55,13 @@ public class Player {
         return username;
     }
 
-    public Card playCard(Card c){
-        return c;
+    public Card playCard(Card card, Trick trick){
+        if(trick.getIsTrumpSet()!=true){
+            if(card.getColor()!=CardColor.SPECIAL){
+                trick.setIsTrumpSet(true);
+                trick.setTrumpColour(card);
+            }
+        }
+        return card;
     }
 }

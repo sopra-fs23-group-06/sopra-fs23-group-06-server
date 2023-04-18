@@ -10,23 +10,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DeckTest {
 
-    private Deck deck = Deck.getInstance();
-    private Deck deck2 = Deck.getInstance();
+    private Deck deck = new Deck();
     ArrayList<Card> drawnCards = new ArrayList<Card>(66);
     ArrayList<Card> drawnCardsAfterShuffle = new ArrayList<Card>(66);
 
 
-
-
-    //deck.fillDeck();
-    @Test
-    void getInstance() {
-        assertSame(deck, deck2);
-        for(int i=0;i<66;i++){
-            drawnCards.add(deck.draw());
-        }
-        assertEquals(drawnCards.size(),66);
-    }
 
     @Test
     void fillDeck() {
