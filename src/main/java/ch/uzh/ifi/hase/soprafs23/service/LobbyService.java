@@ -116,6 +116,7 @@ public class LobbyService {
     public void removeUser(User leavingUser) {
       Long lobbyCode = leavingUser.getLobby();
       Long userID = leavingUser.getId();
+      if (checkIfLobbyExists(lobbyCode)){
       Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
       ArrayList<User> playerList = lobby.getPlayers();
       for (int i = 0; i < playerList.size(); i++){
@@ -123,7 +124,17 @@ public class LobbyService {
               playerList.remove(playerList.get(i));
           }
       }
+      }
     }
+
+    public void closeLobby(Long lobbyCode) {
+        if (checkIfLobbyExists(lobbyCode)){
+        Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
+        ArrayList<User> playerList = lobby.getPlayers();
+        playerList.clear();
+        lobbyRepository.delete(lobby);}
+  }
+
 
 
     /**
