@@ -55,7 +55,7 @@ public class LobbyController {
     }
 
     @GetMapping("/lobbies/{lobbyCode}")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public LobbyGetDTO checkLobby(@PathVariable Long lobbyCode) {
         // create user
@@ -66,7 +66,7 @@ public class LobbyController {
 
 
     @PutMapping("/lobbies/{lobbyCode}")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public LobbyGetDTO joinLobby(@PathVariable Long lobbyCode) {
         // create user
@@ -93,7 +93,7 @@ public class LobbyController {
 
 
     @PutMapping("/lobbies/{lobbyCode}/leaveHandler")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void leaveUser(@RequestBody UserPostDTO userPostDTO) {
         User leavingUser = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
@@ -103,7 +103,7 @@ public class LobbyController {
 
 
     @PutMapping("/lobbies/{lobbyCode}/kickHandler")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void removeUser(@RequestBody UserPostDTO userPostDTO) {
         User leavingUser = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
@@ -112,14 +112,14 @@ public class LobbyController {
     }
 
     @PutMapping("/lobbies/{lobbyCode}/closeHandler")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void closeLobby(@PathVariable Long lobbyCode) {
         lobbyService.closeLobby(lobbyCode);
         close(lobbyCode);
     }
 
-    @CrossOrigin
+    @CrossOrigin(origins = "*")
     @GetMapping("/updates")
     public SseEmitter sendUpdate() {
         SseEmitter emitter = new SseEmitter(-1L);

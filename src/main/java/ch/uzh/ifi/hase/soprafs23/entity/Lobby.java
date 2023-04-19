@@ -27,9 +27,11 @@ public class Lobby implements Serializable {
 
   @Lob
   private ArrayList<User> players;
-
+  @Transient
   private Round round = new Round();
+  @Transient
   private GameTable gameTable = new GameTable();
+  @Transient
   private Deck deck = new Deck();
 
   public void CreateGameLogic(){
