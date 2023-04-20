@@ -26,5 +26,9 @@ public class LobbyGetDTO {
     this.lobbyCode = lobbyCode;
   }
 
+  public ArrayList<User> getPlayers() { return players; }
+
+  public void setPlayers(ArrayList<User> players) { this.players = players; }
+
 
 }
