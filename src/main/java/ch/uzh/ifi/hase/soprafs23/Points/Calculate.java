@@ -1,24 +1,22 @@
 package ch.uzh.ifi.hase.soprafs23.Points;
 
 import ch.uzh.ifi.hase.soprafs23.Game.Player;
+import ch.uzh.ifi.hase.soprafs23.Game.Round;
 
 public class Calculate {
-    private int round;
-    private int trickDifference;
-    private int grantedPoints;
+    private static int trickDifference;
+    private static int grantedPoints;
 
-    public int calculatePoints(Player p){
+    public static int calculatePoints(Player p, Round round){
         trickDifference = Math.abs(p.getTricks() - p.getBid());
         if(p.getBid() == 0 && p.getTricks() == 0)
-            grantedPoints = round * 10;
+            grantedPoints = round.getRound() * 10;
         else if(p.getBid() == 0 && p.getTricks() != 0)
-            grantedPoints = - (round * 10);
+            grantedPoints = - (round.getRound() * 10);
         else if(trickDifference == 0)
             grantedPoints = p.getBid() * 20;
         else grantedPoints = - (trickDifference * 10);
         return grantedPoints;
     }
-    public void setRound(int round) {
-        this.round = round;
-    }
+
 }
