@@ -1,6 +1,10 @@
 package ch.uzh.ifi.hase.soprafs23.Points;
 
 import ch.uzh.ifi.hase.soprafs23.Game.Player;
+import ch.uzh.ifi.hase.soprafs23.constant.CardRank;
+import ch.uzh.ifi.hase.soprafs23.entity.Card;
+
+import java.util.ArrayList;
 
 public class Evaluate {
     private Player trickWinner;
@@ -10,7 +14,26 @@ public class Evaluate {
     }
 
     public void setBonus() {
+        Trick trick = new Trick();
         int bonus = 0;
-        trickWinner.setBonus(bonus);
+        ArrayList<Card> playedCards = (ArrayList<Card>) trick.getPlayedCards();
+        for (Card card : playedCards) {
+            if (card.getaRank() == CardRank.SKULL_KING) {
+                for (Card c : playedCards){
+                    if (c.getaRank() == CardRank.PIRATE){
+                        for (Card car : playedCards) {
+                            if (car.getaRank() == CardRank.PIRATE) {
+                                bonus += 30;
+                            }
+                        }
+                    }
+                    else if (c.getaRank() == CardRank.MERMAID){
+                        bonus = 50;
+                    }
+
+                }
+            }
+            trickWinner.setBonus(bonus);
+        }
     }
 }
