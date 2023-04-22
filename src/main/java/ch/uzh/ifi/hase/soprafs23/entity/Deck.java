@@ -21,7 +21,7 @@ public class Deck implements Serializable {
         for (Card c : aCards) {
             aDeck.add(c);
         }
-        //Collections.shuffle(aDeck);
+        Collections.shuffle(aDeck);
     }
 
     public ArrayList<Card> getaDeck(){return aDeck;}
