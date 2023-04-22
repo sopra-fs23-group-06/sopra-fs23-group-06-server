@@ -1,9 +1,11 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Deck {
+public class Deck implements Serializable {
+
     private ArrayList<Card> aCards = new ArrayList<Card>(66);
     private ArrayList<Card> aDeck = new ArrayList<Card>(66);
 
@@ -21,6 +23,8 @@ public class Deck {
         }
         Collections.shuffle(aDeck);
     }
+
+    public ArrayList<Card> getaDeck(){return aDeck;}
 
     public Card draw() {
         try {

@@ -1,9 +1,11 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
-import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
+import ch.uzh.ifi.hase.soprafs23.Points.Trick;
+import ch.uzh.ifi.hase.soprafs23.constant.CardColor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Internal User Representation
@@ -17,7 +19,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "USER")
-public class User implements Serializable {
+public class Player implements Serializable {
 
   @Id
   private Long id;
@@ -27,6 +29,11 @@ public class User implements Serializable {
 
   @Column(nullable = false, unique = true)
   private String username;
+
+  private int tricks;
+  private int bid;
+  private ArrayList<Card> Hand = new ArrayList<Card>();
+  private int bonus;
 
   public Long getId() {
     return id;
@@ -52,5 +59,30 @@ public class User implements Serializable {
     this.username = username;
   }
 
+  public void setBid(int bid) {this.bid = bid;}
+
+  public void setBonus(int bonus) {this.bonus = bonus;}
+
+  public void setHand(ArrayList<Card> hand) {this.Hand = hand;}
+
+  public void setTricks(int tricks) {this.tricks = tricks;}
+
+  public ArrayList<Card> getHand() {return Hand;}
+
+  public int getBid() {return bid;}
+
+  public int getBonus() {return bonus;}
+
+  public int getTricks() {return tricks;}
+
+  public Card playCard(Card card, Trick trick){
+      if(!trick.getIsTrumpSet()){
+          if(card.getColor()!= CardColor.SPECIAL){
+              trick.setIsTrumpSet(true);
+              trick.setTrumpColour(card);
+          }
+      }
+      return card;
+  }
 
 }

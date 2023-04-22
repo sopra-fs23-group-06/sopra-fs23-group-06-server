@@ -1,12 +1,13 @@
 package ch.uzh.ifi.hase.soprafs23.service;
+import ch.uzh.ifi.hase.soprafs23.entity.Card;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs23.entity.User;
+import ch.uzh.ifi.hase.soprafs23.entity.Player;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPostDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,13 +18,15 @@ import java.util.List;
 
 @Service
 @Transactional
+
 public class LobbyService {
 
   private final Logger log = LoggerFactory.getLogger(LobbyService.class);
   private final LobbyRepository lobbyRepository;
 
 
-  @Autowired
+
+    @Autowired
   public LobbyService(@Qualifier("lobbyRepository") LobbyRepository lobbyRepository)
                          {
     this.lobbyRepository = lobbyRepository;
@@ -39,7 +42,7 @@ public class LobbyService {
     Lobby newLobby = new Lobby();
     double code =  (Math.floor(100000 + Math.random() * 900000));
     newLobby.setLobbyCode((long) code);
-    ArrayList<User> players = new ArrayList<>();
+    ArrayList<Player> players = new ArrayList<>();
     newLobby.setPlayers(players);
     newLobby = lobbyRepository.save(newLobby);
     lobbyRepository.flush();
@@ -72,30 +75,38 @@ public class LobbyService {
         return lobby.getPlayers().size() >= 6;
     }
 
-    public User addToLobby(User userToAdd) {
-      Long lobbyCode = userToAdd.getLobby();
-      Lobby lobbyByLobbyCode = lobbyRepository.findByLobbyCode(lobbyCode);
-      ArrayList<User> playerList = lobbyByLobbyCode.getPlayers();
-      if (!checkIfUserNotTaken(lobbyCode,userToAdd.getUsername())){
+    public Player addToLobby(Player playerToAdd) {
+      Long lobbyCode = playerToAdd.getLobby();
+      Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
+      ArrayList<Player> playerList = lobby.getPlayers();
+      if (!checkIfUserNotTaken(lobbyCode, playerToAdd.getUsername())){
           throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already taken");
       }
       if(checkIfLobbyFull(lobbyCode)){
           throw new ResponseStatusException(HttpStatus.CONFLICT, "Lobby is Full");
       }
-      if (lobbyByLobbyCode.getPlayers().size() == 0){userToAdd.setId((long)1);}
-      else {userToAdd.setId(playerList.get(playerList.size()-1).getId()+1);};
-      lobbyByLobbyCode.addPlayers(userToAdd);
-      return userToAdd;
+      if (lobby.getPlayers().size() == 0){
+          playerToAdd.setId((long)1);}
+      else {
+          playerToAdd.setId(playerList.get(playerList.size()-1).getId()+1);};
+
+      ArrayList<Card> hand = new ArrayList<Card>();
+      for (int i = 0; i<8; i++){
+          hand.add(lobby.getDeck().draw());
+      }
+      playerToAdd.setHand(hand);
+      lobby.addPlayers(playerToAdd);
+      return playerToAdd;
     }
 
 
     private boolean checkIfUserNotTaken(Long lobbyCode, String username) {
         Lobby lobbyByLobbyCode = lobbyRepository.findByLobbyCode(lobbyCode);
-        ArrayList<User> playerList = lobbyByLobbyCode.getPlayers();
+        ArrayList<Player> playerList = lobbyByLobbyCode.getPlayers();
         if (playerList == null){return true;}
         else {
-            for (User user : playerList) {
-            if(user.getUsername().equals(username)){
+            for (Player player : playerList) {
+            if(player.getUsername().equals(username)){
                 return false;
             }
             }
@@ -108,17 +119,17 @@ public class LobbyService {
               return lobbyByLobbyCode != null;
     }
 
-    public List<User> getUsers(Long lobbyCode) {
-        Lobby lobbyByLobbyCode = lobbyRepository.findByLobbyCode(lobbyCode);
-        return lobbyByLobbyCode.getPlayers();
+    public List<Player> getUsers(Long lobbyCode) {
+        Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
+        return lobby.getPlayers();
     }
 
-    public void removeUser(User leavingUser) {
-      Long lobbyCode = leavingUser.getLobby();
-      Long userID = leavingUser.getId();
+    public void removeUser(Player leavingPlayer) {
+      Long lobbyCode = leavingPlayer.getLobby();
+      Long userID = leavingPlayer.getId();
       if (checkIfLobbyExists(lobbyCode)){
       Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
-      ArrayList<User> playerList = lobby.getPlayers();
+      ArrayList<Player> playerList = lobby.getPlayers();
       for (int i = 0; i < playerList.size(); i++){
           if (playerList.get(i).getId().equals(userID)){
               playerList.remove(playerList.get(i));
@@ -130,13 +141,47 @@ public class LobbyService {
     public void closeLobby(Long lobbyCode) {
         if (checkIfLobbyExists(lobbyCode)){
         Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
-        ArrayList<User> playerList = lobby.getPlayers();
+        ArrayList<Player> playerList = lobby.getPlayers();
         playerList.clear();
         lobbyRepository.delete(lobby);}
   }
 
 
+  //game functions, could be moved to a GameService (lobby instance!)
 
+
+    public Player recordBid(Player playerInput, Long lobbyCode) {
+        if (!checkIfLobbyExists(lobbyCode)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby does not exist.");
+        }
+        Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
+        ArrayList<Player> playerList = lobby.getPlayers();
+        Player player = null;
+        for (int i = 0; i < playerList.size(); i++) {
+            if (playerList.get(i).getId().equals(playerInput.getId())) {
+                player = playerList.get(i);
+                player.setBid(playerInput.getBid());
+            }
+        }
+        return player;
+    }
+
+    public void startGame(Long lobbyCode) {
+        if (!checkIfLobbyExists(lobbyCode)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby does not exist.");
+        }
+        Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
+        lobby.setRound(1);
+  }
+
+
+  public int getRound (Long lobbyCode){
+      if (!checkIfLobbyExists(lobbyCode)) {
+          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby does not exist.");
+      }
+      Lobby lobby =lobbyRepository.findByLobbyCode(lobbyCode);
+      return lobby.getRound();
+  }
     /**
    * This is a helper method that will check the uniqueness criteria of the
    * username and the name
@@ -145,7 +190,7 @@ public class LobbyService {
    *
    * @param userToBeCreated
    * @throws ResponseStatusException
-   * @see User
+   * @see Player
    */
 
 }

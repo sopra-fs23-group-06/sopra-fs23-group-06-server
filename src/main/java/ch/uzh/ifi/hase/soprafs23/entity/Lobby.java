@@ -1,7 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
 import ch.uzh.ifi.hase.soprafs23.Game.GameLogic;
-import ch.uzh.ifi.hase.soprafs23.Game.Round;
 import ch.uzh.ifi.hase.soprafs23.Game.GameTable;
 
 
@@ -26,17 +25,21 @@ public class Lobby implements Serializable {
   private Long lobbyCode;
 
   @Lob
-  private ArrayList<User> players;
-  @Transient
-  private Round round = new Round();
-  @Transient
-  private GameTable gameTable = new GameTable();
-  @Transient
-  private Deck deck = new Deck();
+  private ArrayList<Player> players;
 
-  public void CreateGameLogic(){
-      GameLogic gameLogic = new GameLogic(deck, gameTable,round);
+  @Lob
+  private final GameLogic gameLogic;
+
+
+  public Lobby(){
+      GameTable gameTable = new GameTable();
+      Deck deck = new Deck();
+      this.gameLogic = new GameLogic(deck, gameTable);
+
   }
+
+  //public void CreateGameLogic(){GameLogic gameLogic = new GameLogic(deck, gameTable, round);}
+
   public Long getId() {
       return id;
   }
@@ -53,18 +56,24 @@ public class Lobby implements Serializable {
     this.lobbyCode = lobbyCode;
   }
 
-  public ArrayList<User> getPlayers() {return players;}
+  public ArrayList<Player> getPlayers() {return players;}
 
-  public void setPlayers(ArrayList<User> players) {this.players = players;}
+  public void setPlayers(ArrayList<Player> players) {this.players = players;}
 
-   /* public void addPlayers(User userToAdd) {
-        ArrayList<User> players = this.players;
-        players.add(userToAdd);
-        this.setPlayers(players);
-            }
-*/
-   public void addPlayers(User userToAdd){
-       this.players.add(userToAdd);
-   }
+  public void addPlayers(Player playerToAdd){this.players.add(playerToAdd);}
 
+  public int getRound(){return this.gameLogic.getRound();}
+
+  public Deck getDeck(){return this.gameLogic.getDeck();}
+
+  public GameTable getGameTable(){return this.gameLogic.getGameTable();}
+
+  public GameLogic getGameLogic(){return this.gameLogic;}
+
+
+  public void setRound(int r) { this.gameLogic.setRound(r);
+    }
+
+
+    //public void setStartingPlayer(){}
 }

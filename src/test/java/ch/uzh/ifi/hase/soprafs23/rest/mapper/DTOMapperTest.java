@@ -1,12 +1,11 @@
 package ch.uzh.ifi.hase.soprafs23.rest.mapper;
 
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs23.entity.User;
+import ch.uzh.ifi.hase.soprafs23.entity.Player;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyPostDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPostDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerGetDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerPostDTO;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -22,45 +21,45 @@ public class DTOMapperTest {
     @Test
     public void testCreateUser_fromUserPostDTO_toUser_success() {
         // create UserPostDTO
-        UserPostDTO userPostDTO = new UserPostDTO();
-        userPostDTO.setId(1L);
-        userPostDTO.setLobby(1L);
-        userPostDTO.setUsername("username");
+        PlayerPostDTO playerPostDTO = new PlayerPostDTO();
+        playerPostDTO.setId(1L);
+        playerPostDTO.setLobby(1L);
+        playerPostDTO.setUsername("username");
 
         // MAP -> Create user
-        User user = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
+        Player player = DTOMapper.INSTANCE.convertPlayerPostDTOtoEntity(playerPostDTO);
 
         // check content
-        assertEquals(userPostDTO.getId(), user.getId());
-        assertEquals(userPostDTO.getLobby(), user.getLobby());
-        assertEquals(userPostDTO.getUsername(), user.getUsername());
+        assertEquals(playerPostDTO.getId(), player.getId());
+        assertEquals(playerPostDTO.getLobby(), player.getLobby());
+        assertEquals(playerPostDTO.getUsername(), player.getUsername());
     }
 
     @Test
     public void testGetUser_fromUser_toUserGetDTO_success() {
         // create User
-        User user = new User();
-        user.setId(1L);
-        user.setLobby(1L);
-        user.setUsername("username");
+        Player player = new Player();
+        player.setId(1L);
+        player.setLobby(1L);
+        player.setUsername("username");
 
         // MAP -> Create UserGetDTO
-        UserGetDTO userGetDTO = DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
+        PlayerGetDTO playerGetDTO = DTOMapper.INSTANCE.convertEntityToPlayerGetDTO(player);
 
         // check content
-        assertEquals(user.getId(), userGetDTO.getId());
-        assertEquals(user.getUsername(), userGetDTO.getUsername());
-        assertEquals(user.getLobby(), userGetDTO.getLobby());
+        assertEquals(player.getId(), playerGetDTO.getId());
+        assertEquals(player.getUsername(), playerGetDTO.getUsername());
+        assertEquals(player.getLobby(), playerGetDTO.getLobby());
     }
     @Test
     public void testCreateLobby_fromLobbyPostDTO_toLobby_success() {
         // create user list
-        User user = new User();
-        user.setId(1L);
-        user.setLobby(1L);
-        user.setUsername("username");
-        ArrayList<User> list = new ArrayList<User>();
-        list.add(user);
+        Player player = new Player();
+        player.setId(1L);
+        player.setLobby(1L);
+        player.setUsername("username");
+        ArrayList<Player> list = new ArrayList<Player>();
+        list.add(player);
         // create LobbyPostDTO
         LobbyPostDTO lobbyPostDTO = new LobbyPostDTO();
         lobbyPostDTO.setId(2L);
@@ -78,12 +77,12 @@ public class DTOMapperTest {
     @Test
     public void testGetLobby_fromLobby_toLobbyGetDTO_success() {
         // create user list
-        User user = new User();
-        user.setId(1L);
-        user.setLobby(1L);
-        user.setUsername("username");
-        ArrayList<User> list = new ArrayList<User>();
-        list.add(user);
+        Player player = new Player();
+        player.setId(1L);
+        player.setLobby(1L);
+        player.setUsername("username");
+        ArrayList<Player> list = new ArrayList<Player>();
+        list.add(player);
         // create Lobby
         Lobby lobby = new Lobby();
         lobby.setId(2L);

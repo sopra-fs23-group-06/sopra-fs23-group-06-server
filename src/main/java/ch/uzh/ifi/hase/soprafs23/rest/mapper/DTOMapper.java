@@ -1,11 +1,11 @@
 package ch.uzh.ifi.hase.soprafs23.rest.mapper;
 
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs23.entity.User;
+import ch.uzh.ifi.hase.soprafs23.entity.Player;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyPostDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPostDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerGetDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerPostDTO;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -17,12 +17,14 @@ public interface DTOMapper {
   @Mapping(source = "id", target = "id")
   @Mapping(source = "lobby", target = "lobby")
   @Mapping(source = "username", target = "username")
-  User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
+  @Mapping(source = "bid", target = "bid")
+  Player convertPlayerPostDTOtoEntity(PlayerPostDTO playerPostDTO);
 
   @Mapping(source = "id", target = "id")
   @Mapping(source = "lobby", target = "lobby")
   @Mapping(source = "username", target = "username")
-  UserGetDTO convertEntityToUserGetDTO(User user);
+  @Mapping(source = "bid", target = "bid")
+  PlayerGetDTO convertEntityToPlayerGetDTO(Player player);
 
   @Mapping(source = "id", target = "id")
   @Mapping(source = "lobbyCode", target = "lobbyCode")
