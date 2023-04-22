@@ -5,16 +5,23 @@ import ch.uzh.ifi.hase.soprafs23.Points.Trick;
 import ch.uzh.ifi.hase.soprafs23.constant.CardColor;
 import ch.uzh.ifi.hase.soprafs23.entity.Card;
 import ch.uzh.ifi.hase.soprafs23.entity.Deck;
+import ch.uzh.ifi.hase.soprafs23.entity.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GameLogic {
+public class GameLogic implements Serializable {
     private ArrayList<Score> Scoreboard = new ArrayList<Score>();
 
     private Deck deck;
     private GameTable gameTable;
     private Round round;
     private Trick trick;
+
+    public Deck getDeck(){return this.deck;}
+    public GameTable getGameTable(){return this.gameTable;}
+    public Round getRound() {return round;}
+    public Trick getTrick(){return this.trick;}
 
     public GameLogic(Deck d, GameTable gT, Round r){
         deck = d;
@@ -79,4 +86,6 @@ public class GameLogic {
             }
         }
     }
+
+
 }

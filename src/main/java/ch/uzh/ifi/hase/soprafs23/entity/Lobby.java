@@ -26,17 +26,22 @@ public class Lobby implements Serializable {
   private Long lobbyCode;
 
   @Lob
-  private ArrayList<User> players;
-  @Transient
-  private Round round = new Round();
-  @Transient
-  private GameTable gameTable = new GameTable();
-  @Transient
-  private Deck deck = new Deck();
+  private ArrayList<Player> players;
 
-  public void CreateGameLogic(){
-      GameLogic gameLogic = new GameLogic(deck, gameTable,round);
+  @Lob
+  private final GameLogic gameLogic;
+
+
+  public Lobby(){
+      Round round = new Round();
+      GameTable gameTable = new GameTable();
+      Deck deck = new Deck();
+      this.gameLogic = new GameLogic(deck, gameTable, round);
+
   }
+
+  //public void CreateGameLogic(){GameLogic gameLogic = new GameLogic(deck, gameTable, round);}
+
   public Long getId() {
       return id;
   }
@@ -53,18 +58,17 @@ public class Lobby implements Serializable {
     this.lobbyCode = lobbyCode;
   }
 
-  public ArrayList<User> getPlayers() {return players;}
+  public ArrayList<Player> getPlayers() {return players;}
 
-  public void setPlayers(ArrayList<User> players) {this.players = players;}
+  public void setPlayers(ArrayList<Player> players) {this.players = players;}
 
-   /* public void addPlayers(User userToAdd) {
-        ArrayList<User> players = this.players;
-        players.add(userToAdd);
-        this.setPlayers(players);
-            }
-*/
-   public void addPlayers(User userToAdd){
-       this.players.add(userToAdd);
-   }
+  public void addPlayers(Player playerToAdd){this.players.add(playerToAdd);}
 
+  public Round getRound(){return this.gameLogic.getRound();}
+  public Deck getDeck(){return this.gameLogic.getDeck();}
+  public GameTable getGameTable(){return this.gameLogic.getGameTable();};
+  public GameLogic getGameLogic(){return this.gameLogic;};
+
+
+  //public void setStartingPlayer(){}
 }

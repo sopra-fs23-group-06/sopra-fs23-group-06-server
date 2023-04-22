@@ -1,6 +1,10 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
-import ch.uzh.ifi.hase.soprafs23.entity.User;
+import ch.uzh.ifi.hase.soprafs23.Game.GameLogic;
+import ch.uzh.ifi.hase.soprafs23.Game.GameTable;
+import ch.uzh.ifi.hase.soprafs23.Game.Round;
+import ch.uzh.ifi.hase.soprafs23.entity.Deck;
+import ch.uzh.ifi.hase.soprafs23.entity.Player;
 
 import java.util.ArrayList;
 
@@ -8,7 +12,11 @@ public class LobbyPostDTO {
 
     private Long id;
     private Long lobbyCode;
-    private ArrayList<User> players;
+    private ArrayList<Player> players;
+    private Round round;
+    private GameTable gameTable;
+    private GameLogic gameLogic;
+    private Deck deck;
 
     public Long getId() {
         return id;
@@ -27,8 +35,23 @@ public class LobbyPostDTO {
         this.lobbyCode = lobbyCode;
     }
 
-    public ArrayList<User> getPlayers() { return players; }
+    public ArrayList<Player> getPlayers() { return players; }
 
-    public void setPlayers(ArrayList<User> players) { this.players = players; }
+    public void setPlayers(ArrayList<Player> players) { this.players = players; }
 
+    public Round getRound() {return round;}
+
+    public void setRound(Round round) {this.round = round;}
+
+    public GameTable getGameTable() {return gameTable;}
+
+    public void setGameTable(GameTable gameTable) {this.gameTable = gameTable;}
+
+    public Deck getDeck() {return deck;}
+
+    public void setDeck(Deck deck) {this.deck = deck;}
+
+    public GameLogic getGameLogic() {return gameLogic;}
+
+    public void setGameLogic(GameLogic gameLogic) {this.gameLogic = gameLogic;}
 }

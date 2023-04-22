@@ -1,6 +1,8 @@
 package ch.uzh.ifi.hase.soprafs23.Game;
 
-public class Round {
+import java.io.Serializable;
+
+public class Round implements Serializable {
 
     private int round = 0;
 
