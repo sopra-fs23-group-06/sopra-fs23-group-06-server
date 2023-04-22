@@ -2,7 +2,6 @@ package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
 import ch.uzh.ifi.hase.soprafs23.Game.GameLogic;
 import ch.uzh.ifi.hase.soprafs23.Game.GameTable;
-import ch.uzh.ifi.hase.soprafs23.Game.Round;
 import ch.uzh.ifi.hase.soprafs23.entity.Deck;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
 
@@ -13,7 +12,7 @@ public class LobbyPostDTO {
     private Long id;
     private Long lobbyCode;
     private ArrayList<Player> players;
-    private Round round;
+    private int round;
     private GameTable gameTable;
     private GameLogic gameLogic;
     private Deck deck;
@@ -39,9 +38,9 @@ public class LobbyPostDTO {
 
     public void setPlayers(ArrayList<Player> players) { this.players = players; }
 
-    public Round getRound() {return round;}
+    public int getRound() {return round;}
 
-    public void setRound(Round round) {this.round = round;}
+    public void setRound(int round) {this.round = round;}
 
     public GameTable getGameTable() {return gameTable;}
 

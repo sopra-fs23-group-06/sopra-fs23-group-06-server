@@ -1,7 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
 import ch.uzh.ifi.hase.soprafs23.Game.GameLogic;
-import ch.uzh.ifi.hase.soprafs23.Game.Round;
 import ch.uzh.ifi.hase.soprafs23.Game.GameTable;
 
 
@@ -33,10 +32,9 @@ public class Lobby implements Serializable {
 
 
   public Lobby(){
-      Round round = new Round();
       GameTable gameTable = new GameTable();
       Deck deck = new Deck();
-      this.gameLogic = new GameLogic(deck, gameTable, round);
+      this.gameLogic = new GameLogic(deck, gameTable);
 
   }
 
@@ -64,11 +62,18 @@ public class Lobby implements Serializable {
 
   public void addPlayers(Player playerToAdd){this.players.add(playerToAdd);}
 
-  public Round getRound(){return this.gameLogic.getRound();}
+  public int getRound(){return this.gameLogic.getRound();}
+
   public Deck getDeck(){return this.gameLogic.getDeck();}
-  public GameTable getGameTable(){return this.gameLogic.getGameTable();};
-  public GameLogic getGameLogic(){return this.gameLogic;};
+
+  public GameTable getGameTable(){return this.gameLogic.getGameTable();}
+
+  public GameLogic getGameLogic(){return this.gameLogic;}
 
 
-  //public void setStartingPlayer(){}
+  public void setRound(int r) { this.gameLogic.setRound(r);
+    }
+
+
+    //public void setStartingPlayer(){}
 }

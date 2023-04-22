@@ -15,19 +15,22 @@ public class GameLogic implements Serializable {
 
     private Deck deck;
     private GameTable gameTable;
-    private Round round;
+    private int round;
     private Trick trick;
 
     public Deck getDeck(){return this.deck;}
     public GameTable getGameTable(){return this.gameTable;}
-    public Round getRound() {return round;}
+    public int getRound() {return round;}
     public Trick getTrick(){return this.trick;}
 
-    public GameLogic(Deck d, GameTable gT, Round r){
+    public void setRound(int r){this.round = r;}
+
+    public GameLogic(Deck d, GameTable gT){
         deck = d;
         gameTable = gT;
-        round = r;
+        round = 0;
     }
+
     public void setScoreboard(Score s, Player p) {
     }
 
@@ -40,7 +43,7 @@ public class GameLogic implements Serializable {
         deck.fillDeck();
 
         for(Player p : gameTable.getOrder()) {
-            for (int i = 1; i <= round.getRound(); i++) {
+            for (int i = 1; i <= round; i++) {
                 newHand.add(deck.draw());
             }
             p.setHand(newHand);
@@ -55,22 +58,18 @@ public class GameLogic implements Serializable {
     }
 
     public void checkHand() {
-        Boolean hasTrumpColour = false;
+        boolean hasTrumpColour = false;
         for (Player p : gameTable.getOrder()) {
             if (p != gameTable.getStartingPlayer()) {
                 for (Card c : p.getHand()) {
                     if (c.getColor() == trick.getTrumpColour()) {
                         hasTrumpColour = true;
+                        break;
                     }
                 }
-                if (hasTrumpColour == true) {
+                if (hasTrumpColour) {
                     for (Card c : p.getHand()) {
-                        if (c.getColor() != CardColor.SPECIAL && c.getColor() != trick.getTrumpColour()) {
-                            c.setPlayable(false);
-                        }
-                        else {
-                            c.setPlayable(true);
-                        }
+                        c.setPlayable(c.getColor() == CardColor.SPECIAL || c.getColor() == CardColor.BLACK ||c.getColor() == trick.getTrumpColour());
                     }
                 }
                 else {
