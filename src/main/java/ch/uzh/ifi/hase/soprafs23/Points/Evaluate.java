@@ -1,8 +1,8 @@
 package ch.uzh.ifi.hase.soprafs23.Points;
 
-import ch.uzh.ifi.hase.soprafs23.Game.Player;
 import ch.uzh.ifi.hase.soprafs23.constant.CardRank;
 import ch.uzh.ifi.hase.soprafs23.entity.Card;
+import ch.uzh.ifi.hase.soprafs23.entity.Player;
 
 import java.util.ArrayList;
 

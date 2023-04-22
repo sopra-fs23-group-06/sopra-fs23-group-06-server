@@ -1,13 +1,10 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
-import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
-import ch.uzh.ifi.hase.soprafs23.controller.UserController;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs23.entity.User;
+import ch.uzh.ifi.hase.soprafs23.entity.Player;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyPostDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPostDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerPostDTO;
 import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
-import ch.uzh.ifi.hase.soprafs23.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -23,20 +20,17 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(LobbyController.class)
 public class LobbyControllerTest {
@@ -53,39 +47,39 @@ public class LobbyControllerTest {
     @Test
     public void addUserToLobby_validInput_userAddedToLobby() throws Exception {
         // given
-        User user = new User();
-        user.setLobby(123456L);
-        user.setUsername("username");
-        user.setId(1L);
+        Player player = new Player();
+        player.setLobby(123456L);
+        player.setUsername("username");
+        player.setId(1L);
 
-        UserPostDTO userPostDTO = new UserPostDTO();
-        userPostDTO.setLobby(123456L);
-        userPostDTO.setUsername("username");
-        userPostDTO.setId(1L);
+        PlayerPostDTO playerPostDTO = new PlayerPostDTO();
+        playerPostDTO.setLobby(123456L);
+        playerPostDTO.setUsername("username");
+        playerPostDTO.setId(1L);
 
-        given(lobbyService.addToLobby(Mockito.any())).willReturn(user);
+        given(lobbyService.addToLobby(Mockito.any())).willReturn(player);
 
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(userPostDTO));
+                .content(asJsonString(playerPostDTO));
 
         // then
         mockMvc.perform(postRequest)
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", is(user.getId().intValue())))
-                .andExpect(jsonPath("$.username", is(user.getUsername())))
-                .andExpect(jsonPath("$.lobby", is(user.getLobby().intValue())));
+                .andExpect(jsonPath("$.id", is(player.getId().intValue())))
+                .andExpect(jsonPath("$.username", is(player.getUsername())))
+                .andExpect(jsonPath("$.lobby", is(player.getLobby().intValue())));
     }
 
     @Test
     public void createLobby_validInput_LobbyCreated() throws Exception {
         // create user list
-        User user = new User();
+        Player user = new Player();
         user.setId(1L);
         user.setLobby(2L);
         user.setUsername("username");
-        ArrayList<User> list = new ArrayList<User>();
+        ArrayList<Player> list = new ArrayList<Player>();
         list.add(user);
         // create Lobby
         Lobby lobby = new Lobby();
@@ -119,11 +113,11 @@ public class LobbyControllerTest {
     @Test
     public void getLobby_validCode_thenReturnLobby() throws Exception {
         // create user list
-        User user = new User();
+        Player user = new Player();
         user.setId(1L);
         user.setLobby(2L);
         user.setUsername("username");
-        ArrayList<User> list = new ArrayList<User>();
+        ArrayList<Player> list = new ArrayList<Player>();
         list.add(user);
         // create Lobby
         Lobby lobby = new Lobby();
@@ -152,11 +146,11 @@ public class LobbyControllerTest {
     @Test
     public void joinLobby_validCode_thenReturnLobby() throws Exception {
         // create user list
-        User user = new User();
+        Player user = new Player();
         user.setId(1L);
         user.setLobby(2L);
         user.setUsername("username");
-        ArrayList<User> list = new ArrayList<User>();
+        ArrayList<Player> list = new ArrayList<Player>();
         list.add(user);
         // create Lobby
         Lobby lobby = new Lobby();
@@ -185,14 +179,14 @@ public class LobbyControllerTest {
     @Test
     public void getUsers_validCode_thenReturnUsers() throws Exception {
         // create user list
-        User user = new User();
-        user.setId(1L);
-        user.setLobby(2L);
-        user.setUsername("username");
+        Player player = new Player();
+        player.setId(1L);
+        player.setLobby(2L);
+        player.setUsername("username");
 
-        List<User> allUsers = Collections.singletonList(user);
+        List<Player> allPlayers = Collections.singletonList(player);
 
-        given(lobbyService.getUsers(Mockito.any())).willReturn(allUsers);
+        given(lobbyService.getUsers(Mockito.any())).willReturn(allPlayers);
 
         MockHttpServletRequestBuilder getRequest = get("/lobbies/123456/users")
                 .contentType(MediaType.APPLICATION_JSON);
@@ -200,30 +194,30 @@ public class LobbyControllerTest {
         // then
         mockMvc.perform(getRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id", is(user.getId().intValue())))
-                .andExpect(jsonPath("$[0].lobby", is(user.getLobby().intValue())))
-                .andExpect(jsonPath("$[0].username", is(user.getUsername())))
-                .andExpect(jsonPath("$", hasSize(allUsers.size())));
+                .andExpect(jsonPath("$[0].id", is(player.getId().intValue())))
+                .andExpect(jsonPath("$[0].lobby", is(player.getLobby().intValue())))
+                .andExpect(jsonPath("$[0].username", is(player.getUsername())))
+                .andExpect(jsonPath("$", hasSize(allPlayers.size())));
     }
 
     @Test
     public void leaveLobby_validCode_returnOK() throws Exception {
         // given
-        User user = new User();
-        user.setLobby(123456L);
-        user.setUsername("username");
-        user.setId(1L);
+        Player player = new Player();
+        player.setLobby(123456L);
+        player.setUsername("username");
+        player.setId(1L);
 
-        UserPostDTO userPostDTO = new UserPostDTO();
-        userPostDTO.setLobby(123456L);
-        userPostDTO.setUsername("username");
-        userPostDTO.setId(1L);
+        PlayerPostDTO playerPostDTO = new PlayerPostDTO();
+        playerPostDTO.setLobby(123456L);
+        playerPostDTO.setUsername("username");
+        playerPostDTO.setId(1L);
 
         Mockito.doNothing().when(lobbyService).removeUser(Mockito.any());
 
         MockHttpServletRequestBuilder putRequest = put("/lobbies/123456/leaveHandler")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(userPostDTO));
+                .content(asJsonString(playerPostDTO));
 
         mockMvc.perform(putRequest).andExpect(status().isOk());
     }
@@ -231,21 +225,21 @@ public class LobbyControllerTest {
     @Test
     public void kickUser_validCode_returnOK() throws Exception {
         // given
-        User user = new User();
-        user.setLobby(123456L);
-        user.setUsername("username");
-        user.setId(1L);
+        Player player = new Player();
+        player.setLobby(123456L);
+        player.setUsername("username");
+        player.setId(1L);
 
-        UserPostDTO userPostDTO = new UserPostDTO();
-        userPostDTO.setLobby(123456L);
-        userPostDTO.setUsername("username");
-        userPostDTO.setId(1L);
+        PlayerPostDTO playerPostDTO = new PlayerPostDTO();
+        playerPostDTO.setLobby(123456L);
+        playerPostDTO.setUsername("username");
+        playerPostDTO.setId(1L);
 
         Mockito.doNothing().when(lobbyService).removeUser(Mockito.any());
 
         MockHttpServletRequestBuilder putRequest = put("/lobbies/123456/kickHandler")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(userPostDTO));
+                .content(asJsonString(playerPostDTO));
 
         mockMvc.perform(putRequest).andExpect(status().isOk());
     }

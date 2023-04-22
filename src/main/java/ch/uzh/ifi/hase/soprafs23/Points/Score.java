@@ -1,7 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.Points;
 
-import ch.uzh.ifi.hase.soprafs23.Game.Round;
-import ch.uzh.ifi.hase.soprafs23.Game.Player;
+import ch.uzh.ifi.hase.soprafs23.entity.Player;
 
 public class Score {
     private Player curPlayer;

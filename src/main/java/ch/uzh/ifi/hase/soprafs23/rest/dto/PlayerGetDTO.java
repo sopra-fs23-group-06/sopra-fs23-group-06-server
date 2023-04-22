@@ -1,12 +1,11 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
-import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
-
-public class UserGetDTO {
+public class PlayerGetDTO {
 
   private Long id;
   private Long lobby;
   private String username;
+  private Long bid;
 
   public Long getId() {
     return id;
@@ -32,4 +31,11 @@ public class UserGetDTO {
     this.username = username;
   }
 
+    public Long getBid() {
+        return bid;
+    }
+
+    public void setBid(Long bid) {
+        this.bid = bid;
+    }
 }

@@ -1,9 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
-import ch.uzh.ifi.hase.soprafs23.Game.Player;
 import ch.uzh.ifi.hase.soprafs23.Game.Round;
 import ch.uzh.ifi.hase.soprafs23.Points.Calculate;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
