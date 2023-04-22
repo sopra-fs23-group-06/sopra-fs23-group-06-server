@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,13 +18,15 @@ import java.util.List;
 
 @Service
 @Transactional
+
 public class LobbyService {
 
   private final Logger log = LoggerFactory.getLogger(LobbyService.class);
   private final LobbyRepository lobbyRepository;
 
 
-  @Autowired
+
+    @Autowired
   public LobbyService(@Qualifier("lobbyRepository") LobbyRepository lobbyRepository)
                          {
     this.lobbyRepository = lobbyRepository;
@@ -74,19 +77,25 @@ public class LobbyService {
 
     public Player addToLobby(Player playerToAdd) {
       Long lobbyCode = playerToAdd.getLobby();
-      Lobby lobbyByLobbyCode = lobbyRepository.findByLobbyCode(lobbyCode);
-      ArrayList<Player> playerList = lobbyByLobbyCode.getPlayers();
+      Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
+      ArrayList<Player> playerList = lobby.getPlayers();
       if (!checkIfUserNotTaken(lobbyCode, playerToAdd.getUsername())){
           throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already taken");
       }
       if(checkIfLobbyFull(lobbyCode)){
           throw new ResponseStatusException(HttpStatus.CONFLICT, "Lobby is Full");
       }
-      if (lobbyByLobbyCode.getPlayers().size() == 0){
+      if (lobby.getPlayers().size() == 0){
           playerToAdd.setId((long)1);}
       else {
           playerToAdd.setId(playerList.get(playerList.size()-1).getId()+1);};
-      lobbyByLobbyCode.addPlayers(playerToAdd);
+
+      ArrayList<Card> hand = new ArrayList<Card>();
+      for (int i = 0; i<8; i++){
+          hand.add(lobby.getDeck().draw());
+      }
+      playerToAdd.setHand(hand);
+      lobby.addPlayers(playerToAdd);
       return playerToAdd;
     }
 
@@ -111,8 +120,8 @@ public class LobbyService {
     }
 
     public List<Player> getUsers(Long lobbyCode) {
-        Lobby lobbyByLobbyCode = lobbyRepository.findByLobbyCode(lobbyCode);
-        return lobbyByLobbyCode.getPlayers();
+        Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
+        return lobby.getPlayers();
     }
 
     public void removeUser(Player leavingPlayer) {
@@ -137,6 +146,10 @@ public class LobbyService {
         lobbyRepository.delete(lobby);}
   }
 
+
+  //game functions, could be moved to a GameService (lobby instance!)
+
+
     public Player recordBid(Player playerInput, Long lobbyCode) {
         if (!checkIfLobbyExists(lobbyCode)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby does not exist.");
@@ -153,7 +166,22 @@ public class LobbyService {
         return player;
     }
 
+    public void startGame(Long lobbyCode) {
+        if (!checkIfLobbyExists(lobbyCode)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby does not exist.");
+        }
+        Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
+        lobby.setRound(1);
+  }
 
+
+  public int getRound (Long lobbyCode){
+      if (!checkIfLobbyExists(lobbyCode)) {
+          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby does not exist.");
+      }
+      Lobby lobby =lobbyRepository.findByLobbyCode(lobbyCode);
+      return lobby.getRound();
+  }
     /**
    * This is a helper method that will check the uniqueness criteria of the
    * username and the name

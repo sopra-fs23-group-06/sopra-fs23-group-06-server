@@ -9,12 +9,10 @@ import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+
 
 /**
  * User Controller
@@ -27,7 +25,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class LobbyController {
 
   private final LobbyService lobbyService;
-  private final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
   LobbyController(LobbyService lobbyService) {this.lobbyService = lobbyService;}
 
     @PostMapping("/users")
@@ -112,6 +109,31 @@ public class LobbyController {
     @ResponseBody
     public void closeLobby(@PathVariable Long lobbyCode) {
         lobbyService.closeLobby(lobbyCode);
+    }
+
+    //GameController below, could be moved to own class at some point (lobby instance!)
+
+    @PostMapping("/games/{lobbyCode}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void startGame(@PathVariable Long lobbyCode){
+      lobbyService.startGame(lobbyCode);
+    }
+
+    @GetMapping("/games/{lobbyCode}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void /*LobbyGetDTO*/ getGame(@PathVariable Long lobbyCode){
+
+        //return
+    }
+
+
+    @GetMapping("/games/{lobbyCode}/rounds")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public int getRound(@PathVariable Long lobbyCode){
+        return lobbyService.getRound(lobbyCode);
     }
 
     @PutMapping("/games/{lobbyCode}/bidHandler")
