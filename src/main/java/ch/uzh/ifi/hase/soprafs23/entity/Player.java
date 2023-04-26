@@ -18,7 +18,6 @@ import java.util.ArrayList;
  * the primary key
  */
 @Entity
-@Table(name = "USER")
 public class Player implements Serializable {
 
   @Id
@@ -31,7 +30,7 @@ public class Player implements Serializable {
   private String username;
 
   private int tricks;
-  private int bid;
+  private Integer bid;
   private ArrayList<Card> Hand = new ArrayList<Card>();
   private int bonus;
 
@@ -59,7 +58,7 @@ public class Player implements Serializable {
     this.username = username;
   }
 
-  public void setBid(int bid) {this.bid = bid;}
+  public void setBid(Integer bid) {this.bid = bid;}
 
   public void setBonus(int bonus) {this.bonus = bonus;}
 
@@ -69,7 +68,7 @@ public class Player implements Serializable {
 
   public ArrayList<Card> getHand() {return Hand;}
 
-  public int getBid() {return bid;}
+  public Integer getBid() {return bid;}
 
   public int getBonus() {return bonus;}
 
