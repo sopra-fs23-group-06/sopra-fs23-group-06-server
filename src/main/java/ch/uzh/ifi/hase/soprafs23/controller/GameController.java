@@ -27,8 +27,7 @@ public class GameController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ArrayList<Card> getPlayerHand(@RequestParam(name = "userId") Long userId, @PathVariable Long lobbyCode) {
-        ArrayList<Card> playerHand = gameService.getPlayerHand(userId, lobbyCode);
-        return playerHand;
+        return gameService.getPlayerHand(userId, lobbyCode);
     }
 
     @PutMapping("/games/{lobbyCode}/cardHandler")
@@ -41,5 +40,50 @@ public class GameController {
 
     }
 
+    @PostMapping("/games/{lobbyCode}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void startGame(@PathVariable Long lobbyCode){
+        gameService.startGame(lobbyCode);
+    }
 
+    @GetMapping("/games/{lobbyCode}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void /*LobbyGetDTO*/ getGame(@PathVariable Long lobbyCode){
+
+        //return
+    }
+
+    @GetMapping("/games/{lobbyCode}/rounds")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public int getRound(@PathVariable Long lobbyCode){
+        return gameService.getRound(lobbyCode);
+    }
+
+    @PutMapping("/games/{lobbyCode}/bidHandler")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public PlayerGetDTO makeBid(@RequestBody PlayerPostDTO playerPostDTO, @PathVariable Long lobbyCode) {
+        // convert user
+        Player playerInput = DTOMapper.INSTANCE.convertPlayerPostDTOtoEntity(playerPostDTO);
+
+        Player bidPlayer = gameService.recordBid(playerInput, lobbyCode);
+        // convert internal representation of user back to API
+        return DTOMapper.INSTANCE.convertEntityToPlayerGetDTO(bidPlayer);
+    }
+    @GetMapping("/games/{lobbyCode}/order")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<Player> getOrder(@PathVariable Long lobbyCode){
+        return gameService.getOrder(lobbyCode);
+    }
+
+    @GetMapping("/games/{lobbyCode}/playedCards")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ArrayList<Card> getTableCards(@PathVariable Long lobbyCode) {
+        return gameService.getTableCards(lobbyCode);
+    }
 }

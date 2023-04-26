@@ -113,46 +113,10 @@ public class LobbyController {
 
     //GameController below, could be moved to own class at some point (lobby instance!)
 
-    @PostMapping("/games/{lobbyCode}")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public void startGame(@PathVariable Long lobbyCode){
-      lobbyService.startGame(lobbyCode);
-    }
-
-    @GetMapping("/games/{lobbyCode}")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public void /*LobbyGetDTO*/ getGame(@PathVariable Long lobbyCode){
-
-        //return
-    }
 
 
-    @GetMapping("/games/{lobbyCode}/rounds")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public int getRound(@PathVariable Long lobbyCode){
-        return lobbyService.getRound(lobbyCode);
-    }
 
-    @PutMapping("/games/{lobbyCode}/bidHandler")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public PlayerGetDTO makeBid(@RequestBody PlayerPostDTO playerPostDTO, @PathVariable Long lobbyCode) {
-        // convert user
-        Player playerInput = DTOMapper.INSTANCE.convertPlayerPostDTOtoEntity(playerPostDTO);
 
-        Player bidPlayer = lobbyService.recordBid(playerInput, lobbyCode);
-        // convert internal representation of user back to API
-        return DTOMapper.INSTANCE.convertEntityToPlayerGetDTO(bidPlayer);
-    }
 
-    @GetMapping("/games/{lobbyCode}/Order")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public List<Player> getOrder(@PathVariable Long lobbyCode){
-        return lobbyService.getOrder(lobbyCode);
-    }
 
 }
