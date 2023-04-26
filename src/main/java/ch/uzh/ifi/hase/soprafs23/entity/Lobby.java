@@ -29,7 +29,6 @@ public class Lobby implements Serializable {
 
   public Lobby(){
       this.gameLogic = new GameLogic();
-
   }
 
   //public void CreateGameLogic(){GameLogic gameLogic = new GameLogic(deck, gameTable, round);}
