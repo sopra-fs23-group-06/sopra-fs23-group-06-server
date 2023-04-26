@@ -25,16 +25,10 @@ public class Lobby implements Serializable {
   private Long lobbyCode;
 
   @Lob
-  private ArrayList<Player> players;
-
-  @Lob
   private final GameLogic gameLogic;
 
-
   public Lobby(){
-      GameTable gameTable = new GameTable();
-      Deck deck = new Deck();
-      this.gameLogic = new GameLogic(deck, gameTable);
+      this.gameLogic = new GameLogic();
 
   }
 
@@ -56,11 +50,11 @@ public class Lobby implements Serializable {
     this.lobbyCode = lobbyCode;
   }
 
-  public ArrayList<Player> getPlayers() {return players;}
+  public ArrayList<Player> getPlayers() {return gameLogic.getPlayers();}
 
-  public void setPlayers(ArrayList<Player> players) {this.players = players;}
+  public void setPlayers(ArrayList<Player> players) {this.gameLogic.setPlayers(players);}
 
-  public void addPlayers(Player playerToAdd){this.players.add(playerToAdd);}
+  public void addPlayers(Player playerToAdd){this.gameLogic.addPlayers(playerToAdd);}
 
   public int getRound(){return this.gameLogic.getRound();}
 
