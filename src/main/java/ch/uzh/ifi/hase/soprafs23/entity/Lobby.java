@@ -54,7 +54,7 @@ public class Lobby implements Serializable {
 
   public void setPlayers(ArrayList<Player> players) {this.gameLogic.setPlayers(players);}
 
-  public void addPlayers(Player playerToAdd){this.gameLogic.addPlayers(playerToAdd);this.gameLogic.getGameTable().addPlayer(playerToAdd);}
+  public void addPlayers(Player playerToAdd){this.gameLogic.addPlayers(playerToAdd);}
 
   public int getRound(){return this.gameLogic.getRound();}
 
