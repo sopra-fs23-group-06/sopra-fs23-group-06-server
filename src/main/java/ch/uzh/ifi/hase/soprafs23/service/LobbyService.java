@@ -90,11 +90,6 @@ public class LobbyService {
       else {
           playerToAdd.setId(playerList.get(playerList.size()-1).getId()+1);};
 
-      ArrayList<Card> hand = new ArrayList<Card>();
-      for (int i = 0; i<8; i++){
-          hand.add(lobby.getDeck().draw());
-      }
-      playerToAdd.setHand(hand);
       lobby.addPlayers(playerToAdd);
       return playerToAdd;
     }
@@ -172,6 +167,7 @@ public class LobbyService {
         }
         Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
         lobby.setRound(1);
+        lobby.getGameLogic().distributeCards();
   }
 
 
@@ -182,6 +178,15 @@ public class LobbyService {
       Lobby lobby =lobbyRepository.findByLobbyCode(lobbyCode);
       return lobby.getRound();
   }
+
+  public List<Player> getOrder (Long lobbyCode){
+        if (!checkIfLobbyExists(lobbyCode)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby does not exist.");
+        }
+        Lobby lobby =lobbyRepository.findByLobbyCode(lobbyCode);
+        return lobby.getGameTable().getOrder();
+    }
+
     /**
    * This is a helper method that will check the uniqueness criteria of the
    * username and the name
