@@ -148,4 +148,11 @@ public class LobbyController {
         return DTOMapper.INSTANCE.convertEntityToPlayerGetDTO(bidPlayer);
     }
 
+    @GetMapping("/games/{lobbyCode}/Order")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<Player> getOrder(@PathVariable Long lobbyCode){
+        return lobbyService.getOrder(lobbyCode);
+    }
+
 }

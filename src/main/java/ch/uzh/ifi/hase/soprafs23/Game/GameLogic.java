@@ -62,8 +62,8 @@ public class GameLogic implements Serializable {
     }
 
     public void checkHand() {
-        boolean hasTrumpColour = false;
         for (Player p : gameTable.getOrder()) {
+            boolean hasTrumpColour = false;
             if (p != gameTable.getStartingPlayer()) {
                 for (Card c : p.getHand()) {
                     if (c.getColor() == trick.getTrumpColour()) {

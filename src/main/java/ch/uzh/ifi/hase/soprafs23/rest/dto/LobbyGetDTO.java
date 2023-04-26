@@ -5,6 +5,7 @@ import ch.uzh.ifi.hase.soprafs23.entity.Deck;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class LobbyGetDTO {
 
@@ -32,6 +33,9 @@ public class LobbyGetDTO {
     public void setLobbyCode(Long lobbyCode) {
         this.lobbyCode = lobbyCode;
     }
+
+    public List<Player> getOrder() { return gameTable.getOrder();}
+
 
     public ArrayList<Player> getPlayers() { return players; }
 

@@ -330,7 +330,7 @@ public class LobbyServiceIntegrationTest {
         user.setId(1L);
         user.setLobby(createdLobby.getLobbyCode());
         user.setUsername("username");
-        user.setBid(2);
+        user.setBid(0);
         ArrayList<Player> list = new ArrayList<Player>();
         list.add(user);
 
