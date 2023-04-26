@@ -34,7 +34,7 @@ public class LobbyService {
 
 
 
-  public List<Lobby> getLobbies() {
+    public List<Lobby> getLobbies() {
     return this.lobbyRepository.findAll();
   }
 
@@ -142,7 +142,7 @@ public class LobbyService {
   }
 
 
-  //game functions, could be moved to a GameService (lobby instance!)
+  //game functions, could be moved to a GameService (lobbyRepository instance!)
 
 
     public Player recordBid(Player playerInput, Long lobbyCode) {
@@ -150,28 +150,52 @@ public class LobbyService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby does not exist.");
         }
         Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
+        if (playerInput.getBid() < 0 || playerInput.getBid() > lobby.getRound()){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Bid does not match round.");
+        }
         ArrayList<Player> playerList = lobby.getPlayers();
         Player player = null;
-        for (int i = 0; i < playerList.size(); i++) {
-            if (playerList.get(i).getId().equals(playerInput.getId())) {
-                player = playerList.get(i);
+        for (Player value : playerList) {
+            if (value.getId().equals(playerInput.getId())) {
+                player = value;
                 player.setBid(playerInput.getBid());
             }
         }
         return player;
     }
 
+    private boolean checkAllBidsMade(Lobby lobby) {
+    boolean allBidsMade = true;
+        ArrayList<Player> playerList = lobby.getPlayers();
+        for (Player player : playerList) {
+            if(player.getBid() == null){
+                allBidsMade = false;
+                break;
+            }
+        }
+        return allBidsMade;
+    }
+
+
     public void startGame(Long lobbyCode) {
         if (!checkIfLobbyExists(lobbyCode)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby does not exist.");
         }
         Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
-        lobby.setRound(1);
-        lobby.getGameLogic().distributeCards();
+        for (int i = 0; i<lobby.getPlayers().size(); i++){
+            lobby.getGameTable().addPlayer(lobby.getPlayers().get(i));
+        }
+        lobby.getGameTable().setStartingPlayer(lobby.getPlayers().get(0));
+        nextRound(lobby);
   }
 
+    private void nextRound(Lobby lobby) {
+        lobby.setRound(lobby.getRound()+1);
+        lobby.getGameLogic().distributeCards();
+    }
 
-  public int getRound (Long lobbyCode){
+
+    public int getRound (Long lobbyCode){
       if (!checkIfLobbyExists(lobbyCode)) {
           throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby does not exist.");
       }

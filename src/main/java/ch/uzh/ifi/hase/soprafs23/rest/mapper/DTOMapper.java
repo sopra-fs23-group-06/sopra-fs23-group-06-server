@@ -12,26 +12,32 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface DTOMapper {
 
-  DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
+    DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
 
-  @Mapping(source = "id", target = "id")
-  @Mapping(source = "lobby", target = "lobby")
-  @Mapping(source = "username", target = "username")
-  @Mapping(source = "bid", target = "bid")
-  Player convertPlayerPostDTOtoEntity(PlayerPostDTO playerPostDTO);
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "lobby", target = "lobby")
+    @Mapping(source = "username", target = "username")
+    @Mapping(source = "bid", target = "bid")
+    Player convertPlayerPostDTOtoEntity(PlayerPostDTO playerPostDTO);
 
-  @Mapping(source = "id", target = "id")
-  @Mapping(source = "lobby", target = "lobby")
-  @Mapping(source = "username", target = "username")
-  @Mapping(source = "bid", target = "bid")
-  PlayerGetDTO convertEntityToPlayerGetDTO(Player player);
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "lobby", target = "lobby")
+    @Mapping(source = "username", target = "username")
+    @Mapping(source = "bid", target = "bid")
+    PlayerGetDTO convertEntityToPlayerGetDTO(Player player);
 
-  @Mapping(source = "id", target = "id")
-  @Mapping(source = "lobbyCode", target = "lobbyCode")
-  Lobby convertLobbyPostDTOtoEntity(LobbyPostDTO lobbyPostDTO);
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "lobby", target = "lobby")
+    @Mapping(source = "username", target = "username")
+    @Mapping(source = "bid", target = "bid")
+    Player convertPlayerGetDTOToEntity(PlayerGetDTO playerGetDTO);
 
-  @Mapping(source = "id", target = "id")
-  @Mapping(source = "lobbyCode", target = "lobbyCode")
-  LobbyGetDTO convertEntityToLobbyGetDTO(Lobby lobby);
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "lobbyCode", target = "lobbyCode")
+    Lobby convertLobbyPostDTOtoEntity(LobbyPostDTO lobbyPostDTO);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "lobbyCode", target = "lobbyCode")
+    LobbyGetDTO convertEntityToLobbyGetDTO(Lobby lobby);
 
 }
