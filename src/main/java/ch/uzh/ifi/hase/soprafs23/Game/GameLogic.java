@@ -114,6 +114,7 @@ public class GameLogic implements Serializable {
         Player trickWinner = Evaluate.evaluate(getGameTable(), getTrick());
         trickWinner.setTricks(trickWinner.getTricks()+1);
         getGameTable().setTrickStarter(trickWinner);
+
         if(addTricksPerRound() == getRound()){
             endRound();
         }

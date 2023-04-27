@@ -29,7 +29,7 @@ public class Evaluate{
     public static Card check(Card card1, Card card2, CardColor trumpColor){
         //both cards the same color returns the higher rank
         if(card1.getColor() == card2.getColor()){
-            if(byRankComparator().compare(card1, card2) == 0){
+            if(byRankComparator().compare(card1, card2) >= 0){
                 return card1;
             }
             else return card2;
@@ -58,7 +58,7 @@ public class Evaluate{
         }
         else if(card1.getColor() == CardColor.BLACK){
             if(card2.getColor() == CardColor.SPECIAL){
-                if(byRankComparator().compare(card1, card2) == 0){
+                if(byRankComparator().compare(card1, card2) >= 0){
                     return card1;
                 }
                 else return card2;
@@ -67,14 +67,14 @@ public class Evaluate{
         }
         else if(card2.getColor() == CardColor.BLACK){
             if(card1.getColor() == CardColor.SPECIAL){
-                if(byRankComparator().compare(card1, card2) == 0){
+                if(byRankComparator().compare(card1, card2) >= 0){
                     return card1;
                 }
                 else return card2;
             }
             else return card2;
         }
-        else if(byRankComparator().compare(card1, card2) == 0){
+        else if(byRankComparator().compare(card1, card2) >= 0){
                 return card1;
             }
             else return card2;
