@@ -31,12 +31,12 @@ class EvaluateTest {
         Trick trick = mock(Trick.class);
         Player trickWinner = mock(Player.class);
         Evaluate evaluate = mock(Evaluate.class);
-        List<Card> noBonus = new ArrayList<>();
+        ArrayList<Card> noBonus = new ArrayList<>();
         noBonus.add(one);
         noBonus.add(skullking);
-        Mockito.when(trick.getPlayedCards()).thenReturn(noBonus);
+        Mockito.when(trick.getPlayedCards()).thenReturn( noBonus);
         Mockito.when(trickWinner).thenReturn(trickWinner);
-        evaluate.calcBonus(trick);
+        evaluate.calcBonus(trick, trickWinner);
         assertEquals(0,trickWinner.getBonus());
     }
 
@@ -45,12 +45,12 @@ class EvaluateTest {
         Trick trick = mock(Trick.class);
         Player trickWinner = new Player();
         Evaluate evaluate = mock(Evaluate.class);
-        List<Card> mermaidBonus = new ArrayList<>();
+        ArrayList<Card> mermaidBonus = new ArrayList<>();
         mermaidBonus.add(mermaid);
         mermaidBonus.add(skullking);
         Mockito.when(trick.getPlayedCards()).thenReturn(mermaidBonus);
         Mockito.when(trickWinner).thenReturn(trickWinner);
-        evaluate.calcBonus(trick);
+        evaluate.calcBonus(trick, trickWinner);
         assertEquals(50,trickWinner.getBonus());
     }
 
@@ -59,13 +59,13 @@ class EvaluateTest {
         Trick trick = mock(Trick.class);
         Player trickWinner = mock(Player.class);
         Evaluate evaluate = mock(Evaluate.class);
-        List<Card> skullkingBonus = new ArrayList<>();
+        ArrayList<Card> skullkingBonus = new ArrayList<>();
         skullkingBonus.add(skullking);
         skullkingBonus.add(pirate);
         skullkingBonus.add(pirate);
         Mockito.when(trick.getPlayedCards()).thenReturn(skullkingBonus);
         Mockito.when(trickWinner).thenReturn(trickWinner);
-        evaluate.calcBonus(trick);
+        evaluate.calcBonus(trick, trickWinner);
         assertEquals(60,trickWinner.getBonus());
     }
 }
