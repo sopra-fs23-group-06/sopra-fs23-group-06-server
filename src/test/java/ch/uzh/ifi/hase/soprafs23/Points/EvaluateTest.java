@@ -25,48 +25,37 @@ class EvaluateTest {
         pirate = cards.get(60);
         mermaid = cards.get(58);
         skullking = cards.get(65);
+        one = cards.get(13);
     }
 
- /*   @Test
+    @Test
     public void noBonus(){
         Trick trick = mock(Trick.class);
-        Player trickWinner = mock(Player.class);
-        Evaluate evaluate = mock(Evaluate.class);
-        List<Card> noBonus = new ArrayList<>();
-        noBonus.add(one);
-        noBonus.add(skullking);
-        Mockito.when(trick.getPlayedCards()).thenReturn(noBonus);
-        Mockito.when(trickWinner).thenReturn(trickWinner);
-        evaluate.calcBonus(trick);
+        Player trickWinner = new Player();
+        trick.addPlayedCards(one);
+        trick.addPlayedCards(one);
+        Evaluate.calcBonus(trick, trickWinner);
         assertEquals(0,trickWinner.getBonus());
     }
 
     @Test
     public void mermaidBonus(){
-        Trick trick = mock(Trick.class);
+        Trick trick = new Trick();
         Player trickWinner = new Player();
-        Evaluate evaluate = mock(Evaluate.class);
-        List<Card> mermaidBonus = new ArrayList<>();
-        mermaidBonus.add(mermaid);
-        mermaidBonus.add(skullking);
-        Mockito.when(trick.getPlayedCards()).thenReturn(mermaidBonus);
-        Mockito.when(trickWinner).thenReturn(trickWinner);
-        evaluate.calcBonus(trick);
+        trick.addPlayedCards(mermaid);
+        trick.addPlayedCards(skullking);
+        Evaluate.calcBonus(trick, trickWinner);
         assertEquals(50,trickWinner.getBonus());
     }
 
     @Test
     public void skullkingBonus(){
-        Trick trick = mock(Trick.class);
-        Player trickWinner = mock(Player.class);
-        Evaluate evaluate = mock(Evaluate.class);
-        List<Card> skullkingBonus = new ArrayList<>();
-        skullkingBonus.add(skullking);
-        skullkingBonus.add(pirate);
-        skullkingBonus.add(pirate);
-        Mockito.when(trick.getPlayedCards()).thenReturn(skullkingBonus);
-        Mockito.when(trickWinner).thenReturn(trickWinner);
-        evaluate.calcBonus(trick);
+        Trick trick = new Trick();
+        Player trickWinner = new Player();
+        trick.addPlayedCards(pirate);
+        trick.addPlayedCards(pirate);
+        trick.addPlayedCards(skullking);
+        Evaluate.calcBonus(trick, trickWinner);
         assertEquals(60,trickWinner.getBonus());
-    }*/
+    }
 }

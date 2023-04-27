@@ -101,16 +101,12 @@ public class Evaluate{
 
     public static void calcBonus(Trick trick, Player winner) {
         int awardedBonus = 0;
-        ArrayList<Card> playedCards = (ArrayList<Card>) trick.getPlayedCards();
+        ArrayList<Card> playedCards = trick.getPlayedCards();
         for (Card card : playedCards) {
             if (card.getaRank() == CardRank.SKULL_KING) {
                 for (Card c : playedCards){
                     if (c.getaRank() == CardRank.PIRATE){
-                        for (Card car : playedCards) {
-                            if (car.getaRank() == CardRank.PIRATE) {
-                                awardedBonus += 30;
-                            }
-                        }
+                        awardedBonus += 30;
                     }
                     else if (c.getaRank() == CardRank.MERMAID){
                         awardedBonus = 50;
