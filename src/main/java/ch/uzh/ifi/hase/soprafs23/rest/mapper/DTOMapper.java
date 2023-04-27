@@ -18,19 +18,15 @@ public interface DTOMapper {
     @Mapping(source = "lobby", target = "lobby")
     @Mapping(source = "username", target = "username")
     @Mapping(source = "bid", target = "bid")
+    @Mapping(source = "tricks", target = "tricks")
     Player convertPlayerPostDTOtoEntity(PlayerPostDTO playerPostDTO);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "lobby", target = "lobby")
     @Mapping(source = "username", target = "username")
     @Mapping(source = "bid", target = "bid")
+    @Mapping(source = "tricks", target = "tricks")
     PlayerGetDTO convertEntityToPlayerGetDTO(Player player);
-
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "lobby", target = "lobby")
-    @Mapping(source = "username", target = "username")
-    @Mapping(source = "bid", target = "bid")
-    Player convertPlayerGetDTOToEntity(PlayerGetDTO playerGetDTO);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "lobbyCode", target = "lobbyCode")
