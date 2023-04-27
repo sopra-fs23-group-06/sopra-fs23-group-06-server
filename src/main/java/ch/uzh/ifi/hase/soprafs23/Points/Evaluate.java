@@ -1,26 +1,32 @@
 package ch.uzh.ifi.hase.soprafs23.Points;
 
+import ch.uzh.ifi.hase.soprafs23.Game.GameLogic;
+import ch.uzh.ifi.hase.soprafs23.Game.GameTable;
 import ch.uzh.ifi.hase.soprafs23.constant.CardColor;
 import ch.uzh.ifi.hase.soprafs23.constant.CardRank;
 import ch.uzh.ifi.hase.soprafs23.entity.Card;
+import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static ch.uzh.ifi.hase.soprafs23.entity.Card.byRankComparator;
 
 public class Evaluate{
     private Player trickWinner;
 
-    public void setTrickWinner(Player trickWinner) {
-        this.trickWinner = trickWinner;
+    public static Player evaluate(GameTable gameTable, Trick trick) {
+        List<Player> order = gameTable.getOrder();
+        Card high = compareCards(trick);
+        int index = trick.getPlayedCards().indexOf(high);
+        Player winner =order.get((order.indexOf(gameTable.getTrickStarter())+ index) % order.size());
+        calcBonus(trick, winner);
+        return winner;
     }
 
-    public Player getTrickWinner(){
-        return trickWinner;
-    }
 
-    public Card check(Card card1, Card card2, CardColor trumpColor){
+    public static Card check(Card card1, Card card2, CardColor trumpColor){
         //both cards the same color returns the higher rank
         if(card1.getColor() == card2.getColor()){
             if(byRankComparator().compare(card1, card2) == 0){
@@ -74,7 +80,7 @@ public class Evaluate{
             else return card2;
     }
 
-    public void compareCards(Trick trick){
+    public static Card compareCards(Trick trick){
         ArrayList<Card> playedCards = (ArrayList<Card>) trick.getPlayedCards();
         int l = playedCards.size();
         Card highestCard = playedCards.get(0);
@@ -89,10 +95,11 @@ public class Evaluate{
                 }
             }
         }
+        return highestCard;
     }
 
 
-    public void calcBonus(Trick trick) {
+    public static void calcBonus(Trick trick, Player winner) {
         int awardedBonus = 0;
         ArrayList<Card> playedCards = (ArrayList<Card>) trick.getPlayedCards();
         for (Card card : playedCards) {
@@ -111,6 +118,6 @@ public class Evaluate{
                 }
             }
         }
-        getTrickWinner().setBonus(awardedBonus);
+        winner.setBonus(awardedBonus);
     }
 }
