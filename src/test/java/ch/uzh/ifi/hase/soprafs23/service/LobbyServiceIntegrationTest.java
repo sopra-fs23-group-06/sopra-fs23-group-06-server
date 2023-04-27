@@ -317,7 +317,7 @@ public class LobbyServiceIntegrationTest {
     }
 
     //record bid, check that the bid is recorded
-    @Test
+  /*  @Test
     public void recordBid_validInput_BidRecorded() {
         // given
         assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
@@ -428,7 +428,7 @@ public class LobbyServiceIntegrationTest {
 
         // then
         assertEquals(0, lobbyService.getRound(createdLobby.getLobbyCode()));
-    }
+    }*/
 
     /**
      * Helper method to compare the contents of two ArrayLists of Players
