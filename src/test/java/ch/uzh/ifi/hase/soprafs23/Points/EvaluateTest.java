@@ -1,17 +1,17 @@
 package ch.uzh.ifi.hase.soprafs23.Points;
 
-import ch.uzh.ifi.hase.soprafs23.Points.Evaluate;
-import ch.uzh.ifi.hase.soprafs23.Points.Trick;
+
 import ch.uzh.ifi.hase.soprafs23.entity.Card;
+import ch.uzh.ifi.hase.soprafs23.entity.Player;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
+
 
 class EvaluateTest {
     static ArrayList<Card> cards = Card.getCards();
@@ -30,7 +30,7 @@ class EvaluateTest {
 
     @Test
     public void noBonus(){
-        Trick trick = mock(Trick.class);
+        Trick trick = new Trick();
         Player trickWinner = new Player();
         trick.addPlayedCards(one);
         trick.addPlayedCards(one);
