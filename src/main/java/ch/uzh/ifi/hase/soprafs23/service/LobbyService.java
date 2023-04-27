@@ -85,6 +85,7 @@ public class LobbyService {
       if(checkIfLobbyFull(lobbyCode)){
           throw new ResponseStatusException(HttpStatus.CONFLICT, "Lobby is Full");
       }
+      if (lobby.getRound()>0){throw new ResponseStatusException(HttpStatus.CONFLICT, "Game already in progress");}
       if (lobby.getPlayers().size() == 0){
           playerToAdd.setId((long)1);}
       else {
