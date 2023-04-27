@@ -34,6 +34,7 @@ public class LobbyServiceIntegrationTest {
 
     @Autowired
     private LobbyService lobbyService;
+    private GameService gameService;
 
     @BeforeEach
     public void setup() {
@@ -341,7 +342,7 @@ public class LobbyServiceIntegrationTest {
         assertEquals(lobbyRepository.findByLobbyCode(createdLobby.getLobbyCode()).getLobbyCode(), createdLobby.getLobbyCode());
 
         // then
-        assertEquals(lobbyService.recordBid(user, createdLobby.getLobbyCode()).getBid(), user.getBid());
+        assertEquals(gameService.recordBid(user, createdLobby.getLobbyCode()).getBid(), user.getBid());
         assertEquals(user.getBid(), lobbyService.getUsers(createdLobby.getLobbyCode()).get(0).getBid());
         assertEquals(lobbyRepository.findByLobbyCode(createdLobby.getLobbyCode()).getPlayers().get(0).getBid(), user.getBid());
     }
@@ -380,7 +381,7 @@ public class LobbyServiceIntegrationTest {
         assertTrue(compareArrayLists(list, (ArrayList<Player>) lobbyService.getUsers(createdLobby.getLobbyCode())));
 
         // when
-        lobbyService.startGame(createdLobby.getLobbyCode());
+        gameService.startGame(createdLobby.getLobbyCode());
 
         // then
         assertEquals(1, lobbyService.checkLobby(createdLobby.getLobbyCode()).getGameLogic().getRound());
@@ -393,7 +394,7 @@ public class LobbyServiceIntegrationTest {
         assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
 
         // then
-        assertThrows(ResponseStatusException.class, () -> lobbyService.startGame(123456L));
+        assertThrows(ResponseStatusException.class, () -> gameService.startGame(123456L));
     }
 
     //try to get the round of an invalid lobby. Check that an exception is thrown
@@ -403,7 +404,7 @@ public class LobbyServiceIntegrationTest {
         assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
 
         // then
-        assertThrows(ResponseStatusException.class, () -> lobbyService.getRound(123456L));
+        assertThrows(ResponseStatusException.class, () -> gameService.getRound(123456L));
     }
 
     //Populate a lobby with 1 player. Check that the round is 0
@@ -427,7 +428,7 @@ public class LobbyServiceIntegrationTest {
         Player playerToAdd = lobbyService.addToLobby(user);
 
         // then
-        assertEquals(0, lobbyService.getRound(createdLobby.getLobbyCode()));
+        assertEquals(0, gameService.getRound(createdLobby.getLobbyCode()));
     }
 
     /**
