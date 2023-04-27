@@ -8,7 +8,8 @@ import java.util.List;
 
 public class GameTable implements Serializable {
     private List<Player> Order = new ArrayList<Player>();
-    private Player startingPlayer;
+    private Player roundStarter;
+    private Player trickStarter;
 
     public List<Player> getOrder() {
         return Order;
@@ -18,11 +19,11 @@ public class GameTable implements Serializable {
         Order.add(p);
     }
 
-    public void setStartingPlayer(Player startingPlayer) {
-        this.startingPlayer = startingPlayer;
-    }
+    public Player getRoundStarter() {return roundStarter;}
 
-    public Player getStartingPlayer(){
-        return startingPlayer;
-    }
+    public void setRoundStarter(Player roundStarter) {this.roundStarter = roundStarter;}
+
+    public Player getTrickStarter() {return trickStarter;}
+
+    public void setTrickStarter(Player trickStarter) {this.trickStarter = trickStarter;}
 }

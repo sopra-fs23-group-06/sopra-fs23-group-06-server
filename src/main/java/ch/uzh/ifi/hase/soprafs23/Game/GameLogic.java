@@ -1,16 +1,18 @@
 package ch.uzh.ifi.hase.soprafs23.Game;
 
+import ch.uzh.ifi.hase.soprafs23.Points.Calculate;
+import ch.uzh.ifi.hase.soprafs23.Points.Evaluate;
 import ch.uzh.ifi.hase.soprafs23.Points.Score;
 import ch.uzh.ifi.hase.soprafs23.Points.Trick;
 import ch.uzh.ifi.hase.soprafs23.constant.CardColor;
 import ch.uzh.ifi.hase.soprafs23.entity.Card;
 import ch.uzh.ifi.hase.soprafs23.entity.Deck;
+import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
-import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
 
-import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameLogic implements Serializable {
     private ArrayList<Score> Scoreboard = new ArrayList<Score>();
@@ -37,7 +39,7 @@ public class GameLogic implements Serializable {
         round = 0;
     }
 
-    public void setScoreboard(Score s, Player p) {
+    public void setScoreboard(int points, Player p) {
     }
 
     public ArrayList<Score> getScoreboard() {
@@ -56,15 +58,14 @@ public class GameLogic implements Serializable {
     }
 
     public void createTrick(){
-        Trick newTrick = new Trick();
-        trick = newTrick;
+        trick = new Trick();
         trick.setIsTrumpSet(false);
     }
 
     public void checkHand() {
         for (Player p : gameTable.getOrder()) {
             boolean hasTrumpColour = false;
-            if (p != gameTable.getStartingPlayer()) {
+            if (p != gameTable.getTrickStarter()) {
                 for (Card c : p.getHand()) {
                     if (c.getColor() == trick.getTrumpColour()) {
                         hasTrumpColour = true;
@@ -84,14 +85,79 @@ public class GameLogic implements Serializable {
             }
             else{
                 for(Card c : p.getHand()){
-                    c.setPlayable(true);
+                    c.setPlayable(false);
                 }
             }
         }
     }
 
+    public void nextRound() {
+        setRound(getRound()+1);
+        List<Player> order = getGameTable().getOrder();
+        getGameTable().setRoundStarter(order.get((order.indexOf(gameTable.getRoundStarter()) +1) % order.size()));
+        getGameTable().setTrickStarter(gameTable.getRoundStarter());
+        distributeCards();
+        nextTrick();
+    }
+
+    public void nextTrick(){
+        createTrick();
+        getGameTable().getTrickStarter().setHasTurn(true);
+    }
+
+    public void endTrick() {
+        Player trickWinner = Evaluate.evaluate(getGameTable(), getTrick());
+        trickWinner.setTricks(trickWinner.getTricks()+1);
+        getGameTable().setTrickStarter(trickWinner);
+        if(addTricksPerRound() == getRound()){
+            endRound();
+        }
+        else{
+            nextTrick();
+        }
+    }
+
+    private void endRound() {
+        //distributePoints(lobby);
+        resetBids();
+        resetTricks();
+        if(getRound() == 10){endGame();}
+        else{nextRound();};
+    }
+
+    private void endGame() {
+    }
 
 
+    private void distributePoints(Lobby lobby) {
+        ArrayList<Player> players =lobby.getPlayers();
+        for (Player player : players){
+            int points = Calculate.calculatePoints(player, lobby.getRound());
+            lobby.getGameLogic().setScoreboard(points, player);
+        }
+    }
+
+    private void resetBids() {
+        ArrayList<Player> players = getPlayers();
+        for (Player player : players){
+            player.setBid(null);
+        }
+    }
+
+    private void resetTricks() {
+        ArrayList<Player> players = getPlayers();
+        for (Player player : players){
+            player.setTricks(0);
+        }
+    }
 
 
+    private int addTricksPerRound() {
+        ArrayList<Player> players = getPlayers();
+        int totalTricks = 0;
+        for (Player player : players){
+            totalTricks += player.getTricks();
+        }
+        return totalTricks;
+    }
 }

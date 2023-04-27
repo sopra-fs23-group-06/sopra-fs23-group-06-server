@@ -11,6 +11,7 @@ public class PlayerGetDTO {
     private String username;
     private Long bid;
     private ArrayList<Card> hand;
+    private int tricks;
 
     public Long getId() {
         return id;
@@ -50,5 +51,13 @@ public class PlayerGetDTO {
 
     public void setHand(ArrayList<Card> hand) {
         this.hand = hand;
+    }
+
+    public int getTricks() {
+        return tricks;
+    }
+
+    public void setTricks(int tricks) {
+        this.tricks = tricks;
     }
 }

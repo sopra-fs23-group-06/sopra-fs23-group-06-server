@@ -37,7 +37,6 @@ public class GameController {
         String cardRank = playedCard.get("aRank");
         String cardColor = playedCard.get("color");
         gameService.playCard(userId, lobbyCode, cardRank, cardColor);
-
     }
 
     @PostMapping("/games/{lobbyCode}")
