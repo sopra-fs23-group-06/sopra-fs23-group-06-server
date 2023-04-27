@@ -13,7 +13,6 @@ import ch.uzh.ifi.hase.soprafs23.entity.Player;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 public class GameLogic implements Serializable {
     private ArrayList<Score> Scoreboard = new ArrayList<Score>();
 
@@ -64,17 +63,23 @@ public class GameLogic implements Serializable {
 
     public void checkHand() {
         for (Player p : gameTable.getOrder()) {
-            boolean hasTrumpColour = false;
-            if (p != gameTable.getTrickStarter()) {
-                for (Card c : p.getHand()) {
-                    if (c.getColor() == trick.getTrumpColour()) {
-                        hasTrumpColour = true;
-                        break;
-                    }
-                }
-                if (hasTrumpColour) {
+            if (p.isHasTurn()) {
+                boolean hasTrumpColour = false;
+                if (p != gameTable.getTrickStarter()) {
                     for (Card c : p.getHand()) {
-                        c.setPlayable(c.getColor() == CardColor.SPECIAL || c.getColor() == CardColor.BLACK ||c.getColor() == trick.getTrumpColour());
+                        if (c.getColor() == trick.getTrumpColour()) {
+                            hasTrumpColour = true;
+                        }
+                    }
+                    if (hasTrumpColour) {
+                        for (Card c : p.getHand()) {
+                            c.setPlayable(c.getColor() == CardColor.SPECIAL || c.getColor() == CardColor.BLACK || c.getColor() == trick.getTrumpColour());
+                        }
+                    }
+                    else {
+                        for (Card c : p.getHand()) {
+                            c.setPlayable(true);
+                        }
                     }
                 }
                 else {
@@ -83,8 +88,8 @@ public class GameLogic implements Serializable {
                     }
                 }
             }
-            else{
-                for(Card c : p.getHand()){
+            else {
+                for (Card c : p.getHand()) {
                     c.setPlayable(false);
                 }
             }

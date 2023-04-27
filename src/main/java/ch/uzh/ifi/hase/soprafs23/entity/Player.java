@@ -67,7 +67,9 @@ public class Player implements Serializable {
 
   public void setTricks(int tricks) {this.tricks = tricks;}
 
-  public ArrayList<Card> getHand() {return Hand;}
+  public ArrayList<Card> getHand() {
+      return Hand;
+  }
 
   public Integer getBid() {return bid;}
 
@@ -79,14 +81,13 @@ public class Player implements Serializable {
 
   public void setHasTurn(boolean b) {this.hasTurn = b;}
 
-  public Card playCard(Card card, Trick trick){
+  public void playCard(Card card, Trick trick){
       if(!trick.getIsTrumpSet()){
           if(card.getColor()!= CardColor.SPECIAL){
               trick.setIsTrumpSet(true);
               trick.setTrumpColour(card);
           }
       }
-      return card;
   }
 
 

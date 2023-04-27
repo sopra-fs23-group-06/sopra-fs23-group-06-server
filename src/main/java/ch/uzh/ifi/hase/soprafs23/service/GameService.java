@@ -37,6 +37,7 @@ public class GameService {
         for (Player value : playerList) {
             if (value.getId().equals(userId)) {
                 player = value;
+                lobby.getGameLogic().checkHand();
                 playerHand = player.getHand();
             }
         }
@@ -75,6 +76,7 @@ public class GameService {
 
         Trick trick = lobby.getGameLogic().getTrick();
         trick.addPlayedCards(playedCard);
+        player.playCard(playedCard,trick);
         if (trick.getPlayedCards().size() == lobby.getPlayers().size()){
             lobby.getGameLogic().endTrick();
         }
