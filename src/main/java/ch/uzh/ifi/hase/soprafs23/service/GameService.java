@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.Points.Calculate;
 import ch.uzh.ifi.hase.soprafs23.Points.Evaluate;
+import ch.uzh.ifi.hase.soprafs23.Points.Scoreboard;
 import ch.uzh.ifi.hase.soprafs23.Points.Trick;
 import ch.uzh.ifi.hase.soprafs23.entity.Card;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
@@ -123,6 +124,7 @@ public class GameService {
         }
         lobby.getGameTable().setRoundStarter(lobby.getPlayers().get(0));
         lobby.getGameLogic().nextRound();
+        lobby.getGameLogic().setupScoreboard(lobby.getPlayers());
     }
 
 
@@ -142,5 +144,12 @@ public class GameService {
         Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
         if(lobby==null) {throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby does not exist.");}
         return lobby.getGameLogic().getTrick().getPlayedCards();
+    }
+
+    public Scoreboard getScoreboard(Long lobbyCode){
+        //NEEDSTOBEIMPLEMENTED
+        Lobby lobby=lobbyRepository.findByLobbyCode(lobbyCode);
+        if(lobby==null){throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Lobby does not exist.");}
+        return lobby.getGameLogic().getScoreboard();
     }
 }

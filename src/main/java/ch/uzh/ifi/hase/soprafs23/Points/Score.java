@@ -2,14 +2,16 @@ package ch.uzh.ifi.hase.soprafs23.Points;
 
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
 
-public class Score {
-    private Player curPlayer;
+import java.io.Serializable;
+
+public class Score implements Serializable {
+    private String curPlayer;
     private int curRound;
     private int curBid;
     private int curPoints;
 
     public void setCurPlayer(Player curPlayer) {
-        this.curPlayer = curPlayer;
+        this.curPlayer = curPlayer.getUsername();
     }
 
     public void setCurRound(int curRound) {
@@ -24,7 +26,7 @@ public class Score {
         this.curPoints = curPoints;
     }
 
-    public Player getCurPlayer() {
+    public String getCurPlayer() {
         return curPlayer;
     }
 
