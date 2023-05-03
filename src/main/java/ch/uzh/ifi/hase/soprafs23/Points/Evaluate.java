@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs23.Points;
 import ch.uzh.ifi.hase.soprafs23.Game.GameLogic;
 import ch.uzh.ifi.hase.soprafs23.Game.GameTable;
 import ch.uzh.ifi.hase.soprafs23.constant.CardColor;
+import ch.uzh.ifi.hase.soprafs23.constant.CardOption;
 import ch.uzh.ifi.hase.soprafs23.constant.CardRank;
 import ch.uzh.ifi.hase.soprafs23.entity.Card;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
@@ -80,12 +81,51 @@ public class Evaluate{
             else return card2;
     }
 
+    public static Card checkScary(Card card1, Card card2){
+        if (card1.getaRank() == CardRank.SCARY_MARY){
+            if(card1.getaOption()== CardOption.ESCAPE){
+                if(card2.getaRank() == CardRank.ESCAPE){
+                    return card1;
+                }
+                else{
+                    return card2;
+                }
+            }
+            else{
+                if(card2.getaRank() == CardRank.SKULL_KING){
+                    return card2;
+                }
+                else{
+                    return card1;
+                }
+            }
+        }
+        else{
+            if(card2.getaOption()== CardOption.ESCAPE){
+                return card1;
+
+            }
+            else{
+                if(card1.getaRank() == CardRank.SKULL_KING ||card1.getaRank() == CardRank.PIRATE){
+                    return card1;
+                }
+                else{
+                    return card2;
+                }
+            }
+        }
+    }
+
+
     public static Card compareCards(Trick trick){
         ArrayList<Card> playedCards = (ArrayList<Card>) trick.getPlayedCards();
         int l = playedCards.size();
         Card highestCard = playedCards.get(0);
         for (int i = 1; i < l; i++){
-            highestCard = check(highestCard, playedCards.get(i),trick.getTrumpColour());
+            if(playedCards.get(i).getaRank()==CardRank.SCARY_MARY || highestCard.getaRank()==CardRank.SCARY_MARY){
+                highestCard = checkScary(highestCard, playedCards.get(i));
+            }
+            else{highestCard = check(highestCard, playedCards.get(i),trick.getTrumpColour());}
             if (highestCard.getaRank() == CardRank.SKULL_KING){
                 for(Card card : playedCards){
                     if(card.getaRank() == CardRank.MERMAID){

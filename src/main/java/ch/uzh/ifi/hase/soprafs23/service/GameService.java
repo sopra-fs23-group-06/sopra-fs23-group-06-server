@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
+import ch.uzh.ifi.hase.soprafs23.Game.GameLogic;
 import ch.uzh.ifi.hase.soprafs23.Points.Calculate;
 import ch.uzh.ifi.hase.soprafs23.Points.Evaluate;
 import ch.uzh.ifi.hase.soprafs23.Points.Trick;
@@ -44,7 +45,7 @@ public class GameService {
         return playerHand;
 }
 
-    public void playCard(Long userId, Long lobbyCode, String cardRank, String cardColor) {
+    public void playCard(Long userId, Long lobbyCode, String cardRank, String cardColor, String cardOption) {
         Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
         if(lobby==null) {throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby does not exist.");}
         ArrayList<Player> playerList = lobby.getPlayers();
@@ -64,6 +65,9 @@ public class GameService {
         for (int i = 0; i < playerHand.size(); i++) {
             Card card = playerHand.get(i);
             if (card.getaRank().toString().equals(cardRank) && card.getColor().toString().equals(cardColor)) {
+                if(!cardOption.equals("NONE")){
+                    card.setScaryMary(cardOption);
+                }
                 playedCard = card;
                 playerHand.remove(i);
                 player.setHasTurn(false);

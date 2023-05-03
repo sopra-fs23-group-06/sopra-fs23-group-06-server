@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
 import ch.uzh.ifi.hase.soprafs23.constant.CardColor;
+import ch.uzh.ifi.hase.soprafs23.constant.CardOption;
 import ch.uzh.ifi.hase.soprafs23.constant.CardRank;
 
 import java.io.Serializable;
@@ -11,12 +12,14 @@ public class Card implements Serializable {
 
     private final CardRank aRank;
     private final CardColor aColor;
+    private CardOption aOption;
 
     private boolean playable;
 
     private Card(CardRank rank, CardColor color) {
         aRank = rank;
         aColor = color;
+        aOption = CardOption.NONE;
         playable = true;
     }
     private static final ArrayList<Card> CARDS =
@@ -74,6 +77,18 @@ public class Card implements Serializable {
 
     public CardRank getaRank() {
         return this.aRank;
+    }
+
+    public CardOption getaOption(){ return this.aOption;}
+
+    public void setaOption(CardOption option){ this.aOption = option;}
+    public void setScaryMary(String option){
+        if(option.equals("PIRATE")){
+            setaOption(CardOption.PIRATE);
+        }
+        if(option.equals("ESCAPE")) {
+            setaOption(CardOption.ESCAPE);
+        }
     }
 
     public static Comparator<Card> byRankComparator() {

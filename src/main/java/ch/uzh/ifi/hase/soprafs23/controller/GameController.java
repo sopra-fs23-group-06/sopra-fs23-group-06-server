@@ -36,7 +36,8 @@ public class GameController {
     public void playCard(@RequestParam(name = "userId") Long userId, @RequestBody Map<String, String> playedCard, @PathVariable Long lobbyCode) {
         String cardRank = playedCard.get("aRank");
         String cardColor = playedCard.get("color");
-        gameService.playCard(userId, lobbyCode, cardRank, cardColor);
+        String cardOption = playedCard.get("aOption");
+        gameService.playCard(userId, lobbyCode, cardRank, cardColor, cardOption);
     }
 
     @PostMapping("/games/{lobbyCode}")
