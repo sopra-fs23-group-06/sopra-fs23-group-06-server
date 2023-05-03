@@ -1,9 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.Game;
 
-import ch.uzh.ifi.hase.soprafs23.Points.Calculate;
-import ch.uzh.ifi.hase.soprafs23.Points.Evaluate;
-import ch.uzh.ifi.hase.soprafs23.Points.Score;
-import ch.uzh.ifi.hase.soprafs23.Points.Trick;
+import ch.uzh.ifi.hase.soprafs23.Points.*;
 import ch.uzh.ifi.hase.soprafs23.constant.CardColor;
 import ch.uzh.ifi.hase.soprafs23.constant.CardOption;
 import ch.uzh.ifi.hase.soprafs23.entity.Card;
@@ -15,12 +12,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 public class GameLogic implements Serializable {
-    private ArrayList<Score> Scoreboard = new ArrayList<Score>();
+    //private ArrayList<Score> Scoreboard = new ArrayList<Score>();
 
     private Deck deck;
     private GameTable gameTable;
     private int round;
     private Trick trick;
+
+    private Scoreboard scoreboard;
     private ArrayList<Player> players;
 
     public Deck getDeck(){return this.deck;}
@@ -39,11 +38,17 @@ public class GameLogic implements Serializable {
         round = 0;
     }
 
-    public void setScoreboard(int points, Player p) {
+    public void setupScoreboard(ArrayList<Player> players) {
+        scoreboard = new Scoreboard(players);
+
     }
 
-    public ArrayList<Score> getScoreboard() {
-        return Scoreboard;
+    public void setScoreboard(Score score) {
+        scoreboard.setScoreboard(score);
+    }
+
+    public Scoreboard getScoreboard() {
+        return this.scoreboard;
     }
 
     public void distributeCards(){
@@ -115,6 +120,7 @@ public class GameLogic implements Serializable {
         Player trickWinner = Evaluate.evaluate(getGameTable(), getTrick());
         trickWinner.setTricks(trickWinner.getTricks()+1);
         getGameTable().setTrickStarter(trickWinner);
+
         if(addTricksPerRound() == getRound()){
             endRound();
         }
@@ -124,7 +130,7 @@ public class GameLogic implements Serializable {
     }
 
     private void endRound() {
-        //distributePoints(lobby);
+        distributePoints();
         resetBids();
         resetTricks();
         if(getRound() == 10){endGame();}
@@ -135,11 +141,16 @@ public class GameLogic implements Serializable {
     }
 
 
-    private void distributePoints(Lobby lobby) {
-        ArrayList<Player> players =lobby.getPlayers();
+    private void distributePoints() {
+        ArrayList<Player> players = getPlayers();
         for (Player player : players){
-            int points = Calculate.calculatePoints(player, lobby.getRound());
-            lobby.getGameLogic().setScoreboard(points, player);
+            int points = Calculate.calculatePoints(player, getRound());
+            Score score = new Score();
+            score.setCurPlayer(player);
+            score.setCurRound(getRound());
+            score.setCurBid(player.getBid());
+            score.setCurPoints(points);
+            setScoreboard(score);
         }
     }
 

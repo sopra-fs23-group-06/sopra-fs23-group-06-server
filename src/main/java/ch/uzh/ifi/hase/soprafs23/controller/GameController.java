@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
+import ch.uzh.ifi.hase.soprafs23.Points.Scoreboard;
 import ch.uzh.ifi.hase.soprafs23.entity.Card;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
@@ -85,5 +86,12 @@ public class GameController {
     @ResponseBody
     public ArrayList<Card> getTableCards(@PathVariable Long lobbyCode) {
         return gameService.getTableCards(lobbyCode);
+    }
+
+    @GetMapping("/games/{lobbyCode}/scoreboard")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Scoreboard getScoreboard(@PathVariable Long lobbyCode){
+        return gameService.getScoreboard(lobbyCode);
     }
 }
