@@ -96,7 +96,7 @@ public class GameControllerTest {
         // Convert the Map to a JSON string
         String requestBody = objectMapper.writeValueAsString(playedCard);
 
-        Mockito.doNothing().when(gameService).playCard(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any());
+        Mockito.doNothing().when(gameService).playCard(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any());
 
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder putRequest = put("/games/123456/cardHandler").param("userId", "1")
