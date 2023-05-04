@@ -1,10 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.Game.GameLogic;
-import ch.uzh.ifi.hase.soprafs23.Points.Calculate;
-import ch.uzh.ifi.hase.soprafs23.Points.Evaluate;
-import ch.uzh.ifi.hase.soprafs23.Points.Scoreboard;
-import ch.uzh.ifi.hase.soprafs23.Points.Trick;
+import ch.uzh.ifi.hase.soprafs23.Points.*;
 import ch.uzh.ifi.hase.soprafs23.entity.Card;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
@@ -101,6 +98,14 @@ public class GameService {
             if (value.getId().equals(playerInput.getId())) {
                 player = value;
                 player.setBid(playerInput.getBid());
+                /*
+                SET BID IN SCOREBOARD
+                doesn't work yet
+
+                Score score = new Score();
+                score.setCurPlayer(value);
+                score.setCurBid(playerInput.getBid());
+                lobby.getGameLogic().getScoreboard().setScoreboard(score);*/
             }
         }
         return player;

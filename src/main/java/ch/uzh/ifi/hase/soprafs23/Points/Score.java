@@ -7,8 +7,8 @@ import java.io.Serializable;
 public class Score implements Serializable {
     private String curPlayer;
     private int curRound;
-    private int curBid;
-    private int curPoints;
+    private Integer curBid;
+    private Integer curPoints;
 
     public void setCurPlayer(Player curPlayer) {
         this.curPlayer = curPlayer.getUsername();
@@ -34,11 +34,11 @@ public class Score implements Serializable {
         return curRound;
     }
 
-    public int getCurBid() {
+    public Integer getCurBid() {
         return curBid;
     }
 
-    public int getCurPoints() {
+    public Integer getCurPoints() {
         return curPoints;
     }
 }
