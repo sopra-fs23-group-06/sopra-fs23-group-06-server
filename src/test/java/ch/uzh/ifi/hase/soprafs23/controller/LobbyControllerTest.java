@@ -238,6 +238,7 @@ public class LobbyControllerTest {
         Mockito.doNothing().when(lobbyService).removeUser(Mockito.any());
 
         MockHttpServletRequestBuilder putRequest = put("/lobbies/123456/kickHandler")
+                .header("userId", player.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(playerPostDTO));
 
@@ -250,6 +251,7 @@ public class LobbyControllerTest {
         Mockito.doNothing().when(lobbyService).closeLobby(Mockito.any());
 
         MockHttpServletRequestBuilder putRequest = put("/lobbies/123456/closeHandler")
+                .header("userId", 1L)
                 .contentType(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(putRequest).andExpect(status().isOk());
