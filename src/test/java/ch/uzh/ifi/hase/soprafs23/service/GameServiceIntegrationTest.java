@@ -569,13 +569,13 @@ public void playCard_validInput_cardPlayed() {
         assertNotNull(scoreboard);
         assertEquals(scoreboard.getScoreboard().get(0).get(0).getCurPlayer(), player1.getUsername());
         assertEquals(scoreboard.getScoreboard().get(0).get(0).getCurRound(), 1);
-        assertEquals(scoreboard.getScoreboard().get(0).get(0).getCurBid(), 0);
-        assertEquals(scoreboard.getScoreboard().get(0).get(0).getCurPoints(), 0);
+        assertNull(scoreboard.getScoreboard().get(0).get(0).getCurBid());
+        assertNull(scoreboard.getScoreboard().get(0).get(0).getCurPoints());
 
         assertEquals(scoreboard.getScoreboard().get(1).get(0).getCurPlayer(), player2.getUsername());
         assertEquals(scoreboard.getScoreboard().get(1).get(0).getCurRound(), 1);
-        assertEquals(scoreboard.getScoreboard().get(1).get(0).getCurBid(), 0);
-        assertEquals(scoreboard.getScoreboard().get(1).get(0).getCurPoints(), 0);
+        assertNull(scoreboard.getScoreboard().get(1).get(0).getCurBid());
+        assertNull(scoreboard.getScoreboard().get(1).get(0).getCurPoints());
 
     }
 

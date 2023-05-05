@@ -112,8 +112,12 @@ public class GameControllerTest {
 
         Mockito.doNothing().when(gameService).startGame(Mockito.any());
 
+        PlayerPostDTO playerPostDTO = new PlayerPostDTO();
+        playerPostDTO.setId(1L);
+
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = post("/games/123456")
+                .content(asJsonString(playerPostDTO))
                 .contentType(MediaType.APPLICATION_JSON);
 
         // then
