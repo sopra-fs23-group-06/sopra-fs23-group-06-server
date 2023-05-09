@@ -34,6 +34,7 @@ public class Scoreboard implements Serializable {
         Score scoreAtIndex = scoreboard.get(index).get(round);
         scoreAtIndex.setCurPoints(score.getCurPoints());
         scoreAtIndex.setCurBid(score.getCurBid());
+        scoreAtIndex.setCurTricks(score.getCurTricks());
     }
 
     public ArrayList<ArrayList<Score>> getScoreboard() {

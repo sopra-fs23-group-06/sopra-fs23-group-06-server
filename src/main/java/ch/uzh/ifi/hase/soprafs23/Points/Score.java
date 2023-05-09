@@ -9,6 +9,7 @@ public class Score implements Serializable {
     private int curRound;
     private Integer curBid;
     private Integer curPoints;
+    private Integer curTricks;
 
     public void setCurPlayer(Player curPlayer) {
         this.curPlayer = curPlayer.getUsername();
@@ -41,4 +42,10 @@ public class Score implements Serializable {
     public Integer getCurPoints() {
         return curPoints;
     }
+
+    public void setCurTricks(Integer curTricks) {
+        this.curTricks = curTricks;
+    }
+
+    public Integer getCurTricks() { return curTricks; }
 }
