@@ -12,6 +12,8 @@ import ch.uzh.ifi.hase.soprafs23.service.GameService;
 import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,13 +39,19 @@ public class GameController {
     public void playCard(@RequestParam(name = "userId") Long userId, @RequestBody Map<String, String> playedCard, @PathVariable Long lobbyCode) {
         String cardRank = playedCard.get("aRank");
         String cardColor = playedCard.get("color");
-        gameService.playCard(userId, lobbyCode, cardRank, cardColor);
+        String cardOption = playedCard.get("aOption");
+        gameService.playCard(userId, lobbyCode, cardRank, cardColor, cardOption);
     }
 
     @PostMapping("/games/{lobbyCode}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void startGame(@PathVariable Long lobbyCode){
+    public void startGame(@RequestBody PlayerPostDTO playerPostDTO, @PathVariable Long lobbyCode){
+        // convert user
+        Player playerInput = DTOMapper.INSTANCE.convertPlayerPostDTOtoEntity(playerPostDTO);
+        if (playerInput.getId() != 1L) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Only the host can start the game");
+        }
         gameService.startGame(lobbyCode);
     }
 

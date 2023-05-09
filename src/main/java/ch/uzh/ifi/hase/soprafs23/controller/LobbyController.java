@@ -9,6 +9,8 @@ import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,15 +101,21 @@ public class LobbyController {
     @PutMapping("/lobbies/{lobbyCode}/kickHandler")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void removeUser(@RequestBody PlayerPostDTO playerPostDTO) {
+    public void removeUser(@RequestBody PlayerPostDTO playerPostDTO, @RequestHeader("userId") Long userId) {
         Player leavingPlayer = DTOMapper.INSTANCE.convertPlayerPostDTOtoEntity(playerPostDTO);
+        if (userId != 1L) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Only the host can kick other players");
+        }
         lobbyService.removeUser(leavingPlayer);
     }
 
     @PutMapping("/lobbies/{lobbyCode}/closeHandler")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void closeLobby(@PathVariable Long lobbyCode) {
+    public void closeLobby(@PathVariable Long lobbyCode, @RequestHeader("userId") Long userId) {
+        if (userId != 1L) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Only the host can close the lobby");
+        }
         lobbyService.closeLobby(lobbyCode);
     }
 

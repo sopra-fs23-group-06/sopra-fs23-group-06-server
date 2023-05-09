@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.Game;
 
 import ch.uzh.ifi.hase.soprafs23.Points.*;
 import ch.uzh.ifi.hase.soprafs23.constant.CardColor;
+import ch.uzh.ifi.hase.soprafs23.constant.CardOption;
 import ch.uzh.ifi.hase.soprafs23.entity.Card;
 import ch.uzh.ifi.hase.soprafs23.entity.Deck;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
@@ -137,6 +138,8 @@ public class GameLogic implements Serializable {
     }
 
     private void endGame() {
+        setRound(getRound()+1);
+        //IMPLEMENT MORE?
     }
 
 
@@ -149,6 +152,7 @@ public class GameLogic implements Serializable {
             score.setCurRound(getRound());
             score.setCurBid(player.getBid());
             score.setCurPoints(points);
+            score.setCurTricks(player.getTricks());
             setScoreboard(score);
         }
     }
@@ -176,4 +180,5 @@ public class GameLogic implements Serializable {
         }
         return totalTricks;
     }
+
 }
