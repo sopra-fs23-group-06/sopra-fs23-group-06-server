@@ -1,5 +1,8 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
+import ch.uzh.ifi.hase.soprafs23.constant.CardOption;
+import ch.uzh.ifi.hase.soprafs23.constant.CardRank;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,6 +22,9 @@ public class Deck implements Serializable {
     public void fillDeck() {
         aDeck.clear();
         for (Card c : aCards) {
+            if (c.getaRank().equals(CardRank.SCARY_MARY)){
+                c.setaOption(CardOption.NONE);
+            }
             aDeck.add(c);
         }
         Collections.shuffle(aDeck);
