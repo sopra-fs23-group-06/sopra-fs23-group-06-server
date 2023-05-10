@@ -19,6 +19,7 @@ public class GameLogic implements Serializable {
     private GameTable gameTable;
     private int round;
     private Trick trick;
+    private Player trickWinner;
 
     private Scoreboard scoreboard;
     private ArrayList<Player> players;
@@ -120,8 +121,6 @@ public class GameLogic implements Serializable {
 
 
     public void endTrick() {
-        Player trickWinner = Evaluate.evaluate(getGameTable(), getTrick());
-        trickWinner.setTricks(trickWinner.getTricks()+1);
         getGameTable().setTrickStarter(trickWinner);
 
         if(addTricksPerRound() == getRound()){
@@ -130,6 +129,15 @@ public class GameLogic implements Serializable {
         else{
             nextTrick();
         }
+    }
+
+    public Player getTrickWinner() {
+        return trickWinner;
+    }
+
+    public void setTrickWinner(){
+        trickWinner = Evaluate.evaluate(getGameTable(), getTrick());
+        trickWinner.setTricks(trickWinner.getTricks()+1);
     }
 
     private void endRound() {
