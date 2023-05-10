@@ -79,12 +79,29 @@ public class GameService {
         Trick trick = lobby.getGameLogic().getTrick();
         trick.addPlayedCards(playedCard);
         player.playCard(playedCard,trick);
+    }
+
+
+    public void afterPlayCard(Long userId, Long lobbyCode){
+        Player player = null;
+        Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
+        ArrayList<Player> playerList = lobby.getPlayers();
+        for (Player getPlayer : playerList){
+            if (getPlayer.getId().equals(userId)){
+                player = getPlayer;
+            }
+        }
+        Trick trick = lobby.getGameLogic().getTrick();
         if (trick.getPlayedCards().size() == lobby.getPlayers().size()){
+            try {
+                Thread.sleep(3500);
+            } catch (InterruptedException e) {
+
+            }
             lobby.getGameLogic().endTrick();
         }
         else {lobby.getPlayers().get((lobby.getPlayers().indexOf(player)+1) % lobby.getPlayers().size()).setHasTurn(true);}
     }
-
 
     public Player recordBid(Player playerInput, Long lobbyCode) {
         Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);

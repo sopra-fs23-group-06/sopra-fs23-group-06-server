@@ -18,10 +18,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @RestController
 public class GameController {
-
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final GameService gameService;
 
     GameController(GameService gameService) {this.gameService = gameService;}
@@ -41,7 +43,9 @@ public class GameController {
         String cardColor = playedCard.get("color");
         String cardOption = playedCard.get("aOption");
         gameService.playCard(userId, lobbyCode, cardRank, cardColor, cardOption);
+        executorService.submit(() -> gameService.afterPlayCard(userId, lobbyCode));
     }
+
 
     @PostMapping("/games/{lobbyCode}")
     @ResponseStatus(HttpStatus.OK)

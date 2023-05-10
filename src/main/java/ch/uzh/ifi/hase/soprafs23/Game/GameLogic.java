@@ -11,6 +11,7 @@ import ch.uzh.ifi.hase.soprafs23.entity.Player;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 public class GameLogic implements Serializable {
     //private ArrayList<Score> Scoreboard = new ArrayList<Score>();
 
@@ -115,6 +116,8 @@ public class GameLogic implements Serializable {
         createTrick();
         getGameTable().getTrickStarter().setHasTurn(true);
     }
+
+
 
     public void endTrick() {
         Player trickWinner = Evaluate.evaluate(getGameTable(), getTrick());
