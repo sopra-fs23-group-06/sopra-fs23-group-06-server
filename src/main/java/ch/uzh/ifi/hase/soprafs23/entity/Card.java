@@ -30,9 +30,20 @@ public class Card implements Serializable {
             if (color == CardColor.SPECIAL) {
                 //ESCAPE, PIRATE, MERMAID, SCARY_MARY, SKULL_KING
                 for (CardRank rank : CardRank.values()) {
-                    if(rank.ordinal() == 15 || rank.ordinal() == 0){
+                    if(rank.ordinal() == 0){
                         for(int i=0; i<5;i++){
                             CARDS.add(new Card(rank,color));
+                        }
+                    }
+                    if(rank.ordinal() == 15){
+                        for(int i=0; i<5;i++){
+                            Card pirate = new Card(rank,color);
+                            for (CardOption option : CardOption.values()){
+                                if (option.ordinal() == (i+3)){
+                                    pirate.setaOption(option);
+                                }
+                            }
+                            CARDS.add(pirate);
                         }
                     }
                     if(rank.ordinal()==14){

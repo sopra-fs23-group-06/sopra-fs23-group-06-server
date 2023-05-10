@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.Game.GameLogic;
 import ch.uzh.ifi.hase.soprafs23.Points.*;
+import ch.uzh.ifi.hase.soprafs23.constant.CardRank;
 import ch.uzh.ifi.hase.soprafs23.entity.Card;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
@@ -63,6 +64,9 @@ public class GameService {
         for (int i = 0; i < playerHand.size(); i++) {
             Card card = playerHand.get(i);
             if (card.getaRank().toString().equals(cardRank) && card.getColor().toString().equals(cardColor)) {
+                if (card.getaRank().equals(CardRank.PIRATE) && !card.getaOption().toString().equals(cardOption)){
+                    continue;
+                }
                 if(!cardOption.equals("NONE")){
                     card.setScaryMary(cardOption);
                 }
