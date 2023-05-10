@@ -126,12 +126,12 @@ public class Evaluate{
                 highestCard = checkScary(highestCard, playedCards.get(i));
             }
             else{highestCard = check(highestCard, playedCards.get(i),trick.getTrumpColour());}
-            if (highestCard.getaRank() == CardRank.SKULL_KING){
-                for(Card card : playedCards){
-                    if(card.getaRank() == CardRank.MERMAID){
-                        highestCard = card;
-                        break;
-                    }
+        }
+        if (highestCard.getaRank() == CardRank.SKULL_KING){
+            for(Card card : playedCards){
+                if(card.getaRank() == CardRank.MERMAID){
+                    highestCard = card;
+                    break;
                 }
             }
         }
@@ -145,7 +145,7 @@ public class Evaluate{
         for (Card card : playedCards) {
             if (card.getaRank() == CardRank.SKULL_KING) {
                 for (Card c : playedCards){
-                    if (c.getaRank() == CardRank.PIRATE){
+                    if (c.getaRank() == CardRank.PIRATE || c.getaRank() == CardRank.SCARY_MARY){
                         awardedBonus += 30;
                     }
                     else if (c.getaRank() == CardRank.MERMAID){
