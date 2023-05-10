@@ -313,6 +313,7 @@ public void playCard_validInput_cardPlayed() {
     // play the card from player 1's hand
     Card cardToPlay = player1Hand.get(0);
     gameService.playCard(player1.getId(), player1.getLobby(), cardToPlay.getaRank().toString(), cardToPlay.getColor().toString(), cardToPlay.getaOption().toString());
+    gameService.afterPlayCard(player1.getId(), player1.getLobby());
 
     // Load the lobby object from the repository
     Lobby lobby = lobbyRepository.findByLobbyCode(createdLobby.getLobbyCode());
