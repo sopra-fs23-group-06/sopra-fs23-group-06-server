@@ -150,6 +150,7 @@ public class Evaluate{
                     }
                     else if (c.getaRank() == CardRank.MERMAID){
                         awardedBonus = 50;
+                        break;
                     }
                 }
             }
