@@ -15,8 +15,6 @@ import java.util.List;
 import static ch.uzh.ifi.hase.soprafs23.entity.Card.byRankComparator;
 
 public class Evaluate{
-    private Player trickWinner;
-
     public static Player evaluate(GameTable gameTable, Trick trick) {
         List<Player> order = gameTable.getOrder();
         Card high = compareCards(trick);

@@ -97,6 +97,7 @@ public class GameService {
         }
         Trick trick = lobby.getGameLogic().getTrick();
         if (trick.getPlayedCards().size() == lobby.getPlayers().size()){
+            lobby.getGameLogic().setTrickWinner();
             try {
                 Thread.sleep(3500);
             } catch (InterruptedException e) {
@@ -177,9 +178,15 @@ public class GameService {
     }
 
     public Scoreboard getScoreboard(Long lobbyCode){
-        //NEEDSTOBEIMPLEMENTED
         Lobby lobby=lobbyRepository.findByLobbyCode(lobbyCode);
         if(lobby==null){throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Lobby does not exist.");}
         return lobby.getGameLogic().getScoreboard();
     }
+
+    public Player getTrickWinner(Long lobbyCode){
+        Lobby lobby=lobbyRepository.findByLobbyCode(lobbyCode);
+        if(lobby==null){throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Lobby does not exist.");}
+        return lobby.getGameLogic().getTrickWinner();
+    }
+
 }

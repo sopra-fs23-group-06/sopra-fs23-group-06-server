@@ -105,4 +105,11 @@ public class GameController {
     public Scoreboard getScoreboard(@PathVariable Long lobbyCode){
         return gameService.getScoreboard(lobbyCode);
     }
+
+    @GetMapping("/games/{lobbyCode}/trickWinner")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Player getTrickWinner(@PathVariable Long lobbyCode){
+        return gameService.getTrickWinner(lobbyCode);
+    }
 }
