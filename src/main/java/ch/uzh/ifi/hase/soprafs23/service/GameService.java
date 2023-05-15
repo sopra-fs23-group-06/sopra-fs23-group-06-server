@@ -132,17 +132,6 @@ public class GameService {
         return player;
     }
 
-    private boolean checkAllBidsMade(Lobby lobby) {
-        boolean allBidsMade = true;
-        ArrayList<Player> playerList = lobby.getPlayers();
-        for (Player player : playerList) {
-            if(player.getBid() == null){
-                allBidsMade = false;
-                break;
-            }
-        }
-        return allBidsMade;
-    }
 
     public void startGame(Long lobbyCode) {
         Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
