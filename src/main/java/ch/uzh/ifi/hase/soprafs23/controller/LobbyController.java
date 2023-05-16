@@ -81,6 +81,12 @@ public class LobbyController {
         if (playerInput.getId() != 1L) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Only the host can change the game settings");
         }
+        if (roundToEndGame > 10){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "The maximum of Rounds is 10 ");
+        }
+        if (maxPlayerSize <2){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "The minimum of Players are 2");
+        }
         lobbyService.gameSettings(lobbyCode,roundToEndGame,maxPlayerSize);
     }
 
