@@ -146,7 +146,6 @@ public class GameService {
         lobby.getGameLogic().setupScoreboard(lobby.getPlayers());
     }
 
-
     public int getRound (Long lobbyCode){
         Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
         if(lobby==null) {throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby does not exist.");}

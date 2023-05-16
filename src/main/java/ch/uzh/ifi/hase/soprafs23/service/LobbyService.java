@@ -23,6 +23,7 @@ public class LobbyService {
 
   private final Logger log = LoggerFactory.getLogger(LobbyService.class);
   private final LobbyRepository lobbyRepository;
+  private int maxPlayerSize=6;
 
 
 
@@ -68,11 +69,17 @@ public class LobbyService {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby does not exist.");
     }
 
-
+    public void gameSettings(Long lobbyCode, int roundToEndGame, int playerSize){
+        Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
+        if(lobby==null) {throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby does not exist.");}
+        lobby.getGameLogic().SetRoundToEndGame(roundToEndGame);
+        if(lobby.getPlayers().size()>playerSize || lobby.getPlayers().size()>6) {throw new ResponseStatusException(HttpStatus.CONFLICT, "There are already more players in Lobby");}
+        else{ maxPlayerSize=playerSize;}
+    }
 
     private boolean checkIfLobbyFull(Long lobbyCode) {
       Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
-        return lobby.getPlayers().size() >= 6;
+        return lobby.getPlayers().size() >= maxPlayerSize;
     }
 
     public Player addToLobby(Player playerToAdd) {

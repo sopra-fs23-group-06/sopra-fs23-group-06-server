@@ -6,6 +6,8 @@ import ch.uzh.ifi.hase.soprafs23.constant.CardColor;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Internal User Representation
@@ -20,75 +22,122 @@ import java.util.ArrayList;
 @Entity
 public class Player implements Serializable {
 
-  @Id
-  private Long id;
+    @Id
+    private Long id;
 
-  @Column(nullable = false)
-  private Long lobby;
+    @Column(nullable = false)
+    private Long lobby;
 
-  @Column(nullable = false, unique = true)
-  private String username;
+    @Column(nullable = false, unique = true)
+    private String username;
 
-  private int tricks;
-  private Integer bid;
-  private ArrayList<Card> Hand = new ArrayList<Card>();
-  private int bonus;
-  private boolean hasTurn;
+    private int tricks;
+    private Integer bid;
+    private ArrayList<Card> Hand = new ArrayList<Card>();
+    private int bonus;
+    private boolean hasTurn;
 
-  public Long getId() {
-    return id;
-  }
+    public Long getId() {
+        return id;
+    }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-  public Long getLobby() {
-    return lobby;
-  }
+    public Long getLobby() {
+        return lobby;
+    }
 
-  public void setLobby(Long lobby) {
-    this.lobby = lobby;
-  }
+    public void setLobby(Long lobby) {
+        this.lobby = lobby;
+    }
 
-  public String getUsername() {
-    return username;
-  }
+    public String getUsername() {
+        return username;
+    }
 
-  public void setUsername(String username) {
-    this.username = username;
-  }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-  public void setBid(Integer bid) {this.bid = bid;}
+    public void setBid(Integer bid) {
+        this.bid = bid;
+    }
 
-  public void setBonus(int bonus) {this.bonus = bonus;}
+    public void setBonus(int bonus) {
+        this.bonus = bonus;
+    }
 
-  public void setHand(ArrayList<Card> hand) {this.Hand = hand;}
+    public void setHand(ArrayList<Card> hand) {
+        this.Hand = hand;
+    }
 
-  public void setTricks(int tricks) {this.tricks = tricks;}
+    public void setTricks(int tricks) {
+        this.tricks = tricks;
+    }
 
-  public ArrayList<Card> getHand() {
-      return Hand;
-  }
+    public ArrayList<Card> getHand() {
+        Collections.sort(Hand, new Comparator<Card>() {
+            @Override
+            public int compare(Card card1, Card card2) {
+                return compareCards(card1, card2);
+            }
+        });
 
-  public Integer getBid() {return bid;}
+        return Hand;
+    }
 
-  public int getBonus() {return bonus;}
+    private int compareCards(Card card1, Card card2) {
+        boolean isCard1Special = isSpecial(card1);
+        boolean isCard2Special = isSpecial(card2);
 
-  public int getTricks() {return tricks;}
+        if (isCard1Special && !isCard2Special) {
+            return 1;
+        }
+        else if (isCard2Special && !isCard1Special) {
+            return -1;
+        }
+        else if (card1.getColor() == card2.getColor()) {
+            return card1.getaRank().compareTo(card2.getaRank());
+        }
+        else {
+            return card1.getColor().compareTo(card2.getColor());
+        }
+    }
 
-  public boolean isHasTurn() {return hasTurn;}
+    private boolean isSpecial(Card card) {
+        return card.getColor() == CardColor.SPECIAL || card.getColor() == CardColor.BLACK;
+    }
 
-  public void setHasTurn(boolean b) {this.hasTurn = b;}
+    public Integer getBid() {
+        return bid;
+    }
 
-  public void playCard(Card card, Trick trick){
-      if(!trick.getIsTrumpSet()){
-          if(card.getColor()!= CardColor.SPECIAL){
-              trick.setIsTrumpSet(true);
-              trick.setTrumpColour(card);
-          }
-      }
-  }
+    public int getBonus() {
+        return bonus;
+    }
+
+    public int getTricks() {
+        return tricks;
+    }
+
+    public boolean isHasTurn() {
+        return hasTurn;
+    }
+
+    public void setHasTurn(boolean b) {
+        this.hasTurn = b;
+    }
+
+    public void playCard(Card card, Trick trick) {
+        if (!trick.getIsTrumpSet()) {
+            if (card.getColor() != CardColor.SPECIAL) {
+                trick.setIsTrumpSet(true);
+                trick.setTrumpColour(card);
+            }
+        }
+    }
 
 
 }

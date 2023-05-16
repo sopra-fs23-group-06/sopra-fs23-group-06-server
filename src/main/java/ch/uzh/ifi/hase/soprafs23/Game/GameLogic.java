@@ -21,6 +21,7 @@ public class GameLogic implements Serializable {
     private Trick trick;
     private Scoreboard scoreboard;
     private ArrayList<Player> players;
+    private int roundsToEndGame=10;
 
     public Deck getDeck(){return this.deck;}
     public GameTable getGameTable(){return this.gameTable;}
@@ -152,12 +153,16 @@ public class GameLogic implements Serializable {
         distributePoints();
         resetBids();
         resetTricks();
-        if(getRound() == 10){endGame();}
+        if(getRound() == roundsToEndGame){endGame();}
         else{nextRound();};
     }
 
+    public void SetRoundToEndGame(int r){
+        roundsToEndGame = r;
+    }
+
     private void endGame() {
-        setRound(getRound()+1);
+        setRound(11);
         //IMPLEMENT MORE?
     }
 

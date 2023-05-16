@@ -72,6 +72,18 @@ public class LobbyController {
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(updatedLobby);
     }
 
+    @PostMapping("/games/{lobbyCode}/gameSettings")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void GameSettings(@RequestBody PlayerPostDTO playerPostDTO,@RequestParam int roundToEndGame, @RequestParam int maxPlayerSize, @PathVariable Long lobbyCode){
+        // convert user
+        Player playerInput = DTOMapper.INSTANCE.convertPlayerPostDTOtoEntity(playerPostDTO);
+        if (playerInput.getId() != 1L) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Only the host can change the game settings");
+        }
+        lobbyService.gameSettings(lobbyCode,roundToEndGame,maxPlayerSize);
+    }
+
 
     @GetMapping("/lobbies/{lobbyCode}/users")
     @ResponseStatus(HttpStatus.OK)
