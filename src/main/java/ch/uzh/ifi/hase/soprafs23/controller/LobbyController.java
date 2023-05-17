@@ -137,6 +137,13 @@ public class LobbyController {
         lobbyService.closeLobby(lobbyCode);
     }
 
+    @PutMapping("/lobbies/{lobbyCode}/endHandler")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void endGame(@PathVariable Long lobbyCode) {
+        lobbyService.endGame(lobbyCode);
+    }
+
     //GameController below, could be moved to own class at some point (lobby instance!)
 
 

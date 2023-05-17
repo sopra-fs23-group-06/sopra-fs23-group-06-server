@@ -149,8 +149,17 @@ public class LobbyService {
         lobbyRepository.delete(lobby);}
   }
 
+    public void endGame(Long lobbyCode) {
+        if (checkIfLobbyExists(lobbyCode)) {
+            Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
+            ArrayList<Player> playerList = lobby.getPlayers();
+            playerList.clear();
+            lobby.getGameTable().deleteOrder();
+        }
+    }
 
-  //game functions, could be moved to a GameService (lobbyRepository instance!)
+
+    //game functions, could be moved to a GameService (lobbyRepository instance!)
 
 
 
