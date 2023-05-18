@@ -32,6 +32,7 @@ public class GameLogic implements Serializable {
     public void setPlayers(ArrayList<Player> players) {this.players = players;}
     public void addPlayers(Player playerToAdd){this.players.add(playerToAdd);}
     public void setRound(int r){this.round = r;}
+    public void setTrick(Trick t){this.trick = t;}
 
     public GameLogic(){
         deck = new Deck();
@@ -144,8 +145,7 @@ public class GameLogic implements Serializable {
             return null;
         }
         else{
-            Player trickWinner = Evaluate.evaluate(getGameTable(), getTrick());
-            return trickWinner;
+            return Evaluate.evaluate(getGameTable(), getTrick());
         }
     }
 

@@ -256,6 +256,115 @@ public class LobbyControllerTest {
 
         mockMvc.perform(putRequest).andExpect(status().isOk());
     }
+
+    @Test
+    public void changeGameSettings_validInput_SettingsChanged() throws Exception {
+        // given
+        Player player = new Player();
+        player.setLobby(123456L);
+        player.setUsername("username");
+        player.setId(1L);
+
+        PlayerPostDTO playerPostDTO = new PlayerPostDTO();
+        playerPostDTO.setLobby(123456L);
+        playerPostDTO.setUsername("username");
+        playerPostDTO.setId(1L);
+
+        Mockito.doNothing().when(lobbyService).gameSettings(Mockito.anyLong(), Mockito.anyInt(), Mockito.anyInt());
+
+        MockHttpServletRequestBuilder postRequest = post("/games/123456/gameSettings")
+                .param("roundToEndGame", "5")
+                .param("maxPlayerSize", "4")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(playerPostDTO));
+
+        mockMvc.perform(postRequest).andExpect(status().isOk());
+    }
+
+    @Test
+    public void changeGameSettings_unauthorized_throwsException() throws Exception {
+        // given
+        Player player = new Player();
+        player.setLobby(123456L);
+        player.setUsername("username");
+        player.setId(2L);
+
+        PlayerPostDTO playerPostDTO = new PlayerPostDTO();
+        playerPostDTO.setLobby(123456L);
+        playerPostDTO.setUsername("username");
+        playerPostDTO.setId(2L);
+
+        Mockito.doNothing().when(lobbyService).gameSettings(Mockito.anyLong(), Mockito.anyInt(), Mockito.anyInt());
+
+        MockHttpServletRequestBuilder postRequest = post("/games/123456/gameSettings")
+                .param("roundToEndGame", "5")
+                .param("maxPlayerSize", "4")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(playerPostDTO));
+
+        mockMvc.perform(postRequest).andExpect(status().isUnauthorized())
+                .andExpect(status().reason("Only the host can change the game settings"));
+    }
+    @Test
+    public void changeGameSettings_invalidRoundNumber_throwsException() throws Exception {
+        // given
+        Player player = new Player();
+        player.setLobby(123456L);
+        player.setUsername("username");
+        player.setId(1L);
+
+        PlayerPostDTO playerPostDTO = new PlayerPostDTO();
+        playerPostDTO.setLobby(123456L);
+        playerPostDTO.setUsername("username");
+        playerPostDTO.setId(1L);
+
+        Mockito.doNothing().when(lobbyService).gameSettings(Mockito.anyLong(), Mockito.anyInt(), Mockito.anyInt());
+
+        MockHttpServletRequestBuilder postRequest = post("/games/123456/gameSettings")
+                .param("roundToEndGame", "12")
+                .param("maxPlayerSize", "4")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(playerPostDTO));
+
+        mockMvc.perform(postRequest).andExpect(status().isConflict())
+                .andExpect(status().reason("The maximum of Rounds is 10"));
+    }
+    @Test
+    public void changeGameSettings_invalidPlayerNumber_throwsException() throws Exception {
+        // given
+        Player player = new Player();
+        player.setLobby(123456L);
+        player.setUsername("username");
+        player.setId(1L);
+
+        PlayerPostDTO playerPostDTO = new PlayerPostDTO();
+        playerPostDTO.setLobby(123456L);
+        playerPostDTO.setUsername("username");
+        playerPostDTO.setId(1L);
+
+        Mockito.doNothing().when(lobbyService).gameSettings(Mockito.anyLong(), Mockito.anyInt(), Mockito.anyInt());
+
+        MockHttpServletRequestBuilder postRequest = post("/games/123456/gameSettings")
+                .param("roundToEndGame", "10")
+                .param("maxPlayerSize", "1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(playerPostDTO));
+
+        mockMvc.perform(postRequest).andExpect(status().isConflict())
+                .andExpect(status().reason("The minimum of Players are 2"));
+    }
+    @Test
+    public void endGame_validInput_GameEnded() throws Exception {
+        // given
+
+        Mockito.doNothing().when(lobbyService).endGame(Mockito.anyLong());
+
+        MockHttpServletRequestBuilder putRequest = put("/lobbies/123456/endHandler")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(putRequest).andExpect(status().isOk());
+    }
+
     /**
      * Helper Method to convert userPostDTO into a JSON string such that the input
      * can be processed
