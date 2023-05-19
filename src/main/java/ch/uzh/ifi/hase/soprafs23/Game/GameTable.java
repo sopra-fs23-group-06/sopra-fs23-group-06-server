@@ -26,4 +26,8 @@ public class GameTable implements Serializable {
     public Player getTrickStarter() {return trickStarter;}
 
     public void setTrickStarter(Player trickStarter) {this.trickStarter = trickStarter;}
+
+    public void deleteOrder() {
+        this.Order = null;
+    }
 }
