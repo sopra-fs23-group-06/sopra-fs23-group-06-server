@@ -243,9 +243,10 @@ public class GameControllerTest {
         ArrayList<Player> list = new ArrayList<>();
         list.add(user);
         list.add(user2);
+        int roundsToEndGame = 10;
 
         // create scoreboard
-        Scoreboard scoreboard = new Scoreboard(list);
+        Scoreboard scoreboard = new Scoreboard(list, roundsToEndGame);
         Score score = new Score();
         score.setCurPlayer(user);
         score.setCurRound(1);
