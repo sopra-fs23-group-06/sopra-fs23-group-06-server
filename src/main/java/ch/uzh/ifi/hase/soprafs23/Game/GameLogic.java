@@ -41,7 +41,8 @@ public class GameLogic implements Serializable {
     }
 
     public void setupScoreboard(ArrayList<Player> players) {
-        scoreboard = new Scoreboard(players);
+        roundsToEndGame = this.roundsToEndGame;
+        scoreboard = new Scoreboard(players, roundsToEndGame);
 
     }
 
@@ -159,6 +160,10 @@ public class GameLogic implements Serializable {
 
     public void SetRoundToEndGame(int r){
         roundsToEndGame = r;
+    }
+
+    public int getRoundToEndGame() {
+        return roundsToEndGame;
     }
 
     private void endGame() {

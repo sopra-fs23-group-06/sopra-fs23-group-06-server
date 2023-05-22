@@ -10,7 +10,7 @@ public class Scoreboard implements Serializable {
 
     private ArrayList<String> usernames;
 
-    public Scoreboard(ArrayList<Player> players) {
+    public Scoreboard(ArrayList<Player> players, int roundsToEndGame) {
         scoreboard = new ArrayList<ArrayList<Score>>();
         usernames = new ArrayList<String>();
         for (Player player : players) {
@@ -19,7 +19,7 @@ public class Scoreboard implements Serializable {
         for (int i = 0; i < players.size(); i++) {
             ArrayList<Score> row = new ArrayList<Score>();
             Player player = players.get(i);
-            for (int j = 0; j < 10; j++) {
+            for (int j = 0; j < roundsToEndGame; j++) {
                 Score score = new Score();
                 score.setCurPlayer(player);
                 score.setCurRound(j+1);
