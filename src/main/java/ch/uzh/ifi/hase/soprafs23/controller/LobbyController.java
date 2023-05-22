@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,7 +74,7 @@ public class LobbyController {
     @PostMapping("/games/{lobbyCode}/gameSettings")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void GameSettings(@RequestBody PlayerPostDTO playerPostDTO,@RequestParam int roundToEndGame, @RequestParam int maxPlayerSize, @PathVariable Long lobbyCode){
+    public void gameSettings(@RequestBody PlayerPostDTO playerPostDTO, @RequestParam int roundToEndGame, @RequestParam int maxPlayerSize, @PathVariable Long lobbyCode){
         // convert user
         Player playerInput = DTOMapper.INSTANCE.convertPlayerPostDTOtoEntity(playerPostDTO);
         if (playerInput.getId() != 1L) {

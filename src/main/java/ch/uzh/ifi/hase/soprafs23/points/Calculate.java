@@ -1,9 +1,12 @@
-package ch.uzh.ifi.hase.soprafs23.Points;
+package ch.uzh.ifi.hase.soprafs23.points;
 
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
 
 public class Calculate {
 
+    private Calculate() {
+        throw new IllegalStateException("Utility class");
+    }
     public static int calculatePoints(Player p, int round){
         int trickDifference = Math.abs(p.getTricks() - p.getBid());
         int grantedPoints;

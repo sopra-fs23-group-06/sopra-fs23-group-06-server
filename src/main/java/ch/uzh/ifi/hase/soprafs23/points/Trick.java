@@ -1,14 +1,13 @@
-package ch.uzh.ifi.hase.soprafs23.Points;
+package ch.uzh.ifi.hase.soprafs23.points;
 
 import ch.uzh.ifi.hase.soprafs23.constant.CardColor;
 import ch.uzh.ifi.hase.soprafs23.entity.Card;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Trick implements Serializable {
-    private ArrayList<Card> playedCards = new ArrayList<Card>();
+    private ArrayList<Card> playedCards = new ArrayList<>();
     private CardColor trumpColour;
     private boolean isTrumpSet;
 

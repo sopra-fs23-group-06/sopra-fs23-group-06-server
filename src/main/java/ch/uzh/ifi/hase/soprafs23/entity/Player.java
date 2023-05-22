@@ -1,13 +1,12 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
-import ch.uzh.ifi.hase.soprafs23.Points.Trick;
+import ch.uzh.ifi.hase.soprafs23.points.Trick;
 import ch.uzh.ifi.hase.soprafs23.constant.CardColor;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 
 /**
  * Internal User Representation
@@ -33,7 +32,7 @@ public class Player implements Serializable {
 
     private int tricks;
     private Integer bid;
-    private ArrayList<Card> Hand = new ArrayList<Card>();
+    private ArrayList<Card> hand = new ArrayList<>();
     private int bonus;
     private boolean hasTurn;
 
@@ -70,7 +69,7 @@ public class Player implements Serializable {
     }
 
     public void setHand(ArrayList<Card> hand) {
-        this.Hand = hand;
+        this.hand = hand;
     }
 
     public void setTricks(int tricks) {
@@ -78,14 +77,8 @@ public class Player implements Serializable {
     }
 
     public ArrayList<Card> getHand() {
-        Collections.sort(Hand, new Comparator<Card>() {
-            @Override
-            public int compare(Card card1, Card card2) {
-                return compareCards(card1, card2);
-            }
-        });
-
-        return Hand;
+        Collections.sort(hand, (card1, card2) -> compareCards(card1, card2));
+        return hand;
     }
 
     private int compareCards(Card card1, Card card2) {
@@ -131,11 +124,9 @@ public class Player implements Serializable {
     }
 
     public void playCard(Card card, Trick trick) {
-        if (!trick.getIsTrumpSet()) {
-            if (card.getColor() != CardColor.SPECIAL) {
-                trick.setIsTrumpSet(true);
-                trick.setTrumpColour(card);
-            }
+        if (!trick.getIsTrumpSet() && card.getColor() != CardColor.SPECIAL) {
+            trick.setIsTrumpSet(true);
+            trick.setTrumpColour(card);
         }
     }
 

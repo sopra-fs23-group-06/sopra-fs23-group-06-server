@@ -23,7 +23,7 @@ public class Card implements Serializable {
         playable = true;
     }
     private static final ArrayList<Card> CARDS =
-            new ArrayList<Card>(66);
+            new ArrayList<>(66);
 
     static {
         for (CardColor color : CardColor.values()) {

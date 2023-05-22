@@ -1,7 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
-import ch.uzh.ifi.hase.soprafs23.Game.GameLogic;
-import ch.uzh.ifi.hase.soprafs23.Game.GameTable;
+import ch.uzh.ifi.hase.soprafs23.game.GameLogic;
+import ch.uzh.ifi.hase.soprafs23.game.GameTable;
 
 
 import javax.persistence.*;
@@ -30,8 +30,6 @@ public class Lobby implements Serializable {
   public Lobby(){
       this.gameLogic = new GameLogic();
   }
-
-  //public void CreateGameLogic(){GameLogic gameLogic = new GameLogic(deck, gameTable, round);}
 
   public Long getId() {
       return id;
@@ -67,6 +65,4 @@ public class Lobby implements Serializable {
   public void setRound(int r) { this.gameLogic.setRound(r);
     }
 
-
-    //public void setStartingPlayer(){}
 }

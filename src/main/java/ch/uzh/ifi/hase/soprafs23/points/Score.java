@@ -1,4 +1,4 @@
-package ch.uzh.ifi.hase.soprafs23.Points;
+package ch.uzh.ifi.hase.soprafs23.points;
 
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
 

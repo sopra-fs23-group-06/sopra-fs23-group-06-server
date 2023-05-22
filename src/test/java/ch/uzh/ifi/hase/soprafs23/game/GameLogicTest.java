@@ -1,10 +1,6 @@
-package ch.uzh.ifi.hase.soprafs23.Game;
+package ch.uzh.ifi.hase.soprafs23.game;
 
-import ch.uzh.ifi.hase.soprafs23.Game.GameTable;
-import ch.uzh.ifi.hase.soprafs23.Points.Evaluate;
-import ch.uzh.ifi.hase.soprafs23.Points.Trick;
-import ch.uzh.ifi.hase.soprafs23.constant.CardColor;
-import ch.uzh.ifi.hase.soprafs23.constant.CardOption;
+import ch.uzh.ifi.hase.soprafs23.points.Trick;
 import ch.uzh.ifi.hase.soprafs23.entity.Card;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
 import org.junit.jupiter.api.BeforeAll;
@@ -306,7 +302,7 @@ public class GameLogicTest {
         gameTable.addPlayer(player2);
         gameTable.setTrickStarter(player2);
         gameLogic.setRound(1);
-        gameLogic.SetRoundToEndGame(1);
+        gameLogic.setRoundToEndGame(1);
         gameLogic.endTrick();
 
         assertEquals(gameLogic.getRound(), 11);

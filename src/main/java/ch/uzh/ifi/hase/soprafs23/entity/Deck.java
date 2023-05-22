@@ -9,8 +9,8 @@ import java.util.Collections;
 
 public class Deck implements Serializable {
 
-    private ArrayList<Card> aCards = new ArrayList<Card>(66);
-    private ArrayList<Card> aDeck = new ArrayList<Card>(66);
+    private ArrayList<Card> aCards = new ArrayList<>(66);
+    private ArrayList<Card> aDeck = new ArrayList<>(66);
 
     public Deck() {
         for (Card c : Card.getCards()) {

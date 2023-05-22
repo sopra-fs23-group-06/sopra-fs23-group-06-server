@@ -1,9 +1,9 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
-import ch.uzh.ifi.hase.soprafs23.Game.GameLogic;
-import ch.uzh.ifi.hase.soprafs23.Game.GameTable;
-import ch.uzh.ifi.hase.soprafs23.Points.Scoreboard;
-import ch.uzh.ifi.hase.soprafs23.Points.Trick;
+import ch.uzh.ifi.hase.soprafs23.game.GameLogic;
+import ch.uzh.ifi.hase.soprafs23.game.GameTable;
+import ch.uzh.ifi.hase.soprafs23.points.Scoreboard;
+import ch.uzh.ifi.hase.soprafs23.points.Trick;
 import ch.uzh.ifi.hase.soprafs23.constant.CardColor;
 import ch.uzh.ifi.hase.soprafs23.constant.CardRank;
 import ch.uzh.ifi.hase.soprafs23.entity.Card;
@@ -19,8 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.transaction.Transactional;
-import java.lang.reflect.Field;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;

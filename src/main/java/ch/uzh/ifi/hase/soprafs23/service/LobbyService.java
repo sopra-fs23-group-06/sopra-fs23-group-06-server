@@ -1,5 +1,4 @@
 package ch.uzh.ifi.hase.soprafs23.service;
-import ch.uzh.ifi.hase.soprafs23.entity.Card;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
@@ -7,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,7 +70,7 @@ public class LobbyService {
     public void gameSettings(Long lobbyCode, int roundToEndGame, int playerSize){
         Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
         if(lobby==null) {throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby does not exist.");}
-        lobby.getGameLogic().SetRoundToEndGame(roundToEndGame);
+        lobby.getGameLogic().setRoundToEndGame(roundToEndGame);
         if(lobby.getPlayers().size()>playerSize || lobby.getPlayers().size()>6) {throw new ResponseStatusException(HttpStatus.CONFLICT, "There are already more players in Lobby");}
         else{ maxPlayerSize=playerSize;}
     }
@@ -93,10 +91,10 @@ public class LobbyService {
           throw new ResponseStatusException(HttpStatus.CONFLICT, "Lobby is Full");
       }
       if (lobby.getRound()>0){throw new ResponseStatusException(HttpStatus.CONFLICT, "Game already in progress");}
-      if (lobby.getPlayers().size() == 0){
+      if (lobby.getPlayers().isEmpty()){
           playerToAdd.setId((long)1);}
       else {
-          playerToAdd.setId(playerList.get(playerList.size()-1).getId()+1);};
+          playerToAdd.setId(playerList.get(playerList.size()-1).getId()+1);}
 
       lobby.addPlayers(playerToAdd);
       return playerToAdd;

@@ -1,6 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto;
-import ch.uzh.ifi.hase.soprafs23.Game.GameLogic;
-import ch.uzh.ifi.hase.soprafs23.Game.GameTable;
+import ch.uzh.ifi.hase.soprafs23.game.GameLogic;
+import ch.uzh.ifi.hase.soprafs23.game.GameTable;
 import ch.uzh.ifi.hase.soprafs23.entity.Deck;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
 
