@@ -33,7 +33,7 @@ public class GameService {
         Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
         if(lobby==null) {throw new ResponseStatusException(HttpStatus.NOT_FOUND, LOBBY_DOES_NOT_EXIST);}
     ArrayList<Player> playerList = lobby.getPlayers();
-    Player player = null;
+    Player player;
     ArrayList<Card> playerHand = null;
         for (Player value : playerList) {
             if (value.getId().equals(userId)) {

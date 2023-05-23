@@ -77,7 +77,7 @@ public class Player implements Serializable {
     }
 
     public ArrayList<Card> getHand() {
-        Collections.sort(hand, (card1, card2) -> compareCards(card1, card2));
+        Collections.sort(hand, this::compareCards);
         return hand;
     }
 
