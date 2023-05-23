@@ -11,10 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @WebAppConfiguration
 @SpringBootTest
-public class LobbyServiceIntegrationTest {
+class LobbyServiceIntegrationTest {
 
     @Qualifier("lobbyRepository")
     @Autowired
@@ -41,7 +39,7 @@ public class LobbyServiceIntegrationTest {
     }
 
     @Test
-    public void createLobby_validInput_LobbyCreated() {
+    void createLobby_validInput_LobbyCreated() {
         // given
         assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
 
@@ -57,7 +55,7 @@ public class LobbyServiceIntegrationTest {
     }
 
     @Test
-    public void getLobbyByLobbyCode_validInput_LobbyFound() {
+    void getLobbyByLobbyCode_validInput_LobbyFound() {
         // given
         assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
 
@@ -73,7 +71,7 @@ public class LobbyServiceIntegrationTest {
     }
 
     @Test
-    public void getLobbyByLobbyCode_invalidInput_LobbyNotFound() {
+    void getLobbyByLobbyCode_invalidInput_LobbyNotFound() {
         // given
         assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
 
@@ -82,7 +80,7 @@ public class LobbyServiceIntegrationTest {
     }
 
     @Test
-    public void addPlayerToLobby_validInput_PlayerAdded() {
+    void addPlayerToLobby_validInput_PlayerAdded() {
         // given
         assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
 
@@ -93,7 +91,7 @@ public class LobbyServiceIntegrationTest {
         user.setId(1L);
         user.setLobby(createdLobby.getLobbyCode());
         user.setUsername("username");
-        ArrayList<Player> list = new ArrayList<Player>();
+        ArrayList<Player> list = new ArrayList<>();
         list.add(user);
 
         // add player to lobby
@@ -106,7 +104,7 @@ public class LobbyServiceIntegrationTest {
     }
 
     @Test
-    public void addPlayerToLobby_usernameTaken_PlayerNotAdded() {
+    void addPlayerToLobby_usernameTaken_PlayerNotAdded() {
         // given
         assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
 
@@ -117,7 +115,7 @@ public class LobbyServiceIntegrationTest {
         user.setId(1L);
         user.setLobby(createdLobby.getLobbyCode());
         user.setUsername("username");
-        ArrayList<Player> list = new ArrayList<Player>();
+        ArrayList<Player> list = new ArrayList<>();
         list.add(user);
 
         // add player to lobby
@@ -135,7 +133,7 @@ public class LobbyServiceIntegrationTest {
 
     //create a Lobby with 6 players. Check that the Lobby is full and that no more players can be added
     @Test
-    public void addPlayerToLobby_LobbyFull_PlayerNotAdded() {
+    void addPlayerToLobby_LobbyFull_PlayerNotAdded() {
         // given
         assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
 
@@ -146,7 +144,7 @@ public class LobbyServiceIntegrationTest {
         user.setId(1L);
         user.setLobby(createdLobby.getLobbyCode());
         user.setUsername("username");
-        ArrayList<Player> list = new ArrayList<Player>();
+        ArrayList<Player> list = new ArrayList<>();
         list.add(user);
 
         // add player to lobby
@@ -199,7 +197,7 @@ public class LobbyServiceIntegrationTest {
     }
 
     @Test
-    public void joinLobbyByLobbyCode_validInput_LobbyFound() {
+    void joinLobbyByLobbyCode_validInput_LobbyFound() {
         // given
         assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
 
@@ -215,7 +213,7 @@ public class LobbyServiceIntegrationTest {
     }
 
     @Test
-    public void joinLobbyByLobbyCode_invalidInput_LobbyNotFound() {
+    void joinLobbyByLobbyCode_invalidInput_LobbyNotFound() {
         // given
         assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
 
@@ -226,7 +224,7 @@ public class LobbyServiceIntegrationTest {
     //create Lobby, populate it with 2 players, use lobbyService.getUsers(createdLobby.getLobbyCode()) to get the list of players
 
     @Test
-    public void getUsers_validInput_ListOfPlayersReturned() {
+    void getUsers_validInput_ListOfPlayersReturned() {
         // given
         assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
 
@@ -238,7 +236,7 @@ public class LobbyServiceIntegrationTest {
         user.setId(1L);
         user.setLobby(createdLobby.getLobbyCode());
         user.setUsername("username");
-        ArrayList<Player> list = new ArrayList<Player>();
+        ArrayList<Player> list = new ArrayList<>();
         list.add(user);
 
         // add player to lobby
@@ -258,7 +256,7 @@ public class LobbyServiceIntegrationTest {
 
     //populate Lobby with 1 player, then remove that player. Check that the Lobby is empty
     @Test
-    public void removePlayerFromLobby_validInput_PlayerRemoved() {
+    void removePlayerFromLobby_validInput_PlayerRemoved() {
         // given
         assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
 
@@ -270,7 +268,7 @@ public class LobbyServiceIntegrationTest {
         user.setId(1L);
         user.setLobby(createdLobby.getLobbyCode());
         user.setUsername("username");
-        ArrayList<Player> list = new ArrayList<Player>();
+        ArrayList<Player> list = new ArrayList<>();
         list.add(user);
 
         // add player to lobby
@@ -288,7 +286,7 @@ public class LobbyServiceIntegrationTest {
 
     //populate lobby with 1 player, then close the lobby. Check that lobbyService.checkLobby(createdLobby.getLobbyCode()) throws an exception
     @Test
-    public void closeLobby_validInput_LobbyClosed() {
+    void closeLobby_validInput_LobbyClosed() {
         // given
         assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
 
@@ -300,7 +298,7 @@ public class LobbyServiceIntegrationTest {
         user.setId(1L);
         user.setLobby(createdLobby.getLobbyCode());
         user.setUsername("username");
-        ArrayList<Player> list = new ArrayList<Player>();
+        ArrayList<Player> list = new ArrayList<>();
         list.add(user);
 
         // add player to lobby
@@ -313,7 +311,8 @@ public class LobbyServiceIntegrationTest {
         lobbyService.closeLobby(createdLobby.getLobbyCode());
 
         // then
-        assertThrows(ResponseStatusException.class, () -> lobbyService.checkLobby(createdLobby.getLobbyCode()));
+        Long lobbyCode = createdLobby.getLobbyCode();
+        assertThrows(ResponseStatusException.class, () -> lobbyService.checkLobby(lobbyCode));
     }
 
     /**

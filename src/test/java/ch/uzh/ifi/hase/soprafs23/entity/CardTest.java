@@ -4,7 +4,6 @@ import ch.uzh.ifi.hase.soprafs23.constant.CardColor;
 import ch.uzh.ifi.hase.soprafs23.constant.CardRank;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,16 +15,16 @@ class CardTest {
     @Test
     void getCards() {
         int size = cards.size();
-        assertEquals(size, 66);
+        assertEquals(66, size);
     }
 
     @Test
     void getColor() {
-        assertEquals(cards.get(0).getColor(), CardColor.RED);
+        assertEquals(CardColor.RED, cards.get(0).getColor());
     }
 
     @Test
     void getaRank() {
-        assertEquals(cards.get(0).getaRank(), CardRank.ONE);
+        assertEquals(CardRank.ONE, cards.get(0).getaRank());
     }
 }

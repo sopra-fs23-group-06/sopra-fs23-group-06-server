@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(LobbyController.class)
-public class LobbyControllerTest {
+class LobbyControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -45,7 +45,7 @@ public class LobbyControllerTest {
     private SseEmitter sseEmitterMock;
 
     @Test
-    public void addUserToLobby_validInput_userAddedToLobby() throws Exception {
+    void addUserToLobby_validInput_userAddedToLobby() throws Exception {
         // given
         Player player = new Player();
         player.setLobby(123456L);
@@ -73,13 +73,13 @@ public class LobbyControllerTest {
     }
 
     @Test
-    public void createLobby_validInput_LobbyCreated() throws Exception {
+    void createLobby_validInput_LobbyCreated() throws Exception {
         // create user list
         Player user = new Player();
         user.setId(1L);
         user.setLobby(2L);
         user.setUsername("username");
-        ArrayList<Player> list = new ArrayList<Player>();
+        ArrayList<Player> list = new ArrayList<>();
         list.add(user);
         // create Lobby
         Lobby lobby = new Lobby();
@@ -111,13 +111,13 @@ public class LobbyControllerTest {
     }
 
     @Test
-    public void getLobby_validCode_thenReturnLobby() throws Exception {
+    void getLobby_validCode_thenReturnLobby() throws Exception {
         // create user list
         Player user = new Player();
         user.setId(1L);
         user.setLobby(2L);
         user.setUsername("username");
-        ArrayList<Player> list = new ArrayList<Player>();
+        ArrayList<Player> list = new ArrayList<>();
         list.add(user);
         // create Lobby
         Lobby lobby = new Lobby();
@@ -144,13 +144,13 @@ public class LobbyControllerTest {
 
     }
     @Test
-    public void joinLobby_validCode_thenReturnLobby() throws Exception {
+    void joinLobby_validCode_thenReturnLobby() throws Exception {
         // create user list
         Player user = new Player();
         user.setId(1L);
         user.setLobby(2L);
         user.setUsername("username");
-        ArrayList<Player> list = new ArrayList<Player>();
+        ArrayList<Player> list = new ArrayList<>();
         list.add(user);
         // create Lobby
         Lobby lobby = new Lobby();
@@ -177,7 +177,7 @@ public class LobbyControllerTest {
     }
 
     @Test
-    public void getUsers_validCode_thenReturnUsers() throws Exception {
+    void getUsers_validCode_thenReturnUsers() throws Exception {
         // create user list
         Player player = new Player();
         player.setId(1L);
@@ -201,7 +201,7 @@ public class LobbyControllerTest {
     }
 
     @Test
-    public void leaveLobby_validCode_returnOK() throws Exception {
+    void leaveLobby_validCode_returnOK() throws Exception {
         // given
         Player player = new Player();
         player.setLobby(123456L);
@@ -223,7 +223,7 @@ public class LobbyControllerTest {
     }
 
     @Test
-    public void kickUser_validCode_returnOK() throws Exception {
+    void kickUser_validCode_returnOK() throws Exception {
         // given
         Player player = new Player();
         player.setLobby(123456L);
@@ -246,7 +246,7 @@ public class LobbyControllerTest {
     }
 
     @Test
-    public void closeLobby_validCode_returnOK() throws Exception {
+    void closeLobby_validCode_returnOK() throws Exception {
 
         Mockito.doNothing().when(lobbyService).closeLobby(Mockito.any());
 
@@ -258,7 +258,7 @@ public class LobbyControllerTest {
     }
 
     @Test
-    public void changeGameSettings_validInput_SettingsChanged() throws Exception {
+    void changeGameSettings_validInput_SettingsChanged() throws Exception {
         // given
         Player player = new Player();
         player.setLobby(123456L);
@@ -282,7 +282,7 @@ public class LobbyControllerTest {
     }
 
     @Test
-    public void changeGameSettings_unauthorized_throwsException() throws Exception {
+    void changeGameSettings_unauthorized_throwsException() throws Exception {
         // given
         Player player = new Player();
         player.setLobby(123456L);
@@ -306,7 +306,7 @@ public class LobbyControllerTest {
                 .andExpect(status().reason("Only the host can change the game settings"));
     }
     @Test
-    public void changeGameSettings_invalidRoundNumber_throwsException() throws Exception {
+    void changeGameSettings_invalidRoundNumber_throwsException() throws Exception {
         // given
         Player player = new Player();
         player.setLobby(123456L);
@@ -330,7 +330,7 @@ public class LobbyControllerTest {
                 .andExpect(status().reason("The maximum of Rounds is 10"));
     }
     @Test
-    public void changeGameSettings_invalidPlayerNumber_throwsException() throws Exception {
+    void changeGameSettings_invalidPlayerNumber_throwsException() throws Exception {
         // given
         Player player = new Player();
         player.setLobby(123456L);
@@ -354,7 +354,7 @@ public class LobbyControllerTest {
                 .andExpect(status().reason("The minimum of Players are 2"));
     }
     @Test
-    public void endGame_validInput_GameEnded() throws Exception {
+    void endGame_validInput_GameEnded() throws Exception {
         // given
 
         Mockito.doNothing().when(lobbyService).endGame(Mockito.anyLong());

@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @WebAppConfiguration
 @SpringBootTest
-public class GameServiceIntegrationTest {
+class GameServiceIntegrationTest {
 
     @Qualifier("lobbyRepository")
     @Autowired
@@ -49,7 +49,7 @@ public class GameServiceIntegrationTest {
 
     //record bid, check that the bid is recorded
     @Test
-    public void recordBid_validInput_BidRecorded() {
+    void recordBid_validInput_BidRecorded() {
         // given
         assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
 
@@ -62,7 +62,7 @@ public class GameServiceIntegrationTest {
         user.setLobby(createdLobby.getLobbyCode());
         user.setUsername("username");
         user.setBid(0);
-        ArrayList<Player> list = new ArrayList<Player>();
+        ArrayList<Player> list = new ArrayList<>();
         list.add(user);
 
         // add player to lobby
@@ -79,7 +79,7 @@ public class GameServiceIntegrationTest {
 
     //populate lobby with 2 players, then start the game. Check that the round is 1
     @Test
-    public void startGame_validInput_GameStarted() {
+    void startGame_validInput_GameStarted() {
         // given
         assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
 
@@ -91,7 +91,7 @@ public class GameServiceIntegrationTest {
         user.setId(1L);
         user.setLobby(createdLobby.getLobbyCode());
         user.setUsername("username");
-        ArrayList<Player> list = new ArrayList<Player>();
+        ArrayList<Player> list = new ArrayList<>();
         list.add(user);
 
         // add player to lobby
@@ -119,7 +119,7 @@ public class GameServiceIntegrationTest {
 
     //try to start a game with an invalid lobby code. Check that an exception is thrown
     @Test
-    public void startGame_invalidLobbyCode_ExceptionThrown() {
+    void startGame_invalidLobbyCode_ExceptionThrown() {
         // given
         assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
 
@@ -129,7 +129,7 @@ public class GameServiceIntegrationTest {
 
     //try to get the round of an invalid lobby. Check that an exception is thrown
     @Test
-    public void getRound_invalidLobbyCode_ExceptionThrown() {
+    void getRound_invalidLobbyCode_ExceptionThrown() {
         // given
         assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
 
@@ -139,7 +139,7 @@ public class GameServiceIntegrationTest {
 
     //Populate a lobby with 1 player. Check that the round is 0
     @Test
-    public void getRound_validInput_RoundIsZero() {
+    void getRound_validInput_RoundIsZero() {
         // given
         assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
 
@@ -162,7 +162,7 @@ public class GameServiceIntegrationTest {
     }
 
     @Test
-    public void getPlayerHand_validInput_returnsPlayerHand() {
+    void getPlayerHand_validInput_returnsPlayerHand() {
         // given
         assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
 
@@ -176,7 +176,7 @@ public class GameServiceIntegrationTest {
         player.setLobby(createdLobby.getLobbyCode());
         player.setUsername("username");
         player.setId(1L);
-        ArrayList<Card> playerHand = new ArrayList<Card>();
+        ArrayList<Card> playerHand = new ArrayList<>();
         playerHand.add(deck.draw());
         player.setHand(playerHand);
         //ArrayList<Player> list = new ArrayList<Player>();
@@ -196,7 +196,7 @@ public class GameServiceIntegrationTest {
         assertEquals(createdLobby.getPlayers().get(0).getHand().get(0).getPlayable(), player1Hand.get(0).getPlayable());
     }
     @Test
-    public void getPlayerHand_invalidLobbyCode_throwsException() {
+    void getPlayerHand_invalidLobbyCode_throwsException() {
         // given
         assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
 
@@ -210,17 +210,21 @@ public class GameServiceIntegrationTest {
         player.setLobby(createdLobby.getLobbyCode());
         player.setUsername("username");
         player.setId(1L);
-        ArrayList<Card> playerHand = new ArrayList<Card>();
+        ArrayList<Card> playerHand = new ArrayList<>();
         playerHand.add(deck.draw());
         player.setHand(playerHand);
         lobbyService.addToLobby(player);
 
-
-        assertThrows(ResponseStatusException.class, () -> gameService.getPlayerHand(1L, createdLobby.getLobbyCode() - 1L));
+        // then
+        Long lobbyCode = createdLobby.getLobbyCode() - 1L;
+        assertThrows(ResponseStatusException.class, () -> {
+            gameService.getPlayerHand(1L, lobbyCode);
+        });
     }
 
+
     @Test
-    public void getPlayerHand_playerDoesNotExist_returnsNull() {
+    void getPlayerHand_playerDoesNotExist_returnsNull() {
         // given
         assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
 
@@ -234,7 +238,7 @@ public class GameServiceIntegrationTest {
         player.setLobby(createdLobby.getLobbyCode());
         player.setUsername("username");
         player.setId(1L);
-        ArrayList<Card> playerHand = new ArrayList<Card>();
+        ArrayList<Card> playerHand = new ArrayList<>();
         playerHand.add(deck.draw());
         player.setHand(playerHand);
         lobbyService.addToLobby(player);
@@ -246,7 +250,7 @@ public class GameServiceIntegrationTest {
         assertNull(player1Hand);
     }
 @Test
-public void playCard_validInput_cardPlayed() {
+void playCard_validInput_cardPlayed() {
     // given
     assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
 
@@ -262,7 +266,7 @@ public void playCard_validInput_cardPlayed() {
     player1.setLobby(createdLobby.getLobbyCode());
     player1.setUsername("username");
     player1.setId(1L);
-    ArrayList<Card> player1Hand = new ArrayList<Card>();
+    ArrayList<Card> player1Hand = new ArrayList<>();
     while (true) {
         Card card = deck.draw();
         if (card.getaRank() == CardRank.SEVEN && card.getColor() == CardColor.RED) {
@@ -280,7 +284,7 @@ public void playCard_validInput_cardPlayed() {
     player2.setId(2L);
     player2.setLobby(createdLobby.getLobbyCode());
     player2.setUsername("username2");
-    ArrayList<Card> player2Hand = new ArrayList<Card>();
+    ArrayList<Card> player2Hand = new ArrayList<>();
     while (true) {
         Card card2 = deck.draw();
         if (card2.getaRank() == CardRank.SIX && card2.getColor() == CardColor.RED) {
@@ -340,7 +344,7 @@ public void playCard_validInput_cardPlayed() {
 }
 
     @Test
-    public void getOrder_validInput_returnOrder() {
+    void getOrder_validInput_returnOrder() {
         // given
         assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
 
@@ -356,7 +360,7 @@ public void playCard_validInput_cardPlayed() {
         player1.setLobby(createdLobby.getLobbyCode());
         player1.setUsername("username");
         player1.setId(1L);
-        ArrayList<Card> player1Hand = new ArrayList<Card>();
+        ArrayList<Card> player1Hand = new ArrayList<>();
         while (true) {
             Card card = deck.draw();
             if (card.getaRank() == CardRank.SEVEN && card.getColor() == CardColor.RED) {
@@ -374,7 +378,7 @@ public void playCard_validInput_cardPlayed() {
         player2.setId(2L);
         player2.setLobby(createdLobby.getLobbyCode());
         player2.setUsername("username2");
-        ArrayList<Card> player2Hand = new ArrayList<Card>();
+        ArrayList<Card> player2Hand = new ArrayList<>();
         while (true) {
             Card card2 = deck.draw();
             if (card2.getaRank() == CardRank.SIX && card2.getColor() == CardColor.RED) {
@@ -421,7 +425,7 @@ public void playCard_validInput_cardPlayed() {
 
     }
     @Test
-    public void getTableCards_validInput_returnTableCards() {
+    void getTableCards_validInput_returnTableCards() {
         // given
         assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
 
@@ -437,7 +441,7 @@ public void playCard_validInput_cardPlayed() {
         player1.setLobby(createdLobby.getLobbyCode());
         player1.setUsername("username");
         player1.setId(1L);
-        ArrayList<Card> player1Hand = new ArrayList<Card>();
+        ArrayList<Card> player1Hand = new ArrayList<>();
         while (true) {
             Card card = deck.draw();
             if (card.getaRank() == CardRank.SEVEN && card.getColor() == CardColor.RED) {
@@ -455,7 +459,7 @@ public void playCard_validInput_cardPlayed() {
         player2.setId(2L);
         player2.setLobby(createdLobby.getLobbyCode());
         player2.setUsername("username2");
-        ArrayList<Card> player2Hand = new ArrayList<Card>();
+        ArrayList<Card> player2Hand = new ArrayList<>();
         while (true) {
             Card card2 = deck.draw();
             if (card2.getaRank() == CardRank.SIX && card2.getColor() == CardColor.RED) {
@@ -500,7 +504,7 @@ public void playCard_validInput_cardPlayed() {
     }
 
     @Test
-    public void getScoreboard_validInput_returnScoreboard() {
+    void getScoreboard_validInput_returnScoreboard() {
         // given
         assertEquals(Collections.EMPTY_LIST, lobbyRepository.findAll());
 
@@ -516,7 +520,7 @@ public void playCard_validInput_cardPlayed() {
         player1.setLobby(createdLobby.getLobbyCode());
         player1.setUsername("username");
         player1.setId(1L);
-        ArrayList<Card> player1Hand = new ArrayList<Card>();
+        ArrayList<Card> player1Hand = new ArrayList<>();
         while (true) {
             Card card = deck.draw();
             if (card.getaRank() == CardRank.SEVEN && card.getColor() == CardColor.RED) {
@@ -534,7 +538,7 @@ public void playCard_validInput_cardPlayed() {
         player2.setId(2L);
         player2.setLobby(createdLobby.getLobbyCode());
         player2.setUsername("username2");
-        ArrayList<Card> player2Hand = new ArrayList<Card>();
+        ArrayList<Card> player2Hand = new ArrayList<>();
         while (true) {
             Card card2 = deck.draw();
             if (card2.getaRank() == CardRank.SIX && card2.getColor() == CardColor.RED) {
@@ -567,12 +571,12 @@ public void playCard_validInput_cardPlayed() {
 
         assertNotNull(scoreboard);
         assertEquals(scoreboard.getScoreboard().get(0).get(0).getCurPlayer(), player1.getUsername());
-        assertEquals(scoreboard.getScoreboard().get(0).get(0).getCurRound(), 1);
+        assertEquals(1, scoreboard.getScoreboard().get(0).get(0).getCurRound());
         assertNull(scoreboard.getScoreboard().get(0).get(0).getCurBid());
         assertNull(scoreboard.getScoreboard().get(0).get(0).getCurPoints());
 
         assertEquals(scoreboard.getScoreboard().get(1).get(0).getCurPlayer(), player2.getUsername());
-        assertEquals(scoreboard.getScoreboard().get(1).get(0).getCurRound(), 1);
+        assertEquals(1, scoreboard.getScoreboard().get(1).get(0).getCurRound());
         assertNull(scoreboard.getScoreboard().get(1).get(0).getCurBid());
         assertNull(scoreboard.getScoreboard().get(1).get(0).getCurPoints());
 

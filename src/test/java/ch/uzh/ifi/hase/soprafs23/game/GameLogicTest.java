@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class GameLogicTest {
+class GameLogicTest {
     static List<Card> cards = Card.getCards();
     static Card pirate;
     static Card mermaid;
@@ -43,7 +43,7 @@ public class GameLogicTest {
         escape = cards.get(52);
     }
     @Test
-    public void checkHandAllBidsNotMade(){
+    void checkHandAllBidsNotMade(){
         GameLogic gameLogic = new GameLogic();
         GameTable gameTable = gameLogic.getGameTable();
 
@@ -56,16 +56,16 @@ public class GameLogicTest {
         player2.setLobby(123456L);
         player2.setUsername("username2");
 
-        ArrayList<Card> player1Hand = new ArrayList<Card>();
+        ArrayList<Card> player1Hand = new ArrayList<>();
         oneRed.setPlayable(true);
         player1Hand.add(oneRed);
         player1.setHand(player1Hand);
-        ArrayList<Card> player2Hand = new ArrayList<Card>();
+        ArrayList<Card> player2Hand = new ArrayList<>();
         twoRed.setPlayable(true);
         player2Hand.add(twoRed);
         player2.setHand(player2Hand);
 
-        ArrayList<Player> players = new ArrayList<Player>();
+        ArrayList<Player> players = new ArrayList<>();
         gameLogic.setPlayers(players);
         gameLogic.addPlayers(player1);
         gameLogic.addPlayers(player2);
@@ -80,7 +80,7 @@ public class GameLogicTest {
         assertFalse(player2.getHand().get(0).getPlayable());
     }
     @Test
-    public void checkHandAllBidsMade(){
+    void checkHandAllBidsMade(){
         GameLogic gameLogic = new GameLogic();
         GameTable gameTable = gameLogic.getGameTable();
 
@@ -96,16 +96,16 @@ public class GameLogicTest {
         player2.setUsername("username2");
         player2.setBid(1);
 
-        ArrayList<Card> player1Hand = new ArrayList<Card>();
+        ArrayList<Card> player1Hand = new ArrayList<>();
         oneRed.setPlayable(true);
         player1Hand.add(oneRed);
         player1.setHand(player1Hand);
-        ArrayList<Card> player2Hand = new ArrayList<Card>();
+        ArrayList<Card> player2Hand = new ArrayList<>();
         twoRed.setPlayable(true);
         player2Hand.add(twoRed);
         player2.setHand(player2Hand);
 
-        ArrayList<Player> players = new ArrayList<Player>();
+        ArrayList<Player> players = new ArrayList<>();
         gameLogic.setPlayers(players);
         gameLogic.addPlayers(player1);
         gameLogic.addPlayers(player2);
@@ -121,7 +121,7 @@ public class GameLogicTest {
     }
 
     @Test
-    public void checkHandAllBidsMadeNoTrumpColour(){
+    void checkHandAllBidsMadeNoTrumpColour(){
         GameLogic gameLogic = new GameLogic();
         Trick trick = new Trick();
         GameTable gameTable = gameLogic.getGameTable();
@@ -138,18 +138,18 @@ public class GameLogicTest {
         player2.setUsername("username2");
         player2.setBid(1);
 
-        ArrayList<Card> player1Hand = new ArrayList<Card>();
+        ArrayList<Card> player1Hand = new ArrayList<>();
         oneRed.setPlayable(true);
         player1Hand.add(oneRed);
         player1.setHand(player1Hand);
-        ArrayList<Card> player2Hand = new ArrayList<Card>();
+        ArrayList<Card> player2Hand = new ArrayList<>();
         twoRed.setPlayable(true);
         player2Hand.add(twoRed);
         player2.setHand(player2Hand);
 
         trick.setTrumpColour(oneBlue);
         gameLogic.setTrick(trick);
-        ArrayList<Player> players = new ArrayList<Player>();
+        ArrayList<Player> players = new ArrayList<>();
         gameLogic.setPlayers(players);
         gameLogic.addPlayers(player1);
         gameLogic.addPlayers(player2);
@@ -164,7 +164,7 @@ public class GameLogicTest {
         assertFalse(player2.getHand().get(0).getPlayable());
     }
     @Test
-    public void checkHandAllBidsMadeHasTrumpColour(){
+    void checkHandAllBidsMadeHasTrumpColour(){
         GameLogic gameLogic = new GameLogic();
         Trick trick = new Trick();
         GameTable gameTable = gameLogic.getGameTable();
@@ -181,18 +181,18 @@ public class GameLogicTest {
         player2.setUsername("username2");
         player2.setBid(1);
 
-        ArrayList<Card> player1Hand = new ArrayList<Card>();
+        ArrayList<Card> player1Hand = new ArrayList<>();
         oneRed.setPlayable(true);
         player1Hand.add(oneRed);
         player1.setHand(player1Hand);
-        ArrayList<Card> player2Hand = new ArrayList<Card>();
+        ArrayList<Card> player2Hand = new ArrayList<>();
         twoRed.setPlayable(true);
         player2Hand.add(twoRed);
         player2.setHand(player2Hand);
 
         trick.setTrumpColour(oneRed);
         gameLogic.setTrick(trick);
-        ArrayList<Player> players = new ArrayList<Player>();
+        ArrayList<Player> players = new ArrayList<>();
         gameLogic.setPlayers(players);
         gameLogic.addPlayers(player1);
         gameLogic.addPlayers(player2);
@@ -207,7 +207,7 @@ public class GameLogicTest {
         assertFalse(player2.getHand().get(0).getPlayable());
     }
     @Test
-    public void endTrick(){
+    void endTrick(){
         GameLogic gameLogic = new GameLogic();
         Trick trick = new Trick();
         GameTable gameTable = gameLogic.getGameTable();
@@ -226,11 +226,11 @@ public class GameLogicTest {
         player2.setBid(1);
         player2.setTricks(0);
 
-        ArrayList<Card> player1Hand = new ArrayList<Card>();
+        ArrayList<Card> player1Hand = new ArrayList<>();
         oneRed.setPlayable(true);
         player1Hand.add(oneRed);
         player1.setHand(player1Hand);
-        ArrayList<Card> player2Hand = new ArrayList<Card>();
+        ArrayList<Card> player2Hand = new ArrayList<>();
         twoRed.setPlayable(true);
         player2Hand.add(twoRed);
         player2.setHand(player2Hand);
@@ -242,7 +242,7 @@ public class GameLogicTest {
         trick.setIsTrumpSet(true);
         trick.setTrumpColour(oneRed);
         gameLogic.setTrick(trick);
-        ArrayList<Player> players = new ArrayList<Player>();
+        ArrayList<Player> players = new ArrayList<>();
         gameLogic.setPlayers(players);
         gameLogic.addPlayers(player1);
         gameLogic.addPlayers(player2);
@@ -252,11 +252,11 @@ public class GameLogicTest {
         gameLogic.endTrick();
 
         assertEquals(0, player2.getTricks());
-        assertEquals(player1.getTricks(), 1);
+        assertEquals(1, player1.getTricks());
         assertEquals(gameTable.getTrickStarter(), player1);
     }
     @Test
-    public void endRound(){
+    void endRound(){
         GameLogic gameLogic = new GameLogic();
         Trick trick = new Trick();
         GameTable gameTable = gameLogic.getGameTable();
@@ -275,11 +275,11 @@ public class GameLogicTest {
         player2.setBid(1);
         player2.setTricks(0);
 
-        ArrayList<Card> player1Hand = new ArrayList<Card>();
+        ArrayList<Card> player1Hand = new ArrayList<>();
         oneRed.setPlayable(true);
         player1Hand.add(oneRed);
         player1.setHand(player1Hand);
-        ArrayList<Card> player2Hand = new ArrayList<Card>();
+        ArrayList<Card> player2Hand = new ArrayList<>();
         twoRed.setPlayable(true);
         player2Hand.add(twoRed);
         player2.setHand(player2Hand);
@@ -291,8 +291,8 @@ public class GameLogicTest {
         trick.setIsTrumpSet(true);
         trick.setTrumpColour(oneRed);
         gameLogic.setTrick(trick);
-        ArrayList<Player> gameLogicPlayers = new ArrayList<Player>();
-        ArrayList<Player> scoreboardPlayers = new ArrayList<Player>();
+        ArrayList<Player> gameLogicPlayers = new ArrayList<>();
+        ArrayList<Player> scoreboardPlayers = new ArrayList<>();
         scoreboardPlayers.add(player1);
         scoreboardPlayers.add(player2);
         gameLogic.setupScoreboard(scoreboardPlayers);
@@ -306,18 +306,18 @@ public class GameLogicTest {
         gameLogic.setRoundToEndGame(1);
         gameLogic.endTrick();
 
-        assertEquals(gameLogic.getRound(), 11);
-        assertEquals(player1.getTricks(), 0);
-        assertEquals(player2.getTricks(), 0);
+        assertEquals(11, gameLogic.getRound());
+        assertEquals(0, player1.getTricks());
+        assertEquals(0, player2.getTricks());
         assertNull(player1.getBid());
         assertNull(player2.getBid());
         assertEquals(gameLogic.getScoreboard().getScoreboard().get(0).get(0).getCurPlayer(), player1.getUsername());
-        assertEquals(gameLogic.getScoreboard().getScoreboard().get(0).get(0).getCurBid(), 1);
-        assertEquals(gameLogic.getScoreboard().getScoreboard().get(0).get(0).getCurPoints(), 70);
-        assertEquals(gameLogic.getScoreboard().getScoreboard().get(0).get(0).getCurTricks(), 1);
+        assertEquals(1, gameLogic.getScoreboard().getScoreboard().get(0).get(0).getCurBid());
+        assertEquals(70, gameLogic.getScoreboard().getScoreboard().get(0).get(0).getCurPoints());
+        assertEquals(1, gameLogic.getScoreboard().getScoreboard().get(0).get(0).getCurTricks());
         assertEquals(gameLogic.getScoreboard().getScoreboard().get(1).get(0).getCurPlayer(), player2.getUsername());
-        assertEquals(gameLogic.getScoreboard().getScoreboard().get(1).get(0).getCurBid(), 1);
+        assertEquals(1, gameLogic.getScoreboard().getScoreboard().get(1).get(0).getCurBid());
         assertEquals(gameLogic.getScoreboard().getScoreboard().get(1).get(0).getCurPoints(), -10);
-        assertEquals(gameLogic.getScoreboard().getScoreboard().get(1).get(0).getCurTricks(), 0);
+        assertEquals(0, gameLogic.getScoreboard().getScoreboard().get(1).get(0).getCurTricks());
     }
 }

@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(GameController.class)
-public class GameControllerTest {
+class GameControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -41,7 +41,7 @@ public class GameControllerTest {
     private GameService gameService;
 
     @Test
-    public void getCardHandler_validInput_cardHandlerReturned() throws Exception {
+    void getCardHandler_validInput_cardHandlerReturned() throws Exception {
         // generate a deck
         Deck deck = new Deck();
         deck.fillDeck();
@@ -49,7 +49,7 @@ public class GameControllerTest {
         player.setLobby(123456L);
         player.setUsername("username");
         player.setId(1L);
-        ArrayList<Card> playerHand = new ArrayList<Card>();
+        ArrayList<Card> playerHand = new ArrayList<>();
         playerHand.add(deck.draw());
         player.setHand(playerHand);
 
@@ -68,7 +68,7 @@ public class GameControllerTest {
                 .andExpect(jsonPath("$[0].color", is(playerHand.get(0).getColor().toString())));
     }
     @Test
-    public void putCardHandler_validInput_returnNoContent() throws Exception {
+    void putCardHandler_validInput_returnNoContent() throws Exception {
         // generate a deck
         Deck deck = new Deck();
         deck.fillDeck();
@@ -76,7 +76,7 @@ public class GameControllerTest {
         player.setLobby(123456L);
         player.setUsername("username");
         player.setId(1L);
-        ArrayList<Card> playerHand = new ArrayList<Card>();
+        ArrayList<Card> playerHand = new ArrayList<>();
         playerHand.add(deck.draw());
         player.setHand(playerHand);
 
@@ -103,7 +103,7 @@ public class GameControllerTest {
                 .andExpect(status().isNoContent());
     }
     @Test
-    public void postGame_validInput_gameStarted() throws Exception {
+    void postGame_validInput_gameStarted() throws Exception {
 
         Mockito.doNothing().when(gameService).startGame(Mockito.any());
 
@@ -120,7 +120,7 @@ public class GameControllerTest {
                 .andExpect(status().isOk());
     }
     @Test
-    public void getRounds_validInput_returnRounds() throws Exception {
+    void getRounds_validInput_returnRounds() throws Exception {
         //given
         given(gameService.getRound(Mockito.any())).willReturn(1);
 
@@ -134,7 +134,7 @@ public class GameControllerTest {
                 .andExpect(jsonPath("$", is(1)));
     }
     @Test
-    public void putBid_validInput_returnPlayerWithBid() throws Exception {
+    void putBid_validInput_returnPlayerWithBid() throws Exception {
         // given
         Player player = new Player();
         player.setLobby(123456L);
@@ -166,7 +166,7 @@ public class GameControllerTest {
 
     }
     @Test
-    public void getOrder_validInput_returnOrder() throws Exception {
+    void getOrder_validInput_returnOrder() throws Exception {
         // create user list
         Player user = new Player();
         user.setId(1L);
@@ -201,7 +201,7 @@ public class GameControllerTest {
                 .andExpect(jsonPath("$[1].lobby", is(list.get(1).getLobby().intValue())));
     }
     @Test
-    public void getTableCards_validInput_returnTableCards() throws Exception {
+    void getTableCards_validInput_returnTableCards() throws Exception {
         // generate a deck
         Deck deck = new Deck();
         deck.fillDeck();
@@ -209,7 +209,7 @@ public class GameControllerTest {
         player.setLobby(123456L);
         player.setUsername("username");
         player.setId(1L);
-        ArrayList<Card> tableCards = new ArrayList<Card>();
+        ArrayList<Card> tableCards = new ArrayList<>();
         tableCards.add(deck.draw());
         tableCards.add(deck.draw());
 
@@ -229,7 +229,7 @@ public class GameControllerTest {
                 .andExpect(jsonPath("$[1].color", is(tableCards.get(1).getColor().toString())));
     }
     @Test
-    public void getScoreboard_validInput_returnScoreboard() throws Exception {
+    void getScoreboard_validInput_returnScoreboard() throws Exception {
 
         // create user list
         Player user = new Player();

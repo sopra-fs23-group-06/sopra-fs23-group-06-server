@@ -17,9 +17,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Tests if the mapping between the internal and the external/API representation
  * works.
  */
-public class DTOMapperTest {
+class DTOMapperTest {
     @Test
-    public void testCreateUser_fromUserPostDTO_toUser_success() {
+    void testCreateUser_fromUserPostDTO_toUser_success() {
         // create UserPostDTO
         PlayerPostDTO playerPostDTO = new PlayerPostDTO();
         playerPostDTO.setId(1L);
@@ -36,7 +36,7 @@ public class DTOMapperTest {
     }
 
     @Test
-    public void testGetUser_fromUser_toUserGetDTO_success() {
+    void testGetUser_fromUser_toUserGetDTO_success() {
         // create User
         Player player = new Player();
         player.setId(1L);
@@ -52,13 +52,13 @@ public class DTOMapperTest {
         assertEquals(player.getLobby(), playerGetDTO.getLobby());
     }
     @Test
-    public void testCreateLobby_fromLobbyPostDTO_toLobby_success() {
+    void testCreateLobby_fromLobbyPostDTO_toLobby_success() {
         // create user list
         Player player = new Player();
         player.setId(1L);
         player.setLobby(1L);
         player.setUsername("username");
-        ArrayList<Player> list = new ArrayList<Player>();
+        ArrayList<Player> list = new ArrayList<>();
         list.add(player);
         // create LobbyPostDTO
         LobbyPostDTO lobbyPostDTO = new LobbyPostDTO();
@@ -75,13 +75,13 @@ public class DTOMapperTest {
         assertEquals(lobbyPostDTO.getPlayers(), lobby.getPlayers());
     }
     @Test
-    public void testGetLobby_fromLobby_toLobbyGetDTO_success() {
+    void testGetLobby_fromLobby_toLobbyGetDTO_success() {
         // create user list
         Player player = new Player();
         player.setId(1L);
         player.setLobby(1L);
         player.setUsername("username");
-        ArrayList<Player> list = new ArrayList<Player>();
+        ArrayList<Player> list = new ArrayList<>();
         list.add(player);
         // create Lobby
         Lobby lobby = new Lobby();

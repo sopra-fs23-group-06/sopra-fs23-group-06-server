@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -43,7 +42,7 @@ class EvaluateTest {
     }
 
     @Test
-    public void noBonus(){
+    void noBonus(){
         Trick trick = new Trick();
         Player trickWinner = new Player();
         trick.addPlayedCards(oneRed);
@@ -53,7 +52,7 @@ class EvaluateTest {
     }
 
     @Test
-    public void mermaidBonus(){
+    void mermaidBonus(){
         Trick trick = new Trick();
         Player trickWinner = new Player();
         trick.addPlayedCards(mermaid);
@@ -63,7 +62,7 @@ class EvaluateTest {
     }
 
     @Test
-    public void mermaidBonusWithPirate(){
+    void mermaidBonusWithPirate(){
         Trick trick = new Trick();
         Player trickWinner = new Player();
         trick.addPlayedCards(skullking);
@@ -74,7 +73,7 @@ class EvaluateTest {
     }
 
     @Test
-    public void BonusWithPirateScaryMary(){
+    void BonusWithPirateScaryMary(){
         Trick trick = new Trick();
         Player trickWinner = new Player();
         trick.addPlayedCards(skullking);
@@ -86,7 +85,7 @@ class EvaluateTest {
     }
 
     @Test
-    public void skullkingBonus(){
+    void skullkingBonus(){
         Trick trick = new Trick();
         Player trickWinner = new Player();
         trick.addPlayedCards(pirate);
@@ -96,7 +95,7 @@ class EvaluateTest {
         assertEquals(60,trickWinner.getBonus());
     }
     @Test
-    public void evaluateTrick() {
+    void evaluateTrick() {
 
         Trick trick = new Trick();
         GameTable gameTable = new GameTable();
@@ -124,139 +123,139 @@ class EvaluateTest {
         assertEquals(50, player1.getBonus());
     }
     @Test
-    public void checkOneRedTwoRed() {
+    void checkOneRedTwoRed() {
         assertNotNull(Evaluate.check(oneRed, twoRed, twoRed.getColor()));
         assertEquals(twoRed, Evaluate.check(oneRed, twoRed, twoRed.getColor()));
     }
     @Test
-    public void checkTwoRedOneRed() {
+    void checkTwoRedOneRed() {
         assertNotNull(Evaluate.check(twoRed, oneRed, twoRed.getColor()));
         assertEquals(twoRed, Evaluate.check(twoRed, oneRed, twoRed.getColor()));
     }
     @Test
-    public void checkOneRedEscape() {
+    void checkOneRedEscape() {
         assertNotNull(Evaluate.check(oneRed, escape, oneRed.getColor()));
         assertEquals(oneRed, Evaluate.check(oneRed, escape, oneRed.getColor()));
     }
     @Test
-    public void checkOneRedSkullKing() {
+    void checkOneRedSkullKing() {
         assertNotNull(Evaluate.check(oneRed, skullking, oneRed.getColor()));
         assertEquals(skullking, Evaluate.check(oneRed, skullking, oneRed.getColor()));
     }
     @Test
-    public void checkOneRedOneBlack() {
+    void checkOneRedOneBlack() {
         assertNotNull(Evaluate.check(oneRed, oneBlack, oneRed.getColor()));
         assertEquals(oneBlack, Evaluate.check(oneRed, oneBlack, oneRed.getColor()));
     }
     @Test
-    public void checkOneRedOneBlue() {
+    void checkOneRedOneBlue() {
         assertNotNull(Evaluate.check(oneRed, oneBlue, oneRed.getColor()));
         assertEquals(oneRed, Evaluate.check(oneRed, oneBlue, oneRed.getColor()));
     }
     @Test
-    public void checkEscapeOneRed() {
+    void checkEscapeOneRed() {
         assertNotNull(Evaluate.check(escape, oneRed, oneRed.getColor()));
         assertEquals(oneRed, Evaluate.check(escape, oneRed, oneRed.getColor()));
     }
     @Test
-    public void checkSkullKingOneRed() {
+    void checkSkullKingOneRed() {
         assertNotNull(Evaluate.check(skullking, oneRed, oneRed.getColor()));
         assertEquals(skullking, Evaluate.check(skullking, oneRed, oneRed.getColor()));
     }
     @Test
-    public void checkOneBlackOneRed() {
+    void checkOneBlackOneRed() {
         assertNotNull(Evaluate.check(oneBlack, oneRed, oneRed.getColor()));
         assertEquals(oneBlack, Evaluate.check(oneBlack, oneRed, oneRed.getColor()));
     }
     @Test
-    public void checkOneBlueOneRed() {
+    void checkOneBlueOneRed() {
         assertNotNull(Evaluate.check(oneBlue, oneRed, oneRed.getColor()));
         assertEquals(oneRed, Evaluate.check(oneBlue, oneRed, oneRed.getColor()));
     }
     @Test
-    public void checkOneBlackEscape() {
+    void checkOneBlackEscape() {
         assertNotNull(Evaluate.check(oneBlack, escape, oneRed.getColor()));
         assertEquals(oneBlack, Evaluate.check(oneBlack, escape, oneRed.getColor()));
     }
     @Test
-    public void checkOneBlackPirate() {
+    void checkOneBlackPirate() {
         assertNotNull(Evaluate.check(oneBlack, pirate, oneRed.getColor()));
         assertEquals(pirate, Evaluate.check(oneBlack, pirate, oneRed.getColor()));
     }
     @Test
-    public void checkOneBlackOneRedTrumpBlue() {
+    void checkOneBlackOneRedTrumpBlue() {
         assertNotNull(Evaluate.check(oneBlack, oneRed, oneBlue.getColor()));
         assertEquals(oneBlack, Evaluate.check(oneBlack, oneRed, oneBlue.getColor()));
     }
     @Test
-    public void checkEscapeOneBlack() {
+    void checkEscapeOneBlack() {
         assertNotNull(Evaluate.check(escape, oneBlack, oneRed.getColor()));
         assertEquals(oneBlack, Evaluate.check(escape, oneBlack, oneRed.getColor()));
     }
     @Test
-    public void checkPirateOneBlack() {
+    void checkPirateOneBlack() {
         assertNotNull(Evaluate.check(pirate, oneBlack, oneRed.getColor()));
         assertEquals(pirate, Evaluate.check(pirate, oneBlack, oneRed.getColor()));
     }
     @Test
-    public void checkOneRedOneBlackTrumpBlue() {
+    void checkOneRedOneBlackTrumpBlue() {
         assertNotNull(Evaluate.check(oneRed, oneBlack, oneBlue.getColor()));
         assertEquals(oneBlack, Evaluate.check(oneRed, oneBlack, oneBlue.getColor()));
     }
     @Test
-    public void checkOneRedOneBlueTrumpBlack() {
+    void checkOneRedOneBlueTrumpBlack() {
         assertNotNull(Evaluate.check(oneRed, oneBlue, oneBlack.getColor()));
         assertEquals(oneRed, Evaluate.check(oneRed, oneBlue, oneBlack.getColor()));
     }
     @Test
-    public void checkOneBlueTwoRedTrumpBlack() {
+    void checkOneBlueTwoRedTrumpBlack() {
         assertNotNull(Evaluate.check(oneBlue, twoRed, oneBlack.getColor()));
         assertEquals(twoRed, Evaluate.check(oneBlue, twoRed, oneBlack.getColor()));
     }
     @Test
-    public void scaryMaryEscape() {
+    void scaryMaryEscape() {
         scarymary.setaOption(CardOption.ESCAPE);
         assertNotNull(Evaluate.checkScary(scarymary, escape));
         assertEquals(scarymary, Evaluate.checkScary(scarymary, escape));
     }
     @Test
-    public void scaryMaryOneRed() {
+    void scaryMaryOneRed() {
         scarymary.setaOption(CardOption.ESCAPE);
         assertNotNull(Evaluate.checkScary(scarymary, oneRed));
         assertEquals(oneRed, Evaluate.checkScary(scarymary, oneRed));
     }
     @Test
-    public void scaryMarySkullKing() {
+    void scaryMarySkullKing() {
         scarymary.setaOption(CardOption.PIRATE);
         assertNotNull(Evaluate.checkScary(scarymary, skullking));
         assertEquals(skullking, Evaluate.checkScary(scarymary, skullking));
     }
     @Test
-    public void scaryMaryOneBlue() {
+    void scaryMaryOneBlue() {
         scarymary.setaOption(CardOption.PIRATE);
         assertNotNull(Evaluate.checkScary(scarymary, oneBlue));
         assertEquals(scarymary, Evaluate.checkScary(scarymary, oneBlue));
     }
     @Test
-    public void OneBlueScaryMary() {
+    void OneBlueScaryMary() {
         scarymary.setaOption(CardOption.ESCAPE);
         assertNotNull(Evaluate.checkScary(oneBlue, scarymary));
         assertEquals(oneBlue, Evaluate.checkScary(oneBlue, scarymary));
     }
     @Test
-    public void SkullKingScaryMary() {
+    void SkullKingScaryMary() {
         scarymary.setaOption(CardOption.PIRATE);
         assertNotNull(Evaluate.checkScary(skullking, scarymary));
         assertEquals(skullking, Evaluate.checkScary(skullking, scarymary));
     }
     @Test
-    public void OneRedScaryMary() {
+    void OneRedScaryMary() {
         scarymary.setaOption(CardOption.PIRATE);
         assertNotNull(Evaluate.checkScary(oneRed, scarymary));
         assertEquals(scarymary, Evaluate.checkScary(oneRed, scarymary));
     }
     @Test
-    public void compareCards() {
+    void compareCards() {
         Trick trick = new Trick();
 
         trick.addPlayedCards(oneRed);

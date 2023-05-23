@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class CalculateTest {
 
     @Test
-    public void noTricks_and_noBids() {
+    void noTricks_and_noBids() {
         int round = 3;
         Player p = new Player();
         p.setTricks(0);
@@ -18,7 +18,7 @@ class CalculateTest {
     }
 
     @Test
-    public void moreTricksthanBids() {
+    void moreTricksthanBids() {
         int round = 3;
         Player p = new Player();
         p.setTricks(3);
@@ -28,7 +28,7 @@ class CalculateTest {
     }
 
     @Test
-    public void moreBidsthanTricks() {
+    void moreBidsthanTricks() {
         int round = 9;
         Player p = new Player();
         p.setTricks(4);
@@ -38,7 +38,7 @@ class CalculateTest {
     }
 
     @Test
-    public void sameTricksandBids() {
+    void sameTricksandBids() {
         int round = 9;
         Player p = new Player();
         p.setTricks(4);
@@ -48,7 +48,7 @@ class CalculateTest {
     }
 
     @Test
-    public void noBidsandsomeTricks() {
+    void noBidsandsomeTricks() {
         int round = 5;
         Player p = new Player();
         p.setTricks(2);

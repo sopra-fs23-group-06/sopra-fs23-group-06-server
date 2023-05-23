@@ -15,7 +15,7 @@ import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-public class LobbyRepositoryTest {
+class LobbyRepositoryTest {
 
     @Qualifier("lobbyRepository")
     @Autowired
@@ -25,13 +25,13 @@ public class LobbyRepositoryTest {
     public void setup() { testLobbyRepository.deleteAll(); }
 
     @Test
-    public void findByLobbyCode_success() {
+    void findByLobbyCode_success() {
         // create user list
         Player user = new Player();
         user.setId(1L);
         user.setLobby(1L);
         user.setUsername("username");
-        ArrayList<Player> list = new ArrayList<Player>();
+        ArrayList<Player> list = new ArrayList<>();
         list.add(user);
         // create Lobby
         Lobby lobby = new Lobby();
@@ -54,13 +54,13 @@ public class LobbyRepositoryTest {
     }
 
     @Test
-    public void findByLobbyCode_LobbyNotFound() {
+    void findByLobbyCode_LobbyNotFound() {
         // create user list
         Player user = new Player();
         user.setId(1L);
         user.setLobby(1L);
         user.setUsername("username");
-        ArrayList<Player> list = new ArrayList<Player>();
+        ArrayList<Player> list = new ArrayList<>();
         list.add(user);
         // create Lobby
         Lobby lobby = new Lobby();
