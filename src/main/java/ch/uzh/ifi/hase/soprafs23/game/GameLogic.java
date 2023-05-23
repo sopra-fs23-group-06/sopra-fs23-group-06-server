@@ -38,7 +38,6 @@ public class GameLogic implements Serializable {
     }
 
     public void setupScoreboard(ArrayList<Player> players) {
-        roundsToEndGame = this.roundsToEndGame;
         scoreboard = new Scoreboard(players, roundsToEndGame);
 
     }
@@ -69,27 +68,34 @@ public class GameLogic implements Serializable {
 
     public void checkHand() {
         boolean allBidsMade = checkAllBidsMade();
-
         for (Player p : gameTable.getOrder()) {
             if (allBidsMade) {
-                if (p.isHasTurn()) {
-                    boolean hasTrumpColour = p != gameTable.getTrickStarter() && hasTrumpColour(p.getHand());
-
-                    for (Card c : p.getHand()) {
-                        if (hasTrumpColour) {
-                            c.setPlayable(isPlayableCard(c, trick.getTrumpColour()));
-                        } else {
-                            c.setPlayable(true);
-                        }
-                    }
-                } else {
-                    setAllCardsUnplayable(p);
-                }
+                handlePlayableCardsForPlayer(p);
             } else {
                 setAllCardsUnplayable(p);
             }
         }
     }
+
+    private void handlePlayableCardsForPlayer(Player player) {
+        if (player.isHasTurn()) {
+            boolean hasTrumpColour = player != gameTable.getTrickStarter() && hasTrumpColour(player.getHand());
+            updateCardPlayability(player.getHand(), hasTrumpColour);
+        } else {
+            setAllCardsUnplayable(player);
+        }
+    }
+
+    private void updateCardPlayability(List<Card> hand, boolean hasTrumpColour) {
+        for (Card card : hand) {
+            if (hasTrumpColour) {
+                card.setPlayable(isPlayableCard(card, trick.getTrumpColour()));
+            } else {
+                card.setPlayable(true);
+            }
+        }
+    }
+
 
     private boolean hasTrumpColour(List<Card> hand) {
         for (Card c : hand) {

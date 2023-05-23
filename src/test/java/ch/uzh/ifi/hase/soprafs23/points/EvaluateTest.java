@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 class EvaluateTest {
-    static ArrayList<Card> cards = Card.getCards();
+    static List<Card> cards = Card.getCards();
     static Card pirate;
     static Card mermaid;
     static Card skullking;

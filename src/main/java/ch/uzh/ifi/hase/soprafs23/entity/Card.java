@@ -7,6 +7,7 @@ import ch.uzh.ifi.hase.soprafs23.constant.CardRank;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 public class Card implements Serializable {
 
@@ -70,7 +71,7 @@ public class Card implements Serializable {
         }
     }
 
-    public static ArrayList<Card> getCards() {
+    public static List<Card> getCards() {
         return CARDS;
     }
 

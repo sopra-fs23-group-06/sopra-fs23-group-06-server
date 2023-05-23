@@ -6,6 +6,7 @@ import ch.uzh.ifi.hase.soprafs23.constant.CardRank;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.logging.Logger;
 
 public class Deck implements Serializable {
 
@@ -35,10 +36,11 @@ public class Deck implements Serializable {
     public Card draw() {
         try {
             return aDeck.remove(aDeck.size() - 1);
-        }
-        catch (Exception e) {
-            System.out.println("Something went wrong... the deck is empty");
+        } catch (Exception e) {
+            Logger logger = Logger.getLogger(getClass().getName());
+            logger.severe("Something went wrong... the deck is empty");
         }
         return null;
     }
+
 }

@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -27,7 +26,7 @@ public class GameController {
     @GetMapping("/games/{lobbyCode}/cardHandler")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ArrayList<Card> getPlayerHand(@RequestParam(name = "userId") Long userId, @PathVariable Long lobbyCode) {
+    public List<Card> getPlayerHand(@RequestParam(name = "userId") Long userId, @PathVariable Long lobbyCode) {
         return gameService.getPlayerHand(userId, lobbyCode);
     }
 
@@ -91,7 +90,7 @@ public class GameController {
     @GetMapping("/games/{lobbyCode}/playedCards")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public ArrayList<Card> getTableCards(@PathVariable Long lobbyCode) {
+    public List<Card> getTableCards(@PathVariable Long lobbyCode) {
         return gameService.getTableCards(lobbyCode);
     }
 

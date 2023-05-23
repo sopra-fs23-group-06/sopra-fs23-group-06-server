@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class GameLogicTest {
-    static ArrayList<Card> cards = Card.getCards();
+    static List<Card> cards = Card.getCards();
     static Card pirate;
     static Card mermaid;
     static Card skullking;
@@ -250,7 +251,7 @@ public class GameLogicTest {
         gameTable.setTrickStarter(player2);
         gameLogic.endTrick();
 
-        assertEquals(player2.getTricks(), 0);
+        assertEquals(0, player2.getTricks());
         assertEquals(player1.getTricks(), 1);
         assertEquals(gameTable.getTrickStarter(), player1);
     }

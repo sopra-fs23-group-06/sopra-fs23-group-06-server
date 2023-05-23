@@ -5,12 +5,13 @@ import ch.uzh.ifi.hase.soprafs23.constant.CardRank;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CardTest {
 
-    ArrayList<Card> cards = Card.getCards();
+    List<Card> cards = Card.getCards();
 
     @Test
     void getCards() {

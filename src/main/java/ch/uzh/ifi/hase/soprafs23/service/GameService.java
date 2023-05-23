@@ -21,6 +21,8 @@ import java.util.List;
 public class GameService {
     private final LobbyRepository lobbyRepository;
 
+    private static final String LOBBY_DOES_NOT_EXIST = "Lobby does not exist.";
+
     @Autowired
     public GameService(@Qualifier("lobbyRepository") LobbyRepository lobbyRepository) {
         this.lobbyRepository = lobbyRepository;
@@ -29,7 +31,7 @@ public class GameService {
 
     public ArrayList<Card> getPlayerHand(Long userId, Long lobbyCode) {
         Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
-        if(lobby==null) {throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby does not exist.");}
+        if(lobby==null) {throw new ResponseStatusException(HttpStatus.NOT_FOUND, LOBBY_DOES_NOT_EXIST);}
     ArrayList<Player> playerList = lobby.getPlayers();
     Player player = null;
     ArrayList<Card> playerHand = null;
@@ -45,44 +47,62 @@ public class GameService {
 
     public void playCard(Long userId, Long lobbyCode, String cardRank, String cardColor, String cardOption) {
         Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
-        if(lobby==null) {throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby does not exist.");}
-        ArrayList<Player> playerList = lobby.getPlayers();
-        Player player = null;
-        ArrayList<Card> playerHand = null;
-        for (Player value : playerList) {
-            if (value.getId().equals(userId)) {
-                player = value;
-                playerHand = player.getHand();
-            }
+        if (lobby == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, LOBBY_DOES_NOT_EXIST);
         }
-        assert player != null;
+
+        Player player = findPlayerById(lobby.getPlayers(), userId);
+        if (player == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Player not found.");
+        }
+
         if (!player.isHasTurn()) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "It is not your turn");
         }
-        Card playedCard = null;
-        for (int i = 0; i < playerHand.size(); i++) {
-            Card card = playerHand.get(i);
-            if (card.getaRank().toString().equals(cardRank) && card.getColor().toString().equals(cardColor)) {
-                if (card.getaRank().equals(CardRank.PIRATE) && !card.getaOption().toString().equals(cardOption)){
-                    continue;
-                }
-                if(!cardOption.equals("NONE")){
-                    card.setScaryMary(cardOption);
-                }
-                playedCard = card;
-                playerHand.remove(i);
-                player.setHasTurn(false);
-                break;
-            }
-        }
+
+        Card playedCard = findCardInPlayerHand(player.getHand(), cardRank, cardColor, cardOption);
         if (playedCard == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Card not found in player's hand.");
         }
 
-        Trick trick = lobby.getGameLogic().getTrick();
-        trick.addPlayedCards(playedCard);
-        player.playCard(playedCard,trick);
+        updatePlayerStateAfterCardPlayed(player, playedCard);
     }
+
+    private Player findPlayerById(List<Player> players, Long userId) {
+        for (Player player : players) {
+            if (player.getId().equals(userId)) {
+                return player;
+            }
+        }
+        return null;
+    }
+
+    private Card findCardInPlayerHand(List<Card> playerHand, String cardRank, String cardColor, String cardOption) {
+        for (int i = 0; i < playerHand.size(); i++) {
+            Card card = playerHand.get(i);
+            if (card.getaRank().toString().equals(cardRank) && card.getColor().toString().equals(cardColor)) {
+                if (card.getaRank().equals(CardRank.PIRATE) && !card.getaOption().toString().equals(cardOption)) {
+                    continue;
+                }
+                if (!cardOption.equals("NONE")) {
+                    card.setScaryMary(cardOption);
+                }
+                return card;
+            }
+        }
+        return null;
+    }
+
+    private void updatePlayerStateAfterCardPlayed(Player player, Card playedCard) {
+        Long lobbyCode = player.getLobby();
+        Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
+        Trick trick = lobby.getGameLogic().getTrick();
+        player.getHand().remove(playedCard);
+        player.setHasTurn(false);
+        trick.addPlayedCards(playedCard);
+        player.playCard(playedCard, trick);
+    }
+
 
 
     public void afterPlayCard(Long userId, Long lobbyCode){
@@ -99,7 +119,7 @@ public class GameService {
             try {
                 Thread.sleep(3500);
             } catch (InterruptedException e) {
-
+                Thread.currentThread().interrupt();
             }
             lobby.getGameLogic().endTrick();
         }
@@ -108,7 +128,7 @@ public class GameService {
 
     public Player recordBid(Player playerInput, Long lobbyCode) {
         Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
-        if(lobby==null) {throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby does not exist.");}
+        if(lobby==null) {throw new ResponseStatusException(HttpStatus.NOT_FOUND, LOBBY_DOES_NOT_EXIST);}
         if (playerInput.getBid() < 0 || playerInput.getBid() > lobby.getRound()){
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Bid does not match round.");
         }
@@ -126,7 +146,7 @@ public class GameService {
 
     public void startGame(Long lobbyCode) {
         Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
-        if(lobby==null) {throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby does not exist.");}
+        if(lobby==null) {throw new ResponseStatusException(HttpStatus.NOT_FOUND, LOBBY_DOES_NOT_EXIST);}
         if(lobby.getPlayers().size() < 2 || lobby.getPlayers().size() >6)
         {throw new ResponseStatusException(HttpStatus.CONFLICT, "Incorrect Player count.");}
         for (int i = 0; i<lobby.getPlayers().size(); i++){
@@ -139,31 +159,31 @@ public class GameService {
 
     public int getRound (Long lobbyCode){
         Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
-        if(lobby==null) {throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby does not exist.");}
+        if(lobby==null) {throw new ResponseStatusException(HttpStatus.NOT_FOUND, LOBBY_DOES_NOT_EXIST);}
         return lobby.getRound();
     }
 
     public List<Player> getOrder (Long lobbyCode){
         Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
-        if(lobby==null) {throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby does not exist.");}
+        if(lobby==null) {throw new ResponseStatusException(HttpStatus.NOT_FOUND, LOBBY_DOES_NOT_EXIST);}
         return lobby.getGameTable().getOrder();
     }
 
     public ArrayList<Card> getTableCards(Long lobbyCode) {
         Lobby lobby = lobbyRepository.findByLobbyCode(lobbyCode);
-        if(lobby==null) {throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby does not exist.");}
+        if(lobby==null) {throw new ResponseStatusException(HttpStatus.NOT_FOUND, LOBBY_DOES_NOT_EXIST);}
         return lobby.getGameLogic().getTrick().getPlayedCards();
     }
 
     public Scoreboard getScoreboard(Long lobbyCode){
         Lobby lobby=lobbyRepository.findByLobbyCode(lobbyCode);
-        if(lobby==null){throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Lobby does not exist.");}
+        if(lobby==null){throw new ResponseStatusException(HttpStatus.NOT_FOUND, LOBBY_DOES_NOT_EXIST);}
         return lobby.getGameLogic().getScoreboard();
     }
 
     public Player getTrickWinner(Long lobbyCode){
         Lobby lobby=lobbyRepository.findByLobbyCode(lobbyCode);
-        if(lobby==null){throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Lobby does not exist.");}
+        if(lobby==null){throw new ResponseStatusException(HttpStatus.NOT_FOUND, LOBBY_DOES_NOT_EXIST);}
         return lobby.getGameLogic().getTrickWinner();
     }
 
