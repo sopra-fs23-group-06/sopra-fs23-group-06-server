@@ -1,8 +1,8 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
-import ch.uzh.ifi.hase.soprafs23.points.Scoreboard;
 import ch.uzh.ifi.hase.soprafs23.entity.Card;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
+import ch.uzh.ifi.hase.soprafs23.points.Scoreboard;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
@@ -10,9 +10,11 @@ import ch.uzh.ifi.hase.soprafs23.service.GameService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.socket.TextMessage;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -20,8 +22,10 @@ import java.util.concurrent.Executors;
 public class GameController {
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final GameService gameService;
+    private final WebSocketController webSocketController;
 
-    GameController(GameService gameService) {this.gameService = gameService;}
+    GameController(GameService gameService) {this.gameService = gameService;
+        this.webSocketController = WebSocketController.getInstance();}
 
     @GetMapping("/games/{lobbyCode}/cardHandler")
     @ResponseStatus(HttpStatus.OK)
@@ -38,7 +42,26 @@ public class GameController {
         String cardColor = playedCard.get("color");
         String cardOption = playedCard.get("aOption");
         gameService.playCard(userId, lobbyCode, cardRank, cardColor, cardOption);
-        executorService.submit(() -> gameService.afterPlayCard(userId, lobbyCode));
+        TextMessage message = new TextMessage(lobbyCode +" update");
+        try {
+            webSocketController.sendServerMessage(message);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        CompletableFuture<Void> afterPlayCardFuture = CompletableFuture.runAsync(() -> {
+            gameService.afterPlayCard(userId, lobbyCode);
+        });
+
+// Wait for the afterPlayCardFuture to complete before sending the server message again
+        afterPlayCardFuture.thenRun(() -> {
+            try {
+                webSocketController.sendServerMessage(message);
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
 
@@ -52,6 +75,13 @@ public class GameController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Only the host can start the game");
         }
         gameService.startGame(lobbyCode);
+        TextMessage message = new TextMessage(lobbyCode +" update");
+        try {
+            webSocketController.sendServerMessage(message);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @GetMapping("/games/{lobbyCode}")
@@ -78,8 +108,16 @@ public class GameController {
 
         Player bidPlayer = gameService.recordBid(playerInput, lobbyCode);
         // convert internal representation of user back to API
+        TextMessage message = new TextMessage(lobbyCode +" update");
+        try {
+            webSocketController.sendServerMessage(message);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return DTOMapper.INSTANCE.convertEntityToPlayerGetDTO(bidPlayer);
     }
+
     @GetMapping("/games/{lobbyCode}/order")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

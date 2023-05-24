@@ -117,7 +117,7 @@ public class GameService {
         Trick trick = lobby.getGameLogic().getTrick();
         if (trick.getPlayedCards().size() == lobby.getPlayers().size()){
             try {
-                Thread.sleep(3500);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }

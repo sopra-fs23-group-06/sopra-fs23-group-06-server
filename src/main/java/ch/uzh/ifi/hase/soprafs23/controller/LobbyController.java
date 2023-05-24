@@ -159,13 +159,6 @@ public class LobbyController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Only the host can close the lobby");
         }
         lobbyService.closeLobby(lobbyCode);
-        TextMessage message = new TextMessage(lobbyCode +" update");
-        try {
-            webSocketController.sendServerMessage(message);
-        }
-        catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @PutMapping("/lobbies/{lobbyCode}/endHandler")
@@ -173,6 +166,13 @@ public class LobbyController {
     @ResponseBody
     public void endGame(@PathVariable Long lobbyCode) {
         lobbyService.endGame(lobbyCode);
+        TextMessage message = new TextMessage(lobbyCode +" update");
+        try {
+            webSocketController.sendServerMessage(message);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     //GameController below, could be moved to own class at some point (lobby instance!)
