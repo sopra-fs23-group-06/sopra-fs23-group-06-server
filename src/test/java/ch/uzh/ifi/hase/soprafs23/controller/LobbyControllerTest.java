@@ -44,6 +44,9 @@ class LobbyControllerTest {
     @Mock
     private SseEmitter sseEmitterMock;
 
+    @MockBean
+    private WebSocketController webSocketController;
+
     @Test
     void addUserToLobby_validInput_userAddedToLobby() throws Exception {
         // given
@@ -272,7 +275,7 @@ class LobbyControllerTest {
 
         Mockito.doNothing().when(lobbyService).gameSettings(Mockito.anyLong(), Mockito.anyInt(), Mockito.anyInt());
 
-        MockHttpServletRequestBuilder postRequest = post("/games/123456/gameSettings")
+        MockHttpServletRequestBuilder postRequest = post("/lobbies/123456/gameSettings")
                 .param("roundToEndGame", "5")
                 .param("maxPlayerSize", "4")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -296,7 +299,7 @@ class LobbyControllerTest {
 
         Mockito.doNothing().when(lobbyService).gameSettings(Mockito.anyLong(), Mockito.anyInt(), Mockito.anyInt());
 
-        MockHttpServletRequestBuilder postRequest = post("/games/123456/gameSettings")
+        MockHttpServletRequestBuilder postRequest = post("/lobbies/123456/gameSettings")
                 .param("roundToEndGame", "5")
                 .param("maxPlayerSize", "4")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -320,7 +323,7 @@ class LobbyControllerTest {
 
         Mockito.doNothing().when(lobbyService).gameSettings(Mockito.anyLong(), Mockito.anyInt(), Mockito.anyInt());
 
-        MockHttpServletRequestBuilder postRequest = post("/games/123456/gameSettings")
+        MockHttpServletRequestBuilder postRequest = post("/lobbies/123456/gameSettings")
                 .param("roundToEndGame", "12")
                 .param("maxPlayerSize", "4")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -344,7 +347,7 @@ class LobbyControllerTest {
 
         Mockito.doNothing().when(lobbyService).gameSettings(Mockito.anyLong(), Mockito.anyInt(), Mockito.anyInt());
 
-        MockHttpServletRequestBuilder postRequest = post("/games/123456/gameSettings")
+        MockHttpServletRequestBuilder postRequest = post("/lobbies/123456/gameSettings")
                 .param("roundToEndGame", "10")
                 .param("maxPlayerSize", "1")
                 .contentType(MediaType.APPLICATION_JSON)

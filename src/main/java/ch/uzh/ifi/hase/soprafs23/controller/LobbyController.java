@@ -10,6 +10,7 @@ import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.socket.TextMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,10 @@ import java.util.List;
 public class LobbyController {
 
   private final LobbyService lobbyService;
-  LobbyController(LobbyService lobbyService) {this.lobbyService = lobbyService;}
+  private final WebSocketController webSocketController;
+  LobbyController(LobbyService lobbyService, WebSocketController webSocketController) {this.lobbyService = lobbyService;
+      this.webSocketController = WebSocketController.getInstance();
+  }
 
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
@@ -36,6 +40,13 @@ public class LobbyController {
         Player playerInput = DTOMapper.INSTANCE.convertPlayerPostDTOtoEntity(playerPostDTO);
 
         Player addedPlayer = lobbyService.addToLobby(playerInput);
+        TextMessage message = new TextMessage(playerInput.getLobby() +" update");
+        try {
+            webSocketController.sendServerMessage(message);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToPlayerGetDTO(addedPlayer);
     }
@@ -71,7 +82,7 @@ public class LobbyController {
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(updatedLobby);
     }
 
-    @PostMapping("/games/{lobbyCode}/gameSettings")
+    @PostMapping("/lobbies/{lobbyCode}/gameSettings")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void gameSettings(@RequestBody PlayerPostDTO playerPostDTO, @RequestParam int roundToEndGame, @RequestParam int maxPlayerSize, @PathVariable Long lobbyCode){
@@ -112,6 +123,13 @@ public class LobbyController {
     public void leaveUser(@RequestBody PlayerPostDTO playerPostDTO) {
         Player leavingPlayer = DTOMapper.INSTANCE.convertPlayerPostDTOtoEntity(playerPostDTO);
         lobbyService.removeUser(leavingPlayer);
+        TextMessage message = new TextMessage(leavingPlayer.getLobby() +" update");
+        try {
+            webSocketController.sendServerMessage(message);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -124,6 +142,13 @@ public class LobbyController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Only the host can kick other players");
         }
         lobbyService.removeUser(leavingPlayer);
+        TextMessage message = new TextMessage(leavingPlayer.getLobby() +" update");
+        try {
+            webSocketController.sendServerMessage(message);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @PutMapping("/lobbies/{lobbyCode}/closeHandler")
@@ -134,6 +159,13 @@ public class LobbyController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Only the host can close the lobby");
         }
         lobbyService.closeLobby(lobbyCode);
+        TextMessage message = new TextMessage(lobbyCode +" update");
+        try {
+            webSocketController.sendServerMessage(message);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @PutMapping("/lobbies/{lobbyCode}/endHandler")
