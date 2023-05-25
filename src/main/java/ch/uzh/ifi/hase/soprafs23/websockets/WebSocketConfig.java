@@ -19,7 +19,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     }
 
     @Bean
-    public org.springframework.web.socket.WebSocketHandler getChatWebSocketHandler(){
+    public org.springframework.web.socket.WebSocketHandler getChatWebSocketHandler() {
         return WebSocketHandler.getInstance();
     }
 }

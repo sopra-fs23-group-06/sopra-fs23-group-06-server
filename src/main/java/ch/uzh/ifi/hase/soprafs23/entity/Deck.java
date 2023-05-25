@@ -23,7 +23,7 @@ public class Deck implements Serializable {
     public void fillDeck() {
         aDeck.clear();
         for (Card c : aCards) {
-            if (c.getaRank().equals(CardRank.SCARY_MARY)){
+            if (c.getaRank().equals(CardRank.SCARY_MARY)) {
                 c.setaOption(CardOption.NONE);
             }
             aDeck.add(c);
@@ -31,16 +31,18 @@ public class Deck implements Serializable {
         Collections.shuffle(aDeck);
     }
 
-    public ArrayList<Card> getaDeck(){return aDeck;}
+    public ArrayList<Card> getaDeck() {
+        return aDeck;
+    }
 
     public Card draw() {
         try {
             return aDeck.remove(aDeck.size() - 1);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             Logger logger = Logger.getLogger(getClass().getName());
             logger.severe("Something went wrong... the deck is empty");
         }
         return null;
     }
-
 }

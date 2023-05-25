@@ -29,7 +29,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     }
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session){
+    public void afterConnectionEstablished(WebSocketSession session) {
         webSocketSessions.add(session);
     }
 
@@ -39,10 +39,8 @@ public class WebSocketHandler extends TextWebSocketHandler {
     }
 
     public void sendServerMessage(TextMessage message) throws IOException {
-        for(WebSocketSession webSocketSession : webSocketSessions){
+        for (WebSocketSession webSocketSession : webSocketSessions) {
             webSocketSession.sendMessage(message);
         }
     }
 }
-
-

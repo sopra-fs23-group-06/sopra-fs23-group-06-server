@@ -23,11 +23,11 @@ public class Trick implements Serializable {
         isTrumpSet = trumpSet;
     }
 
-    public boolean getIsTrumpSet(){
-        return  isTrumpSet;
+    public boolean getIsTrumpSet() {
+        return isTrumpSet;
     }
 
-    public void addPlayedCards(Card c){
+    public void addPlayedCards(Card c) {
         playedCards.add(c);
     }
 

@@ -27,11 +27,13 @@ import java.util.List;
 @RestController
 public class LobbyController {
 
-  private final LobbyService lobbyService;
-  private final WebSocketHandler webSocketHandler;
-  LobbyController(LobbyService lobbyService) {this.lobbyService = lobbyService;
-      this.webSocketHandler = WebSocketHandler.getInstance();
-  }
+    private final LobbyService lobbyService;
+    private final WebSocketHandler webSocketHandler;
+
+    LobbyController(LobbyService lobbyService) {
+        this.lobbyService = lobbyService;
+        this.webSocketHandler = WebSocketHandler.getInstance();
+    }
 
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
@@ -41,7 +43,7 @@ public class LobbyController {
         Player playerInput = DTOMapper.INSTANCE.convertPlayerPostDTOtoEntity(playerPostDTO);
 
         Player addedPlayer = lobbyService.addToLobby(playerInput);
-        TextMessage message = new TextMessage(playerInput.getLobby() +" update");
+        TextMessage message = new TextMessage(playerInput.getLobby() + " update");
         try {
             webSocketHandler.sendServerMessage(message);
         }
@@ -72,7 +74,6 @@ public class LobbyController {
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
     }
 
-
     @PutMapping("/lobbies/{lobbyCode}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -86,21 +87,20 @@ public class LobbyController {
     @PostMapping("/lobbies/{lobbyCode}/gameSettings")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void gameSettings(@RequestBody PlayerPostDTO playerPostDTO, @RequestParam int roundToEndGame, @RequestParam int maxPlayerSize, @PathVariable Long lobbyCode){
+    public void gameSettings(@RequestBody PlayerPostDTO playerPostDTO, @RequestParam int roundToEndGame, @RequestParam int maxPlayerSize, @PathVariable Long lobbyCode) {
         // convert user
         Player playerInput = DTOMapper.INSTANCE.convertPlayerPostDTOtoEntity(playerPostDTO);
         if (playerInput.getId() != 1L) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Only the host can change the game settings");
         }
-        if (roundToEndGame > 10){
+        if (roundToEndGame > 10) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "The maximum of Rounds is 10");
         }
-        if (maxPlayerSize <2){
+        if (maxPlayerSize < 2) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "The minimum of Players are 2");
         }
-        lobbyService.gameSettings(lobbyCode,roundToEndGame,maxPlayerSize);
+        lobbyService.gameSettings(lobbyCode, roundToEndGame, maxPlayerSize);
     }
-
 
     @GetMapping("/lobbies/{lobbyCode}/users")
     @ResponseStatus(HttpStatus.OK)
@@ -117,14 +117,13 @@ public class LobbyController {
         return playerGetDTOS;
     }// maybe change to GET lobbies/lobbyId
 
-
     @PutMapping("/lobbies/{lobbyCode}/leaveHandler")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void leaveUser(@RequestBody PlayerPostDTO playerPostDTO) {
         Player leavingPlayer = DTOMapper.INSTANCE.convertPlayerPostDTOtoEntity(playerPostDTO);
         lobbyService.removeUser(leavingPlayer);
-        TextMessage message = new TextMessage(leavingPlayer.getLobby() +" update");
+        TextMessage message = new TextMessage(leavingPlayer.getLobby() + " update");
         try {
             webSocketHandler.sendServerMessage(message);
         }
@@ -132,7 +131,6 @@ public class LobbyController {
             throw new RuntimeException(e);
         }
     }
-
 
     @PutMapping("/lobbies/{lobbyCode}/kickHandler")
     @ResponseStatus(HttpStatus.OK)
@@ -143,7 +141,7 @@ public class LobbyController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Only the host can kick other players");
         }
         lobbyService.removeUser(leavingPlayer);
-        TextMessage message = new TextMessage(leavingPlayer.getLobby() +" update");
+        TextMessage message = new TextMessage(leavingPlayer.getLobby() + " update");
         try {
             webSocketHandler.sendServerMessage(message);
         }
@@ -167,7 +165,7 @@ public class LobbyController {
     @ResponseBody
     public void endGame(@PathVariable Long lobbyCode) {
         lobbyService.endGame(lobbyCode);
-        TextMessage message = new TextMessage(lobbyCode +" update");
+        TextMessage message = new TextMessage(lobbyCode + " update");
         try {
             webSocketHandler.sendServerMessage(message);
         }
@@ -175,13 +173,4 @@ public class LobbyController {
             throw new RuntimeException(e);
         }
     }
-
-    //GameController below, could be moved to own class at some point (lobby instance!)
-
-
-
-
-
-
-
 }

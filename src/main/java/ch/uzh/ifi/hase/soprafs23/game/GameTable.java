@@ -15,17 +15,25 @@ public class GameTable implements Serializable {
         return order;
     }
 
-    public void addPlayer(Player p){
+    public void addPlayer(Player p) {
         order.add(p);
     }
 
-    public Player getRoundStarter() {return roundStarter;}
+    public Player getRoundStarter() {
+        return roundStarter;
+    }
 
-    public void setRoundStarter(Player roundStarter) {this.roundStarter = roundStarter;}
+    public void setRoundStarter(Player roundStarter) {
+        this.roundStarter = roundStarter;
+    }
 
-    public Player getTrickStarter() {return trickStarter;}
+    public Player getTrickStarter() {
+        return trickStarter;
+    }
 
-    public void setTrickStarter(Player trickStarter) {this.trickStarter = trickStarter;}
+    public void setTrickStarter(Player trickStarter) {
+        this.trickStarter = trickStarter;
+    }
 
     public void deleteOrder() {
         this.order = null;

@@ -47,5 +47,7 @@ public class Score implements Serializable {
         this.curTricks = curTricks;
     }
 
-    public Integer getCurTricks() { return curTricks; }
+    public Integer getCurTricks() {
+        return curTricks;
+    }
 }

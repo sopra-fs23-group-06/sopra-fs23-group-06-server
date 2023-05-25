@@ -25,8 +25,10 @@ public class GameController {
     private final GameService gameService;
     private final WebSocketHandler webSocketHandler;
 
-    GameController(GameService gameService) {this.gameService = gameService;
-        this.webSocketHandler = WebSocketHandler.getInstance();}
+    GameController(GameService gameService) {
+        this.gameService = gameService;
+        this.webSocketHandler = WebSocketHandler.getInstance();
+    }
 
     @GetMapping("/games/{lobbyCode}/cardHandler")
     @ResponseStatus(HttpStatus.OK)
@@ -43,7 +45,7 @@ public class GameController {
         String cardColor = playedCard.get("color");
         String cardOption = playedCard.get("aOption");
         gameService.playCard(userId, lobbyCode, cardRank, cardColor, cardOption);
-        TextMessage message = new TextMessage(lobbyCode +" update");
+        TextMessage message = new TextMessage(lobbyCode + " update");
         try {
             webSocketHandler.sendServerMessage(message);
         }
@@ -65,18 +67,17 @@ public class GameController {
         });
     }
 
-
     @PostMapping("/games/{lobbyCode}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void startGame(@RequestBody PlayerPostDTO playerPostDTO, @PathVariable Long lobbyCode){
+    public void startGame(@RequestBody PlayerPostDTO playerPostDTO, @PathVariable Long lobbyCode) {
         // convert user
         Player playerInput = DTOMapper.INSTANCE.convertPlayerPostDTOtoEntity(playerPostDTO);
         if (playerInput.getId() != 1L) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Only the host can start the game");
         }
         gameService.startGame(lobbyCode);
-        TextMessage message = new TextMessage(lobbyCode +" update");
+        TextMessage message = new TextMessage(lobbyCode + " update");
         try {
             webSocketHandler.sendServerMessage(message);
         }
@@ -85,18 +86,10 @@ public class GameController {
         }
     }
 
-    @GetMapping("/games/{lobbyCode}")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public void /*LobbyGetDTO*/ getGame(@PathVariable Long lobbyCode){
-
-        //return
-    }
-
     @GetMapping("/games/{lobbyCode}/rounds")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public int getRound(@PathVariable Long lobbyCode){
+    public int getRound(@PathVariable Long lobbyCode) {
         return gameService.getRound(lobbyCode);
     }
 
@@ -106,10 +99,8 @@ public class GameController {
     public PlayerGetDTO makeBid(@RequestBody PlayerPostDTO playerPostDTO, @PathVariable Long lobbyCode) {
         // convert user
         Player playerInput = DTOMapper.INSTANCE.convertPlayerPostDTOtoEntity(playerPostDTO);
-
         Player bidPlayer = gameService.recordBid(playerInput, lobbyCode);
-        // convert internal representation of user back to API
-        TextMessage message = new TextMessage(lobbyCode +" update");
+        TextMessage message = new TextMessage(lobbyCode + " update");
         try {
             webSocketHandler.sendServerMessage(message);
         }
@@ -122,7 +113,7 @@ public class GameController {
     @GetMapping("/games/{lobbyCode}/order")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<Player> getOrder(@PathVariable Long lobbyCode){
+    public List<Player> getOrder(@PathVariable Long lobbyCode) {
         return gameService.getOrder(lobbyCode);
     }
 
@@ -136,14 +127,14 @@ public class GameController {
     @GetMapping("/games/{lobbyCode}/scoreboard")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Scoreboard getScoreboard(@PathVariable Long lobbyCode){
+    public Scoreboard getScoreboard(@PathVariable Long lobbyCode) {
         return gameService.getScoreboard(lobbyCode);
     }
 
     @GetMapping("/games/{lobbyCode}/trickWinner")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Player getTrickWinner(@PathVariable Long lobbyCode){
+    public Player getTrickWinner(@PathVariable Long lobbyCode) {
         return gameService.getTrickWinner(lobbyCode);
     }
 }

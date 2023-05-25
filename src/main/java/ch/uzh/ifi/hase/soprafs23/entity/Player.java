@@ -129,6 +129,4 @@ public class Player implements Serializable {
             trick.setTrumpColour(card);
         }
     }
-
-
 }

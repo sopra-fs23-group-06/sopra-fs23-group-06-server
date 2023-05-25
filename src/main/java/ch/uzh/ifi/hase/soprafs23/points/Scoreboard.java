@@ -22,12 +22,13 @@ public class Scoreboard implements Serializable {
             for (int j = 0; j < roundsToEndGame; j++) {
                 Score score = new Score();
                 score.setCurPlayer(player);
-                score.setCurRound(j+1);
+                score.setCurRound(j + 1);
                 row.add(score);
             }
             scoreboardTable.add(row);
         }
     }
+
     public void setScoreboard(Score score) {
         int index = usernames.indexOf(score.getCurPlayer());
         int round = score.getCurRound() - 1;
