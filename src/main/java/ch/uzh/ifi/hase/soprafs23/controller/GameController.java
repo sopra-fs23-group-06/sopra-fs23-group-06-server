@@ -7,6 +7,7 @@ import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
+import ch.uzh.ifi.hase.soprafs23.websockets.WebSocketHandler;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -22,10 +23,10 @@ import java.util.concurrent.Executors;
 public class GameController {
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final GameService gameService;
-    private final WebSocketController webSocketController;
+    private final WebSocketHandler webSocketHandler;
 
     GameController(GameService gameService) {this.gameService = gameService;
-        this.webSocketController = WebSocketController.getInstance();}
+        this.webSocketHandler = WebSocketHandler.getInstance();}
 
     @GetMapping("/games/{lobbyCode}/cardHandler")
     @ResponseStatus(HttpStatus.OK)
@@ -44,7 +45,7 @@ public class GameController {
         gameService.playCard(userId, lobbyCode, cardRank, cardColor, cardOption);
         TextMessage message = new TextMessage(lobbyCode +" update");
         try {
-            webSocketController.sendServerMessage(message);
+            webSocketHandler.sendServerMessage(message);
         }
         catch (Exception e) {
             throw new RuntimeException(e);
@@ -56,7 +57,7 @@ public class GameController {
 // Wait for the afterPlayCardFuture to complete before sending the server message again
         afterPlayCardFuture.thenRun(() -> {
             try {
-                webSocketController.sendServerMessage(message);
+                webSocketHandler.sendServerMessage(message);
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
@@ -77,7 +78,7 @@ public class GameController {
         gameService.startGame(lobbyCode);
         TextMessage message = new TextMessage(lobbyCode +" update");
         try {
-            webSocketController.sendServerMessage(message);
+            webSocketHandler.sendServerMessage(message);
         }
         catch (Exception e) {
             throw new RuntimeException(e);
@@ -110,7 +111,7 @@ public class GameController {
         // convert internal representation of user back to API
         TextMessage message = new TextMessage(lobbyCode +" update");
         try {
-            webSocketController.sendServerMessage(message);
+            webSocketHandler.sendServerMessage(message);
         }
         catch (Exception e) {
             throw new RuntimeException(e);

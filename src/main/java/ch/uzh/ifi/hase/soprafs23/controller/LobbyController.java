@@ -7,6 +7,7 @@ import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
+import ch.uzh.ifi.hase.soprafs23.websockets.WebSocketHandler;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -27,9 +28,9 @@ import java.util.List;
 public class LobbyController {
 
   private final LobbyService lobbyService;
-  private final WebSocketController webSocketController;
-  LobbyController(LobbyService lobbyService, WebSocketController webSocketController) {this.lobbyService = lobbyService;
-      this.webSocketController = WebSocketController.getInstance();
+  private final WebSocketHandler webSocketHandler;
+  LobbyController(LobbyService lobbyService) {this.lobbyService = lobbyService;
+      this.webSocketHandler = WebSocketHandler.getInstance();
   }
 
     @PostMapping("/users")
@@ -42,7 +43,7 @@ public class LobbyController {
         Player addedPlayer = lobbyService.addToLobby(playerInput);
         TextMessage message = new TextMessage(playerInput.getLobby() +" update");
         try {
-            webSocketController.sendServerMessage(message);
+            webSocketHandler.sendServerMessage(message);
         }
         catch (Exception e) {
             throw new RuntimeException(e);
@@ -125,7 +126,7 @@ public class LobbyController {
         lobbyService.removeUser(leavingPlayer);
         TextMessage message = new TextMessage(leavingPlayer.getLobby() +" update");
         try {
-            webSocketController.sendServerMessage(message);
+            webSocketHandler.sendServerMessage(message);
         }
         catch (Exception e) {
             throw new RuntimeException(e);
@@ -144,7 +145,7 @@ public class LobbyController {
         lobbyService.removeUser(leavingPlayer);
         TextMessage message = new TextMessage(leavingPlayer.getLobby() +" update");
         try {
-            webSocketController.sendServerMessage(message);
+            webSocketHandler.sendServerMessage(message);
         }
         catch (Exception e) {
             throw new RuntimeException(e);
@@ -168,7 +169,7 @@ public class LobbyController {
         lobbyService.endGame(lobbyCode);
         TextMessage message = new TextMessage(lobbyCode +" update");
         try {
-            webSocketController.sendServerMessage(message);
+            webSocketHandler.sendServerMessage(message);
         }
         catch (Exception e) {
             throw new RuntimeException(e);

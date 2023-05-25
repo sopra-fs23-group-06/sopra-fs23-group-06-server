@@ -1,4 +1,4 @@
-package ch.uzh.ifi.hase.soprafs23.controller;
+package ch.uzh.ifi.hase.soprafs23.websockets;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -10,38 +10,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class WebSocketController extends TextWebSocketHandler {
+public class WebSocketHandler extends TextWebSocketHandler {
 
-    private static WebSocketController instance;
+    private static WebSocketHandler instance;
 
     private final List<WebSocketSession> webSocketSessions = new ArrayList<>();
 
-    private WebSocketController() {
+    private WebSocketHandler() {
         // Private constructor to prevent direct instantiation
     }
 
-    public static synchronized WebSocketController getInstance() {
+    public static synchronized WebSocketHandler getInstance() {
         if (instance == null) {
-            instance = new WebSocketController();
+            instance = new WebSocketHandler();
         }
         return instance;
     }
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+    public void afterConnectionEstablished(WebSocketSession session){
         webSocketSessions.add(session);
     }
 
-    @Override
-    public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        for(WebSocketSession webSocketSession : webSocketSessions){
-            webSocketSession.sendMessage(message);
-        }
-    }
-
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         webSocketSessions.remove(session);
     }
 

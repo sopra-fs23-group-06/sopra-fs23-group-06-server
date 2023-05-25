@@ -5,6 +5,7 @@ import ch.uzh.ifi.hase.soprafs23.entity.Player;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerPostDTO;
 import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
+import ch.uzh.ifi.hase.soprafs23.websockets.WebSocketHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -45,7 +46,7 @@ class LobbyControllerTest {
     private SseEmitter sseEmitterMock;
 
     @MockBean
-    private WebSocketController webSocketController;
+    private WebSocketHandler webSocketHandler;
 
     @Test
     void addUserToLobby_validInput_userAddedToLobby() throws Exception {
