@@ -1,43 +1,54 @@
-# SoPra RESTful Service Template FS23
+# SoPra Group 6 - Skull King Online
+The goal of this project is to create an online version of the popular game [Skull King](https://www.grandpabecksgames.com/products/skull-king). Skull King
+Online allows up to 6 players to play this exciting pirates' contest in which you have to win tricks in order to get or lose glory and fame.
+Whether you're a seasoned Skull King player or new to the game, our online version provides an immersive experience that will keep you coming back for more.
 
-## Getting started with Spring Boot
--   Documentation: https://docs.spring.io/spring-boot/docs/current/reference/html/index.html
--   Guides: http://spring.io/guides
-    -   Building a RESTful Web Service: http://spring.io/guides/gs/rest-service/
-    -   Building REST services with Spring: https://spring.io/guides/tutorials/rest/
+## Table of Content
 
-## Setup this Template with your IDE of choice
-Download your IDE of choice (e.g., [IntelliJ](https://www.jetbrains.com/idea/download/), [Visual Studio Code](https://code.visualstudio.com/), or [Eclipse](http://www.eclipse.org/downloads/)). Make sure Java 17 is installed on your system (for Windows, please make sure your `JAVA_HOME` environment variable is set to the correct version of Java).
+- [Technologies used](#technologies-used)
+- [High-level components](#high-level-components)
+- [Deployment](#deployment)
+- [Illustrations](#illustrations)
+- [Roadmap](#roadmap)
+- [Authors and acknowledgment](#authors-and-acknowledgment)
+- [License](#license)
 
-### IntelliJ
-1. File -> Open... -> SoPra server template
-2. Accept to import the project as a `gradle project`
-3. To build right click the `build.gradle` file and choose `Run Build`
+## Technologies used
+* [React.js](https://react.dev/) - Frontend JavaScript library
+* [Spring](https://spring.io/projects/spring-framework) - Framework that enables running JVM
+* [Gradle](https://gradle.org/) - Build automation tool
+* [Spring WebSocket](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#websocket) - Real-time interactive applications protocol
+* [Jitsi Meet API](https://jitsi.github.io/handbook/docs/dev-guide/dev-guide-react-sdk) - API for the voice chat functionality
 
-### VS Code
-The following extensions can help you get started more easily:
--   `vmware.vscode-spring-boot`
--   `vscjava.vscode-spring-initializr`
--   `vscjava.vscode-spring-boot-dashboard`
--   `vscjava.vscode-java-pack`
+## High-level components
 
-**Note:** You'll need to build the project first with Gradle, just click on the `build` command in the _Gradle Tasks_ extension. Then check the _Spring Boot Dashboard_ extension if it already shows `soprafs23` and hit the play button to start the server. If it doesn't show up, restart VS Code and check again.
+#### Player
+The [Player](https://github.com/sopra-fs23-group-06/sopra-fs23-group-06-server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/entity/Player.java) JPA entity stores all the important information about a player like their ID, the lobby ID, the username and the cards on the player's hand.
 
-## Building with Gradle
-You can use the local Gradle Wrapper to build the application.
--   macOS: `./gradlew`
--   Linux: `./gradlew`
--   Windows: `./gradlew.bat`
+#### LobbyController
+The [LobbyController](https://github.com/sopra-fs23-group-06/sopra-fs23-group-06-server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/controller/LobbyController.java) is responsible for processing the RESTful GET, PUT and POST requests from the client related to the functionality of the lobby, and calling the right function in the [LobbyService](https://github.com/sopra-fs23-group-06/sopra-fs23-group-06-server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/service/LobbyService.java)
 
-More Information about [Gradle Wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html) and [Gradle](https://gradle.org/docs/).
+#### GameController
+The [GameController](https://github.com/sopra-fs23-group-06/sopra-fs23-group-06-server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/controller/GameController.java) is responsible for processing the RESTful GET, PUT and POST requests from the client related to the functionality of the game, and calling the right function in the [GameService](https://github.com/sopra-fs23-group-06/sopra-fs23-group-06-server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/service/GameService.java)
 
-### Build
+#### GameService
+The [GameService](https://github.com/sopra-fs23-group-06/sopra-fs23-group-06-server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/service/GameService.java) contains the functions called by the [GameController](https://github.com/sopra-fs23-group-06/sopra-fs23-group-06-server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/controller/GameController.java). It is responsible for recording bids, fetching the cards on a [Player](https://github.com/sopra-fs23-group-06/sopra-fs23-group-06-server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/entity/Player.java)'s hand and for updating the player state after a card has been played.
+
+## Deployment
+
+#### Clone Repository
+Clone the server repository onto your local machine with the help of [Git](https://git-scm.com/downloads).
+```bash 
+git clone https://github.com/sopra-fs23-group-06/sopra-fs23-group-06-server.git
+```
+
+#### Build
 
 ```bash
 ./gradlew build
 ```
 
-### Run
+#### Run
 
 ```bash
 ./gradlew bootRun
@@ -45,7 +56,7 @@ More Information about [Gradle Wrapper](https://docs.gradle.org/current/userguid
 
 You can verify that the server is running by visiting `localhost:8080` in your browser.
 
-### Test
+#### Test
 
 ```bash
 ./gradlew test
@@ -67,20 +78,27 @@ If you want to avoid running all tests with every change, use the following comm
 
 `./gradlew build --continuous -xtest`
 
-## API Endpoint Testing with Postman
-We recommend using [Postman](https://www.getpostman.com) to test your API Endpoints.
+## Illustrations
+For illustrations of the UI of this application, please have a look at our [client](https://github.com/sopra-fs23-group-06/sopra-fs23-group-06-client) repository.
 
-## Debugging
-If something is not working and/or you don't know what is going on. We recommend using a debugger and step-through the process step-by-step.
 
-To configure a debugger for SpringBoot's Tomcat servlet (i.e. the process you start with `./gradlew bootRun` command), do the following:
+## Roadmap
+Developers who want to contribute to our project could add the following features:
+- Add some new and exciting game modes, such as playing with a reduced deck of cards.
+- Extend the functionality of the voice chat API to highlight the player who is talking at any moment during the game.
+- Add a persistent high score view so that one could see the all-time highest scores achieved in the game.
 
-1. Open Tab: **Run**/Edit Configurations
-2. Add a new Remote Configuration and name it properly
-3. Start the Server in Debug mode: `./gradlew bootRun --debug-jvm`
-4. Press `Shift + F9` or the use **Run**/Debug "Name of your task"
-5. Set breakpoints in the application where you need it
-6. Step through the process one step at a time
+## Authors and acknowledgment
+### Authors
+* **Roman Mathis** - [Terebos](https://github.com/Terebos)
+* **Nikolin Lotter** - [CodeHub3](https://github.com/CodeHub3)
+* **Lorenzo Ladner** - [lorezh](https://github.com/lorezh)
+* **Matej Gurica** - [bzns](https://github.com/bzns)
+* **Linard Jaeggi** - [exostatistic](https://github.com/exostatistic)
 
-## Testing
-Have a look here: https://www.baeldung.com/spring-boot-testing
+### Acknowledgment
+* This project is based on the [SoPra FS23 - Server Template](https://github.com/HASEL-UZH/sopra-fs23-template-server)
+* We would like to thank our tutor [Luis](https://github.com/luis-tm) as well as the entire team involved in the Software Engineering Lab course at the University of Zurich.
+
+## License
+This project is licensed under the GNU AGPLv3 License - see the [LICENSE](https://github.com/sopra-fs23-group-06/sopra-fs23-group-06-server/blob/main/LICENSE) file for details.
