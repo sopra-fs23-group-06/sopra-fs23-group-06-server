@@ -315,7 +315,7 @@ void playCard_validInput_cardPlayed() {
     // play the card from player 1's hand
     Card cardToPlay = player1Hand.get(0);
     gameService.playCard(player1.getId(), player1.getLobby(), cardToPlay.getaRank().toString(), cardToPlay.getColor().toString(), cardToPlay.getaOption().toString());
-    gameService.afterPlayCard(player1.getId(), player1.getLobby());
+    gameService.afterPlayCard(player1.getLobby());
 
     // Load the lobby object from the repository
     Lobby lobby = lobbyRepository.findByLobbyCode(createdLobby.getLobbyCode());
@@ -339,7 +339,7 @@ void playCard_validInput_cardPlayed() {
     assertEquals(CardColor.RED, trick.getTrumpColour());
 
     // Assert that player2.isHasTurn returns true
-    assertTrue(lobby.getPlayers().get(1).isHasTurn());
+    assertFalse(lobby.getPlayers().get(1).isHasTurn());
 
 }
 

@@ -45,6 +45,7 @@ public class GameController {
         String cardColor = playedCard.get("color");
         String cardOption = playedCard.get("aOption");
         gameService.playCard(userId, lobbyCode, cardRank, cardColor, cardOption);
+        gameService.handleTurn(lobbyCode);
         TextMessage message = new TextMessage(lobbyCode + " update");
         try {
             webSocketHandler.sendServerMessage(message);
@@ -53,7 +54,7 @@ public class GameController {
             throw new RuntimeException(e);
         }
         CompletableFuture<Void> afterPlayCardFuture = CompletableFuture.runAsync(() -> {
-            gameService.afterPlayCard(userId, lobbyCode);
+            gameService.afterPlayCard(lobbyCode);
         });
 
 // Wait for the afterPlayCardFuture to complete before sending the server message again
