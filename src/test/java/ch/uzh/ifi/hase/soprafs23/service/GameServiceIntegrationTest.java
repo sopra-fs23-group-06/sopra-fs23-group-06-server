@@ -324,7 +324,8 @@ void playCard_validInput_cardPlayed() {
     assertEquals(0, lobby.getPlayers().get(0).getHand().size());
 
     // Assert that player1's hasTurn boolean is set to false
-    assertFalse(lobby.getPlayers().get(0).isHasTurn());
+    assertFalse(lobby.getGameTable().getOrder().get(1).isHasTurn());
+
 
     // Assert that the array playedCards in the "Trick" object contains the card played by player1
     Trick trick = lobby.getGameLogic().getTrick();
@@ -339,7 +340,7 @@ void playCard_validInput_cardPlayed() {
     assertEquals(CardColor.RED, trick.getTrumpColour());
 
     // Assert that player2.isHasTurn returns true
-    assertFalse(lobby.getPlayers().get(1).isHasTurn());
+    assertTrue(lobby.getGameTable().getOrder().get(0).isHasTurn());
 
 }
 
