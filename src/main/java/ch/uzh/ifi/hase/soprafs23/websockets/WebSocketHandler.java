@@ -6,6 +6,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,13 +33,12 @@ public class WebSocketHandler extends TextWebSocketHandler {
         webSocketSessions.add(session);
     }
 
-
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         webSocketSessions.remove(session);
     }
 
-    public void sendServerMessage(TextMessage message) throws Exception {
+    public void sendServerMessage(TextMessage message) throws IOException {
         for(WebSocketSession webSocketSession : webSocketSessions){
             webSocketSession.sendMessage(message);
         }
